@@ -16,6 +16,9 @@
 			{
 				// set the default options for all scrollpanes on this page
 				$.extend($.fn.jScrollPane.defaults, {showArrows:true});
+				// The above line could also be expressed like this as we are just setting one default:
+				//$.fn.jScrollPane.defaults.showArrows = true;
+
 				// this initialises the demo scollpanes on the page.
 				$('#pane1').jScrollPane();
 				$('#pane2').jScrollPane();
