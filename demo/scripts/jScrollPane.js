@@ -40,23 +40,7 @@ jQuery.jScrollPane = {
 };
 jQuery.fn.jScrollPane = function(settings)
 {
-	settings = jQuery.extend(
-		{
-			scrollbarWidth : 10,
-			scrollbarMargin : 5,
-			wheelSpeed : 18,
-			showArrows : false,
-			arrowSize : 0,
-			animateTo : false,
-			dragMinHeight : 1,
-			dragMaxHeight : 99999,
-			animateInterval : 100,
-			animateStep: 3,
-			maintainPosition: true,
-			scrollbarOnLeft: false,
-			reinitialiseOnImageLoad: false
-		}, settings
-	);
+	settings = jQuery.extend({}, jQuery.fn.jScrollPane.defaults, settings);
 
 	var rf = function() { return false; };
 	
@@ -449,6 +433,22 @@ jQuery.fn.jScrollPane = function(settings)
 			
 		}
 	)
+};
+
+jQuery.fn.jScrollPane.defaults = {
+	scrollbarWidth : 10,
+	scrollbarMargin : 5,
+	wheelSpeed : 18,
+	showArrows : false,
+	arrowSize : 0,
+	animateTo : false,
+	dragMinHeight : 1,
+	dragMaxHeight : 99999,
+	animateInterval : 100,
+	animateStep: 3,
+	maintainPosition: true,
+	scrollbarOnLeft: false,
+	reinitialiseOnImageLoad: false
 };
 
 // clean up the scrollTo expandos
