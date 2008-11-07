@@ -48,6 +48,8 @@ jQuery.fn.jScrollPane = function(settings)
 		function()
 		{
 			var $this = jQuery(this);
+			// Switch the element's overflow to hidden to ensure we get the size of the element without the scrollbars [http://plugins.jquery.com/node/1208]
+			$this.css('overflow', 'hidden');
 			var paneEle = this;
 			
 			if (jQuery(this).parent().is('.jScrollPaneContainer')) {
