@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<html>
+	<head>
+		<title>jScrollPane text size change example</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/demoStyles.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/jScrollPane.css" />
+		<script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="jquery.em.js"></script>
+		<script type="text/javascript" src="scripts/jScrollPane.js"></script>
+		<script type="text/javascript">
+			
+			$(function()
+			{
+				// this initialises the demo scollpane on the page.
+				$('#pane1').jScrollPane();
+			});
+			
+		</script>
+	</head>
+	<body>
+		<h1>jScrollPane text size change example</h1>
+		<p id="intro">
+			This demo shows how to use <a href="jScrollPane.html">jScrollPane</a> alongside
+			<a href="http://code.google.com/p/jquery-em/">jQEm</a> so
+			that your scroll bar resizes and updates as the user resizes the text on your page
+			using the browser's controls.
+		</p>
+		<p>
+			It's very simple - just include the jQEm script in your page and jScrollPane does
+			the rest! Resize the text in your browser to see it working...
+		</p>
+		<div class="holder">
+			<h3>#pane1 (default)</h3>
+			<div id="pane1" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+				<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+		<div class="holder">
+			<h3>#pane2 (normal overflowing div)</h3>
+			<div id="pane1" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+				<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+	</body>
+</html>

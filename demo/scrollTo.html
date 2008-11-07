@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<html>
+	<head>
+		<title>jScrollPane - scrollTo demos</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/demoStyles.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/jScrollPane.css" />
+		<script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="scripts/jScrollPane.js"></script>
+		<script type="text/javascript">
+			
+			$(function()
+			{
+				// this initialises the demo scollpanes on the page.
+				$('#pane1').jScrollPane();
+				$('#pane2').jScrollPane({showArrows:true});
+				$('#pane3').jScrollPane({scrollbarWidth:20, scrollbarMargin:10, animateTo:true});
+                
+                // this initialises the scrollBy and scrollTo links.
+                $('.scroll-to-demo').bind(
+                    'click',
+                    function()
+                    {
+                        $('#pane1')[0].scrollTo(200);
+                        return false;
+                    }
+                );
+                
+                $('.scroll-by-demo').bind(
+                    'click',
+                    function()
+                    {
+                        $('#pane2')[0].scrollBy(parseInt($(this).attr('rel')));
+                        return false;
+                    }
+                );
+                
+                var $targets = $('#pane3-scroll-targets');
+                var $pane3 = $('#pane3');
+                var pane3top = parseInt($pane3.offset().top);
+                $('#pane3 p').each(
+                    function(index)
+                    {
+                        $targets.append(
+                            $('<li></li>').append(
+                                $('<a></a>')
+                                    .attr({'href':'javascript:;', 'rel':$(this).offset().top})
+                                    .text('Scroll to paragraph ' + (index+1))
+                                    .bind(
+                                        'click',
+                                        function()
+                                        {
+                                            $pane3[0].scrollTo(parseInt($(this).attr('rel')) - pane3top);
+                                        }
+                                    )
+                                )
+                        );
+                    }
+                );
+				
+				// Set up #pane4 and the links which scrollTo elements within it
+				
+                var $pane4 = $('#pane4');
+				$pane4.jScrollPane({animateTo:true});
+				$('a.scroll-to-element-demo').bind(
+					'click',
+					function()
+					{
+						var targetElementSelectorString = $(this).attr('rel');
+						$pane4[0].scrollTo(targetElementSelectorString);
+						return false;
+					}
+				);
+                
+			});
+		</script>
+	</head>
+	<body>
+		<h1>jScrollPane - scrollTo demo</h1>
+		<p id="intro">
+			This page demonstrates the scrollTo functionality of <a href="jScrollPane.html">jScrollPane</a>.
+            View source and click the links below...
+		</p>
+		<h2>Examples</h2>
+		<div class="holder">
+			<h3>#pane1</h3>
+			<div id="pane1" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+				<p>Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.</p>
+				<p>Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.</p>
+				<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+		<div class="holder">
+			<h3>#pane2</h3>
+			<div id="pane2" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+				<p>Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.</p>
+				<p>Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.</p>
+				<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+		<div class="holder orange-bar">
+			<h3>#pane3</h3>
+			<div id="pane3" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis.</p>
+				<p>START P 2 -- Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus.</p>
+				<p>START P 3 -- Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.</p>
+				<p>START P 4 -- Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+				<p>START P 5 -- Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+		<p style="clear: left;">
+            Here are some things to try:
+		</p>
+        <ul>
+            <li><a class="scroll-to-demo" href="noJS.html">scroll pane 1 to 200</a></li>
+            <li><a class="scroll-by-demo" rel="50" href="noJS.html">scroll pane 2 50 pixels down</a></li>
+            <li><a class="scroll-by-demo" rel="-50" href="noJS.html">scroll pane 2 50 pixels up</a></li>
+            <li>
+                <p>
+                    The following UL will be filled with references to the P's in #pane3 and will let you scroll directly
+                    to the top of those P's (note that pane3 also has animateTo passed as true when it is initialised,
+                    hence the smooth animations here).
+                </p>
+                <ul id="pane3-scroll-targets">
+                </ul>
+            </li>
+        </ul>
+		
+		<h2>Update:</h2>
+		<p>
+			You can now also provide a reference to an element within your scroll pane to scrollTo -
+			just pass in a jQuery selector string and if an element matching that string exists
+			within your scroll pane then the scroll pane will scroll so that element appears at the top:
+		</p>
+		<div class="holder">
+			<h3>#pane4</h3>
+			<div id="pane4" class="scroll-pane">
+				<p id="p1">&gt;p1 - Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.&lt;</p>
+				<p id="p2">&gt;p2 - Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.&lt;</p>
+				<p id="p3">&gt;p3 - Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.&lt;</p>
+				<p id="p4">&gt;p4 - Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+		<div class="holder">
+			<ul>
+				<li><a href="noJS.html" rel="#p1" class="scroll-to-element-demo">Scroll pane4 to #p1</a></li>
+				<li><a href="noJS.html" rel="#p2" class="scroll-to-element-demo">Scroll pane4 to #p2</a></li>
+				<li><a href="noJS.html" rel="#p3" class="scroll-to-element-demo">Scroll pane4 to #p3</a></li>
+				<li><a href="noJS.html" rel="#p4" class="scroll-to-element-demo">Scroll pane4 to #p4</a></li>
+			</ul>
+		</div>
+		
+	</body>
+</html>

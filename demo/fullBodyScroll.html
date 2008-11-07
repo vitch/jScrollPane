@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<html>
+	<head>
+		<title>jScrollPane - full body scroll</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/jScrollPane.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/demoStyles.css" />
+		<script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="scripts/jScrollPane.js"></script>
+		<style type="text/css">
+			html {
+				overflow: auto;
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			#container {
+				overflow: auto;
+				padding: 10px 30px 10px 40px;
+			}
+			#pane1 {
+				height: 100px;
+			}
+			#pane2 {
+				height: 150px;
+			}
+			#pane3 {
+				background: #f60;
+				width: 150px;
+				height: 50px;
+			}
+		</style>
+		<script type="text/javascript">
+			
+			$(function()
+			{
+				// this initialises the demo scollpanes on the page.
+				$('#pane3').jScrollPane();
+				$('#pane1, #pane2').jScrollPane();
+				
+				var isResizing;
+				
+				// and the body scrollpane
+				var setContainerHeight = function()
+				{
+					// IE triggers the onResize event internally when you do the stuff in this function
+					// so make sure we don't enter an infinite loop and crash the browser
+					if (!isResizing) { 
+						isResizing = true;
+						$w = $(window);
+						$c = $('#container');
+						var p = (parseInt($c.css('paddingLeft')) || 0) + (parseInt($c.css('paddingRight')) || 0);
+						$('body>.jScrollPaneContainer').css({'height': $w.height() + 'px', 'width': $w.width() + 'px'});
+						$c.css({'height': ($w.height()-p) + 'px', 'width': ($w.width() - p) + 'px', 'overflow':'auto'});
+						$c.jScrollPane();
+						isResizing = false;	
+					}
+				}
+				$(window).bind('resize', setContainerHeight);
+				setContainerHeight();
+				
+				// it seems like you need to call this twice to get consistantly correct results cross browser...
+				setContainerHeight();
+				
+			});
+			
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<h1>jScrollPane - full body scroll</h1>
+			<p id="intro">
+				This is an example of using <a href="jScrollPane.html">jScrollPane</a> to scroll the entire contents
+				of a web page. Resize your window to show vertical scrollbars and they will be provided by jScrollPane.
+			</p>
+			<h2>Examples</h2>
+			<p>
+				These examples show that jScrollPanes work sucessfully inside each other (and inside the container
+				which is also a jScrollPane on this page).
+			</p>
+			<div class="holder">
+				<h3>#pane1</h3>
+				<div id="pane1" class="scroll-pane">
+					<div id="pane3" class="scroll-pane">
+						<p>Nested scrollpane</p>
+						<p>Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.</p>
+						<p>Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.&lt;&lt;</p>
+					</div>
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+					<p>Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.</p>
+					<p>Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.</p>
+					<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae a.&lt;&lt;</p>
+				</div>
+			</div>
+			<div class="holder">
+				<h3>#pane2</h3>
+				<div id="pane2" class="scroll-pane">
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+					<p>Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.</p>
+					<p>Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.</p>
+					<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;&lt;</p>
+				</div>
+			</div>
+			<h2 style="clear: left;">Issues</h2>
+			<ul>
+				<li>
+					Since this solution relies on the window resize event it isn't as smooth as
+					the browsers default scrollbars when resizing the window - especially in Firefox.
+					I think this is pretty much unavoidable :(
+				</li>
+				<li>
+					<strike>The mouse wheel behaves slightly strangely... In Firefox when you use the mouse wheel
+					over a nested jScrollPane it activates both scrollings. In IE it activates the inner one
+					but then if you roll out into the outer one then the mouse wheel doesn't work there any more
+					(until you move the mouse out of it and then back in to re-initialise the handler). I'm
+					guessing that this problem is solvable with a little more experimentation.</strike> I think
+					this has been fixed with a tweak to the mousewheel plugin :)
+				</li>
+				<li>
+					The order of initialisation can be important. Note that above I initialise #pane3 first and
+					then the others. This is because turning #pane3 into a scroll pane introduces some extra height
+					to the contents of #pane2 which needs to be taken into account when the calculating initialising
+					the scroll pane for #pane2.
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

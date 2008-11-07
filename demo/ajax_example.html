@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<html>
+	<head>
+		<title>jScrollPane - ajax examples</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/demoStyles.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/jScrollPane.css" />
+		<script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="scripts/jScrollPane.js"></script>
+		<script type="text/javascript">
+			
+			$(function()
+			{
+				// this initialises the demo scollpanes on the page.
+				$('#pane1').jScrollPane();
+
+				reinitialiseScrollPane = function()
+				{
+					$('#pane1').jScrollPane();
+				}
+
+				$('#add-content').bind(
+					'click',
+					function()
+					{
+						$('#pane1').load('lipsum.html', '', reinitialiseScrollPane);
+					}
+				);
+				// and this allows you to click the link to reduce the amount of content in
+				// #pane1 and reinitialise the scrollbars.
+				$('#remove-content').bind(
+					'click',
+					function()
+					{
+						$('#pane1').empty().append($('<p>Nothing to see here</p>')).jScrollPane({scrollbarWidth:20, scrollbarMargin:10});
+					}
+				);
+			});
+			
+		</script>
+	</head>
+	<body>
+		<h1>jScrollPane</h1>
+		<h2>Ajax example</h2>
+		<p id="intro">
+			This simple example shows how you can load content into a <a href="jScrollPane.html">jScrollPane</a> via AJAX and reinitialise the jScrollPane so it displays scrollbars in the correct place. The important thing to note is that I use the callback parameter of the load function to call a method which reinitialises the scroll pane.
+		</p>
+		
+		<div class="holder">
+			<h3>#pane1</h3>
+			<div id="pane1" class="scroll-pane">
+				<p>No content yet!</p>
+			</div>
+		</div>
+		<p style="clear: left;">
+			You can load the ajax content by clicking <a href="javascript:;" id="add-content">here</a>. If you want to remove it again then just click <a href="javascript:;" id="remove-content">here</a>. View source to see how it works.
+		</p>
+	</body>
+</html>

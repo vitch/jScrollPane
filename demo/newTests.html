@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<html>
+	<head>
+		<title>jScrollPane - new tests (March 2007)</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/demoStyles.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/jScrollPane.css" />
+		<script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="scripts/jScrollPane.js"></script>
+		<style type="text/css">
+			#pane2 {
+				height: 150px;
+			}
+		</style>
+		<script type="text/javascript">
+			
+			$(function()
+			{
+				// this initialises the demo scollpanes on the page.
+				$('#pane1').jScrollPane({showArrows:true});
+				$('#pane2').jScrollPane({showArrows:true});
+				// this allows you to click a link to add content to #pane2 and shows how to 
+				// reinitialise the scrollbars when you have done this.
+				$('#add-content').bind(
+					'click',
+					function()
+					{
+						$('#pane2').append($('<p>').html($('#intro').html())).jScrollPane({showArrows:true});
+					}
+				);
+				// and this allows you to click the link to reduce the amount of content in
+				// #pane2 and reinitialise the scrollbars.
+				$('#remove-content').bind(
+					'click',
+					function()
+					{
+						$('#pane2').empty().append($('<p>').html($('#intro').html())).jScrollPane({showArrows:true});
+					}
+				);
+			});
+			
+		</script>
+	</head>
+	<body>
+		<h1>jScrollPane - new tests (March 2007)</h1>
+		<p id="intro">
+			This page contains some examples of edge case uses of <a href="jScrollPane.html">jScrollPane</a> which
+            were previously buggy.
+		</p>
+		<h2>Examples</h2>
+		<form>
+			<select>
+                <option>This shouldn't interfere with the jScrollPane</option>
+                <option>This shouldn't interfere with the jScrollPane</option>
+                <option>This shouldn't interfere with the jScrollPane</option>
+                <option>This shouldn't interfere with the jScrollPane</option>
+                <option>This shouldn't interfere with the jScrollPane</option>
+                <option>This shouldn't interfere with the jScrollPane</option>
+            </select>
+		</form>
+		<div class="holder">
+			<h3>#pane1</h3>
+			<div id="pane1" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+				<p>Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.</p>
+				<p>Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.</p>
+				<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+		<div class="holder">
+			<h3>#pane2</h3>
+			<div id="pane2" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec condimentum pretium nisl. Integer quis tellus nec turpis placerat scelerisque. In semper lacus eu nisi. Praesent dignissim metus sit amet enim. Nam auctor, neque semper congue sagittis, risus mi commodo pede, nec euismod magna libero at sem. In enim magna, vestibulum et, blandit sit amet, tempor vel, ligula. Phasellus ante augue, congue vitae, faucibus quis, gravida sit amet, diam. Nullam congue accumsan magna. Etiam a nunc. Aliquam elit urna, ornare vitae, ultrices et, tempus non, nisl. Duis eros neque, luctus quis, interdum ultricies, auctor eu, urna. Donec nibh. Integer in purus tempus mi venenatis mollis. Cras nunc odio, porttitor at, accumsan ac, adipiscing vitae, ante.</p>
+				<p>Nam dui enim, fringilla vitae, rhoncus non, pharetra in, nunc. Sed a lectus vel orci bibendum placerat. Aliquam erat volutpat. Integer odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis dictum egestas lorem. Donec ultricies volutpat tellus. Phasellus justo arcu, pharetra eget, cursus non, consectetuer ac, nunc. Fusce orci tortor, semper vel, lacinia vitae, accumsan id, quam. Mauris semper molestie lectus. Duis venenatis erat ultrices nisl.</p>
+				<p>Morbi augue enim, ultricies nec, lobortis sed, iaculis eu, quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Curabitur sollicitudin, elit eu porttitor varius, tellus velit tristique sem, vitae blandit nisi eros id purus. Nunc non lorem. Nunc blandit purus nec nisi. Donec vulputate, urna vel interdum tristique, tellus mauris pretium lacus, quis sodales lectus nunc sit amet turpis. Suspendisse potenti. Fusce accumsan. Maecenas aliquam consectetuer augue. Fusce est neque, condimentum nec, condimentum vitae, consectetuer ac, tortor. Praesent ultricies urna in lectus. Nam erat nunc, venenatis nec, facilisis sed, feugiat ac, pede. Vivamus aliquam aliquet libero. Curabitur dolor nunc, scelerisque at, gravida dignissim, rutrum at, orci. Maecenas vitae libero id eros rutrum hendrerit. Duis lacinia mauris non erat. Nullam et dolor vel leo sollicitudin suscipit. Sed laoreet libero.</p>
+				<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent turpis. Suspendisse molestie, neque non congue ullamcorper, neque sem consequat nisl, eget pulvinar odio erat et tellus. Nunc luctus convallis dolor. Nullam non mauris. Etiam nisi magna, adipiscing eu, nonummy ac, laoreet nec, est. Pellentesque tristique, est vel condimentum feugiat, nisi justo rhoncus pede, in pulvinar mauris lectus vitae dui. Pellentesque scelerisque. Vestibulum tellus dolor, porta quis, facilisis nec, convallis vitae, quam. Quisque nisi. Nunc vitae nulla vel turpis mollis molestie. Etiam vitae massa.&lt;</p>
+			</div>
+		</div>
+		<p style="clear: left;">
+			You can add more copy to pane2 by clicking <a href="javascript:;" id="add-content">here</a> -
+			this illustrates how to update the scrollbar when content is dynamically added to a page (e.g.
+			as the result of an AJAX call). You can also reduce the amount of content in pane2 by clicking
+			<a href="javascript:;" id="remove-content">here</a>.
+		</p>
+	</body>
+</html>

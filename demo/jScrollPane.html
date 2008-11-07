@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<html>
+	<head>
+		<title>jScrollPane</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/demoStyles.css" />
+	</head>
+	<body>
+		<h1>jScrollPane</h1>
+		<p id="intro">
+			jScrollPane is a <a href="http://www.jquery.com/">jquery</a> plugin which allows you to replace the 
+			browsers default vertical scrollbars on	any block level element with an <em>overflow:auto</em> style. 
+			You can easily control the apperance of	the custom scrollbars using simple CSS.
+		</p>
+		<p>
+			jScrollPane is crossbrowser, working on all browsers that support jquery and it also  
+			degrades gracefully. If a user's browser doesn't support jQuery or has JavaScript turned off then 
+			they will see the browsers default scrollbars. If the 
+			<a href="http://jquery.com/plugins/project/mousewheel">mouse wheel plugin</a> is 
+			included in the page then the scroll panes will respond to mouse wheel events as well.
+		</p>
+		<p>
+			jScrollPane is built on top of the <a href="http://www.jquery.com/">awesome jQuery library</a> and
+			optionally utilises the <a href="http://jquery.com/plugins/project/mousewheel">mouse wheel plugin</a>
+			and the <a href="http://davecardwell.co.uk/javascript/jquery/plugins/jquery-em/">jQEm plugin</a>
+		</p>
+		<h2>Examples</h2>
+		<p>
+			There are a number of different examples of different ways you can use jScrollPane:
+		</p>
+		<ul>
+			<li><a href="basic.html">Basic scrollbars</a></li>
+			<li><a href="examples.html">OS style scrollbars</a></li>
+			<li><a href="scrollTo.html">scrollTo functionality</a></li>
+			<li><a href="ajax_example.html">example of loading content into scroll pane using AJAX</a></li>
+			<li><a href="fullBodyScroll.html">fullpage scroll and nested scrollpanes</a></li>
+			<li><a href="scrollToSpeed.html">scrollTo functionality with different speeds</a></li>
+			<li><a href="imagesExample.html">using jScrollPane with the reinitialiseOnImageLoad parameter so that it automagically updates when any images inside it load</a></li>
+			<li><a href="tabFormFieldExample.html">an example showing tabbing amoungst form fields inside the jscrollpane</a></li>
+			<li><a href="jumpToExternalAnchorExample.html#marker">example showing scrolling to a specific place in a jScrollPane from an external link</a></li>
+			<li><a href="textSizeChange.html">using jScrollPane with jQEm so it works even when the user changes their text size in the browser</a></li>
+			<li><a href="onImagesLoadExample.html">[deprecated] using jScrollPane with jquery.onImagesLoad so it works even when your scroll pane contains images which haven't been loaded when you initialise it</a></li>
+		</ul>
+		<h2>Real world examples</h2>
+		<p>
+			Here are some examples of jScrollPane being used in the real world - they demonstrate how
+			varied the scroll bars you can create can be.
+		</p>
+		<ul>
+			<li>In the Tignes Spirit <a href="http://www.tignes-spirit.com/store/details/29">snowboard store</a.></li>
+			<li>In the <a href="http://www.lisakline.com/">Lisa Kline</a> online boutique.</li>
+			<li>On <a href="http://www.lab-au.com/index.php?section=news">lab-au's</a> news panel.</li>
+			<li>On <a href="http://www.rezo.ge/design.htm">Rezo Kaishauri's portfolio</a> site.</li>
+		</ul>
+		<h2>Usage</h2>
+		<p>Just include the following files in the head of your page:</p>
+		<ul>
+			<li><a href="scripts/jquery-1.2.6.min.js">jQuery</a> (I'm using 1.2.6 here)</li>
+			<li><a href="scripts/jquery.mousewheel.js">the mouse wheel plugin</a> (if you want mouse wheel support)</li>
+			<li><a href="scripts/jquery.em.js">the jQEm plugin</a> (if you want your scroll panes to automagically resize when the user changes text size)</li>
+			<li><a href="scripts/jScrollPane.js">jScrollPane.js</a></li>
+			<li><a href="styles/jScrollPane.css">jScrollPane.css</a></li>
+		</ul>
+		<p>Like so:</p>
+<pre>
+&lt;script type="text/javascript" src="scripts/jquery-1.2.6.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="scripts/jquery.mousewheel.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="scripts/jquery.em.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="scripts/jScrollPane.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" type="text/css" media="all" href="styles/jScrollPane.css" /&gt;
+</pre>
+		<p>
+			Then you can use any query selector to select the elements you would like to apply jScrollPane
+			and then initialise it. The following code runs when the document is ready and finds any element
+			with a class of "scroll-pane" and then calls jScrollPane on them.
+		</p>
+<pre>
+$(function()
+{
+	$('.scroll-pane').jScrollPane();
+});
+</pre>
+		<p>
+			You can pass some optional parameters to the jScrollPane function. These take the form of an object
+			with the following attributes:
+		</p>
+		<ul>
+			<li><strong>scrollbarWidth</strong> [int] - the width of the created scrollbar in pixels (defaults to 10)</li>
+			<li><strong>scrollbarMargin</strong> [int] - the margin to leave to the left of the scrollbar in pixels (defaults to 5)</li>
+			<li><strong>wheelSpeed</strong> [int] - controls how fast the mouse wheel makes the content scroll in pixels (defaults to 18)</li>
+			<li><strong>showArrows</strong> [boolean] - controls whether to display arrows for the user to scroll with (defaults to false)</li>
+			<li><strong>arrowSize</strong> [int] - the height of the arrow buttons if showArrows=true (calculated from CSS if not provided)</li>
+			<li><strong>animateTo</strong> [boolean] - whether to animate when calling <a href="scrollTo.html">scrollTo and scrollBy</a> (defaults to false)</li>
+			<li><strong>dragMinHeight</strong> [int] - the minimum height to allow the drag bar to be (defaults to 0)</li>
+			<li><strong>dragMaxHeight</strong> [int] - the maximum height to allow the drag bar to be (defaults to 99999!)</li>
+			<li><strong>animateInterval</strong> [int] - The interval in milliseconds to update an animating scrollPane (default 100)</li>
+			<li><strong>animateStep</strong> [int] - The amount to divide the remaining scroll distance by when animating (default 3)</li>
+			<li><strong>maintainPosition</strong> [boolean] - Whether you want the contents of the scroll pane to maintain it's position when you re-initialise it - so it doesn't scroll as you add more content (default true)</li>
+			<li><strong>scrollbarOnLeft</strong> [boolean] - Whether the scrollbar should appear on the left hand side of the panes content (make sure your CSS also reflects this)</li>
+			<li><strong>reinitialiseOnImageLoad</strong> [boolean] - Whether the jScrollPane should automatically re-initialise itself when any contained images are loaded (defaults to false)</li>
+		</ul>
+		<h2>Downloads</h2>
+		<p>
+			You can download this plugin in a number of ways. Release version distributions are available from the <a href="http://code.google.com/p/jscrollpane/downloads/list">jScrollPane
+			googlecode site</a>. Or the latest sourcecode is always available in the <a href="http://code.google.com/p/jscrollpane/source/checkout">googlecode subversion repository</a>.
+		</p>
+		<h2>Limitations</h2>
+		<p>
+			Because the element that you turn into a scrollpane is wrapped in another element you can't apply any
+			positional styling to it. This is a shame but the problem is easily avoided by wrapping the element in
+			another div with the positional styling on it (like the divs on this page with a class of holder).
+		</p>
+		<h2>Bugs</h2>
+		<p>Bug reports and enhancement requests should be made through the <a href="http://code.google.com/p/jscrollpane/issues/list">jScrollPane issues page</a> on googlecode. All bug reports should include full details of the browser/ OS that the bug appears on and a link to a test URL displaying the bug. This is the only avenue that I can accept bug reports through as otherwise it is too hard to keep track of them.</p>
+		<h2>Support</h2>
+		<p>All support requests should also be made through the <a href="http://code.google.com/p/jscrollpane/issues/list">jScrollPane issues page</a> on googlecode or through the comments on my <a href="http://www.kelvinluck.com/projects/jscrollpane-custom-cross-browser-scrollbars/">jScrollPane project page</a>.
+	</body>
+</html>
