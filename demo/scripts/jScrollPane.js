@@ -390,13 +390,19 @@ jQuery.fn.jScrollPane = function(settings)
 					{
 						var eleTop = $(this).position().top;
 						var viewportTop = -parseInt($pane.css('top')) || 0;
-						var eleInView = eleTop > viewportTop && eleTop < viewportTop + paneHeight;
+						var maxVisibleEleTop = viewportTop + paneHeight;
+						var eleInView = eleTop > viewportTop && eleTop < maxVisibleEleTop;
 						if (!eleInView) {
 							$container.scrollTop(0);
-							scrollTo($(this).position().top - settings.scrollbarMargin , true);
+							var destPos = eleTop - settings.scrollbarMargin;
+							if (eleTop > viewportTop) { // element is below viewport - scroll so it is at bottom.
+								destPos += $(this).height() + 15+ settings.scrollbarMargin - paneHeight;
+							}
+							scrollTo(destPos);
 						}
 					}
 				)
+				
 				
 				if (location.hash) {
 					// the timeout needs to be longer in IE when not loading from cache...
