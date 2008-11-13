@@ -3,7 +3,7 @@
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * 
  * See http://kelvinluck.com/assets/jquery/jScrollPane/
- * $Id: jScrollPane.js 6 2008-11-07 07:08:04Z kelvin.luck $
+ * $Id: jScrollPane.js 19 2008-11-13 06:00:09Z kelvin.luck $
  */
 
 /**
@@ -48,6 +48,8 @@ jQuery.fn.jScrollPane = function(settings)
 		function()
 		{
 			var $this = jQuery(this);
+			// Switch the element's overflow to hidden to ensure we get the size of the element without the scrollbars [http://plugins.jquery.com/node/1208]
+			$this.css('overflow', 'hidden');
 			var paneEle = this;
 			
 			if (jQuery(this).parent().is('.jScrollPaneContainer')) {
@@ -384,12 +386,23 @@ jQuery.fn.jScrollPane = function(settings)
 				// Deal with it when the user tabs to a link or form element within this scrollpane
 				$('*', this).bind(
 					'focus',
-					function()
+					function(event)
 					{
-						$container.scrollTop(0);
-						scrollTo($(this).position().top - settings.scrollbarMargin , true);
+						var eleTop = $(this).position().top;
+						var viewportTop = -parseInt($pane.css('top')) || 0;
+						var maxVisibleEleTop = viewportTop + paneHeight;
+						var eleInView = eleTop > viewportTop && eleTop < maxVisibleEleTop;
+						if (!eleInView) {
+							$container.scrollTop(0);
+							var destPos = eleTop - settings.scrollbarMargin;
+							if (eleTop > viewportTop) { // element is below viewport - scroll so it is at bottom.
+								destPos += $(this).height() + 15+ settings.scrollbarMargin - paneHeight;
+							}
+							scrollTo(destPos);
+						}
 					}
 				)
+				
 				
 				if (location.hash) {
 					// the timeout needs to be longer in IE when not loading from cache...
@@ -407,8 +420,10 @@ jQuery.fn.jScrollPane = function(settings)
 						$target = $(e.target);
 						if ($target.is('a')) {
 							var h = $target.attr('href');
+							console.log(h);
 							if (h.substr(0, 1) == '#') {
 								$linkedEle = $(h, $this);
+								console.log($linkedEle);
 								if ($linkedEle.length) {
 									$linkedEle.trigger('focus');
 									return false;
