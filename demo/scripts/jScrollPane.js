@@ -385,11 +385,25 @@ jQuery.fn.jScrollPane = function(settings)
 			
 				// Deal with it when the user tabs to a link or form element within this scrollpane
 				$('*', this).bind(
-					'focus',
-					function()
+					'mousedown',
+					function(event)
 					{
-						$container.scrollTop(0);
-						scrollTo($(this).position().top - settings.scrollbarMargin , true);
+						$.data(this, 'jScrollPaneMouseDown', true);
+					}
+				).bind(
+					'mouseup',
+					function(event)
+					{
+						$.data(this, 'jScrollPaneMouseDown', null);
+					}
+				).bind(
+					'focus',
+					function(event)
+					{
+						if (!$.data(this, 'jScrollPaneMouseDown')) {
+							$container.scrollTop(0);
+							scrollTo($(this).position().top - settings.scrollbarMargin , true);
+						}
 					}
 				)
 				
@@ -409,8 +423,10 @@ jQuery.fn.jScrollPane = function(settings)
 						$target = $(e.target);
 						if ($target.is('a')) {
 							var h = $target.attr('href');
+							console.log(h);
 							if (h.substr(0, 1) == '#') {
 								$linkedEle = $(h, $this);
+								console.log($linkedEle);
 								if ($linkedEle.length) {
 									$linkedEle.trigger('focus');
 									return false;
