@@ -385,22 +385,13 @@ jQuery.fn.jScrollPane = function(settings)
 			
 				// Deal with it when the user tabs to a link or form element within this scrollpane
 				$('*', this).bind(
-					'mousedown',
-					function(event)
-					{
-						$.data(this, 'jScrollPaneMouseDown', true);
-					}
-				).bind(
-					'mouseup',
-					function(event)
-					{
-						$.data(this, 'jScrollPaneMouseDown', null);
-					}
-				).bind(
 					'focus',
 					function(event)
 					{
-						if (!$.data(this, 'jScrollPaneMouseDown')) {
+						var eleTop = $(this).position().top;
+						var viewportTop = -parseInt($pane.css('top')) || 0;
+						var eleInView = eleTop > viewportTop && eleTop < viewportTop + paneHeight;
+						if (!eleInView) {
 							$container.scrollTop(0);
 							scrollTo($(this).position().top - settings.scrollbarMargin , true);
 						}
