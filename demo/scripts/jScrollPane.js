@@ -35,30 +35,33 @@
  * @cat Plugins/jScrollPane
  * @author Kelvin Luck (kelvin AT kelvinluck DOT com || http://www.kelvinluck.com)
  */
-jQuery.jScrollPane = {
+
+(function($) {
+
+$.jScrollPane = {
 	active : []
 };
-jQuery.fn.jScrollPane = function(settings)
+$.fn.jScrollPane = function(settings)
 {
-	settings = jQuery.extend({}, jQuery.fn.jScrollPane.defaults, settings);
+	settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
 
 	var rf = function() { return false; };
 	
 	return this.each(
 		function()
 		{
-			var $this = jQuery(this);
+			var $this = $(this);
 			// Switch the element's overflow to hidden to ensure we get the size of the element without the scrollbars [http://plugins.jquery.com/node/1208]
 			$this.css('overflow', 'hidden');
 			var paneEle = this;
 			
-			if (jQuery(this).parent().is('.jScrollPaneContainer')) {
-				var currentScrollPosition = settings.maintainPosition ? $this.offset({relativeTo:jQuery(this).parent()[0]}).top : 0;
-				var $c = jQuery(this).parent();
+			if ($(this).parent().is('.jScrollPaneContainer')) {
+				var currentScrollPosition = settings.maintainPosition ? $this.offset({relativeTo:$(this).parent()[0]}).top : 0;
+				var $c = $(this).parent();
 				var paneWidth = $c.innerWidth();
 				var paneHeight = $c.outerHeight();
 				var trackHeight = paneHeight;
-				jQuery('>.jScrollPaneTrack, >.jScrollArrowUp, >.jScrollArrowDown', $c).remove();
+				$('>.jScrollPaneTrack, >.jScrollArrowUp, >.jScrollArrowDown', $c).remove();
 				$this.css({'top':0});
 			} else {
 				var currentScrollPosition = 0;
@@ -68,7 +71,7 @@ jQuery.fn.jScrollPane = function(settings)
 				var paneHeight = $this.innerHeight();
 				var trackHeight = paneHeight;
 				$this.wrap(
-					jQuery('<div></div>').attr(
+					$('<div></div>').attr(
 						{'className':'jScrollPaneContainer'}
 					).css(
 						{
@@ -80,7 +83,7 @@ jQuery.fn.jScrollPane = function(settings)
 				// deal with text size changes (if the jquery.em plugin is included)
 				// and re-initialise the scrollPane so the track maintains the
 				// correct size
-				jQuery(document).bind(
+				$(document).bind(
 					'emchange', 
 					function(e, cur, prev)
 					{
@@ -100,7 +103,7 @@ jQuery.fn.jScrollPane = function(settings)
 				if ($imagesToLoad.length) {
 					$imagesToLoad.each(function(i, val)	{
 						$(this).bind('load', function() {
-							if(jQuery.inArray(i, loadedImages) == -1){ //don't double count images
+							if($.inArray(i, loadedImages) == -1){ //don't double count images
 								loadedImages.push(val); //keep a record of images we've seen
 								$imagesToLoad = $.grep($imagesToLoad, function(n, i) {
 									return n != val;
@@ -140,16 +143,16 @@ jQuery.fn.jScrollPane = function(settings)
 			if (percentInView < .99) {
 				var $container = $this.parent();
 				$container.append(
-					jQuery('<div></div>').attr({'className':'jScrollPaneTrack'}).css({'width':settings.scrollbarWidth+'px'}).append(
-						jQuery('<div></div>').attr({'className':'jScrollPaneDrag'}).css({'width':settings.scrollbarWidth+'px'}).append(
-							jQuery('<div></div>').attr({'className':'jScrollPaneDragTop'}).css({'width':settings.scrollbarWidth+'px'}),
-							jQuery('<div></div>').attr({'className':'jScrollPaneDragBottom'}).css({'width':settings.scrollbarWidth+'px'})
+					$('<div></div>').attr({'className':'jScrollPaneTrack'}).css({'width':settings.scrollbarWidth+'px'}).append(
+						$('<div></div>').attr({'className':'jScrollPaneDrag'}).css({'width':settings.scrollbarWidth+'px'}).append(
+							$('<div></div>').attr({'className':'jScrollPaneDragTop'}).css({'width':settings.scrollbarWidth+'px'}),
+							$('<div></div>').attr({'className':'jScrollPaneDragBottom'}).css({'width':settings.scrollbarWidth+'px'})
 						)
 					)
 				);
 				
-				var $track = jQuery('>.jScrollPaneTrack', $container);
-				var $drag = jQuery('>.jScrollPaneTrack .jScrollPaneDrag', $container);
+				var $track = $('>.jScrollPaneTrack', $container);
+				var $drag = $('>.jScrollPaneTrack .jScrollPaneDrag', $container);
 				
 				if (settings.showArrows) {
 					
@@ -166,7 +169,7 @@ jQuery.fn.jScrollPane = function(settings)
 					};
 					var onArrowMouseUp = function(event)
 					{
-						jQuery('html').unbind('mouseup', onArrowMouseUp);
+						$('html').unbind('mouseup', onArrowMouseUp);
 						currentArrowButton.removeClass('jScrollActiveArrowButton');
 						clearInterval(currentArrowInterval);
 						//console.log($(event.target));
@@ -175,7 +178,7 @@ jQuery.fn.jScrollPane = function(settings)
 					var onArrowMouseDown = function() {
 						//console.log(direction);
 						//currentArrowButton = $(this);
-						jQuery('html').bind('mouseup', onArrowMouseUp);
+						$('html').bind('mouseup', onArrowMouseUp);
 						currentArrowButton.addClass('jScrollActiveArrowButton');
 						currentArrowInc = 0;
 						whileArrowButtonDown();
@@ -183,26 +186,26 @@ jQuery.fn.jScrollPane = function(settings)
 					};
 					$container
 						.append(
-							jQuery('<a></a>')
+							$('<a></a>')
 								.attr({'href':'javascript:;', 'className':'jScrollArrowUp'})
 								.css({'width':settings.scrollbarWidth+'px'})
 								.html('Scroll up')
 								.bind('mousedown', function()
 								{
-									currentArrowButton = jQuery(this);
+									currentArrowButton = $(this);
 									currentArrowDirection = -1;
 									onArrowMouseDown();
 									this.blur();
 									return false;
 								})
 								.bind('click', rf),
-							jQuery('<a></a>')
+							$('<a></a>')
 								.attr({'href':'javascript:;', 'className':'jScrollArrowDown'})
 								.css({'width':settings.scrollbarWidth+'px'})
 								.html('Scroll down')
 								.bind('mousedown', function()
 								{
-									currentArrowButton = jQuery(this);
+									currentArrowButton = $(this);
 									currentArrowDirection = 1;
 									onArrowMouseDown();
 									this.blur();
@@ -210,8 +213,8 @@ jQuery.fn.jScrollPane = function(settings)
 								})
 								.bind('click', rf)
 						);
-					var $upArrow = jQuery('>.jScrollArrowUp', $container);
-					var $downArrow = jQuery('>.jScrollArrowDown', $container);
+					var $upArrow = $('>.jScrollArrowUp', $container);
+					var $downArrow = $('>.jScrollArrowDown', $container);
 					if (settings.arrowSize) {
 						trackHeight = paneHeight - settings.arrowSize - settings.arrowSize;
 						$track
@@ -225,7 +228,7 @@ jQuery.fn.jScrollPane = function(settings)
 					}
 				}
 				
-				var $pane = jQuery(this).css({'position':'absolute', 'overflow':'visible'});
+				var $pane = $(this).css({'position':'absolute', 'overflow':'visible'});
 				
 				var currentOffset;
 				var maxY;
@@ -255,18 +258,18 @@ jQuery.fn.jScrollPane = function(settings)
 				{
 					initDrag();
 					dragMiddle = getPos(event, 'Y') - dragPosition - currentOffset.top;
-					jQuery('html').bind('mouseup', onStopDrag).bind('mousemove', updateScroll);
-					if (jQuery.browser.msie) {
-						jQuery('html').bind('dragstart', ignoreNativeDrag).bind('selectstart', ignoreNativeDrag);
+					$('html').bind('mouseup', onStopDrag).bind('mousemove', updateScroll);
+					if ($.browser.msie) {
+						$('html').bind('dragstart', ignoreNativeDrag).bind('selectstart', ignoreNativeDrag);
 					}
 					return false;
 				};
 				var onStopDrag = function()
 				{
-					jQuery('html').unbind('mouseup', onStopDrag).unbind('mousemove', updateScroll);
+					$('html').unbind('mouseup', onStopDrag).unbind('mousemove', updateScroll);
 					dragMiddle = percentInView*paneHeight/2;
-					if (jQuery.browser.msie) {
-						jQuery('html').unbind('dragstart', ignoreNativeDrag).unbind('selectstart', ignoreNativeDrag);
+					if ($.browser.msie) {
+						$('html').unbind('dragstart', ignoreNativeDrag).unbind('selectstart', ignoreNativeDrag);
 					}
 				};
 				var positionDrag = function(destY)
@@ -306,7 +309,7 @@ jQuery.fn.jScrollPane = function(settings)
 				var onStopTrackClick = function()
 				{
 					clearInterval(trackScrollInterval);
-					jQuery('html').unbind('mouseup', onStopTrackClick).unbind('mousemove', onTrackMouseMove);
+					$('html').unbind('mouseup', onStopTrackClick).unbind('mousemove', onTrackMouseMove);
 				};
 				var onTrackMouseMove = function(event)
 				{
@@ -317,7 +320,7 @@ jQuery.fn.jScrollPane = function(settings)
 					initDrag();
 					onTrackMouseMove(event);
 					trackScrollInc = 0;
-					jQuery('html').bind('mouseup', onStopTrackClick).bind('mousemove', onTrackMouseMove);
+					$('html').bind('mouseup', onStopTrackClick).bind('mousemove', onTrackMouseMove);
 					trackScrollInterval = setInterval(doTrackScroll, 100);
 					doTrackScroll();
 				};
@@ -358,7 +361,7 @@ jQuery.fn.jScrollPane = function(settings)
 				var scrollTo = function(pos, preventAni)
 				{
 					if (typeof pos == "string") {
-						$e = jQuery(pos, this);
+						$e = $(pos, this);
 						if (!$e.length) return;
 						pos = $e.offset().top - $this.offset().top;
 					}
@@ -433,7 +436,7 @@ jQuery.fn.jScrollPane = function(settings)
 					}
 				);
 				
-				jQuery.jScrollPane.active.push($this[0]);
+				$.jScrollPane.active.push($this[0]);
 				
 			} else {
 				$this.css(
@@ -450,7 +453,7 @@ jQuery.fn.jScrollPane = function(settings)
 	)
 };
 
-jQuery.fn.jScrollPane.defaults = {
+$.fn.jScrollPane.defaults = {
 	scrollbarWidth : 10,
 	scrollbarMargin : 5,
 	wheelSpeed : 18,
@@ -467,11 +470,13 @@ jQuery.fn.jScrollPane.defaults = {
 };
 
 // clean up the scrollTo expandos
-jQuery(window)
+$(window)
 	.bind('unload', function() {
-		var els = jQuery.jScrollPane.active; 
+		var els = $.jScrollPane.active; 
 		for (var i=0; i<els.length; i++) {
 			els[i].scrollTo = els[i].scrollBy = null;
 		}
 	}
 );
+
+})(jQuery);
