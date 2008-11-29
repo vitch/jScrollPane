@@ -172,12 +172,8 @@ $.fn.jScrollPane = function(settings)
 						$('html').unbind('mouseup', onArrowMouseUp);
 						currentArrowButton.removeClass('jScrollActiveArrowButton');
 						clearInterval(currentArrowInterval);
-						//console.log($(event.target));
-						//currentArrowButton.parent().removeClass('jScrollArrowUpClicked jScrollArrowDownClicked');
 					};
 					var onArrowMouseDown = function() {
-						//console.log(direction);
-						//currentArrowButton = $(this);
 						$('html').bind('mouseup', onArrowMouseUp);
 						currentArrowButton.addClass('jScrollActiveArrowButton');
 						currentArrowInc = 0;
@@ -423,10 +419,8 @@ $.fn.jScrollPane = function(settings)
 						$target = $(e.target);
 						if ($target.is('a')) {
 							var h = $target.attr('href');
-							console.log(h);
 							if (h.substr(0, 1) == '#') {
 								$linkedEle = $(h, $this);
-								console.log($linkedEle);
 								if ($linkedEle.length) {
 									$linkedEle.trigger('focus');
 									return false;
