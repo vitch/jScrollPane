@@ -387,7 +387,18 @@ $.fn.jScrollPane = function(settings)
 					'focus',
 					function(event)
 					{
-						var eleTop = $(this).position().top;
+						var $e = $(this);
+						
+						// loop through parents adding the offset top of any elements that are relatively positioned between
+						// the focused element and the jScrollPaneContainer so we can get the true distance from the top
+						// of the focused element to the top of the scrollpane...
+						var eleTop = 0;
+						
+						while ($e[0] != $this[0]) {
+							eleTop += $e.position().top;
+							$e = $e.offsetParent();
+						}
+						
 						var viewportTop = -parseInt($pane.css('top')) || 0;
 						var maxVisibleEleTop = viewportTop + paneHeight;
 						var eleInView = eleTop > viewportTop && eleTop < maxVisibleEleTop;
