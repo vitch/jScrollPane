@@ -58,7 +58,7 @@ $.event.special.mousewheel = {
 		
 		if ( event.wheelDelta ) delta = event.wheelDelta/120;
 		if ( event.detail     ) delta = -event.detail/3;
-		if ( $.browser.opera  ) delta = -event.wheelDelta;
+//		if ( $.browser.opera  ) delta = -event.wheelDelta;
 		
 		event.data  = event.data || {};
 		event.type  = "mousewheel";
