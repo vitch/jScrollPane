@@ -357,10 +357,11 @@ $.fn.jScrollPane = function(settings)
 				var scrollTo = function(pos, preventAni)
 				{
 					if (typeof pos == "string") {
-						$e = $(pos, this);
+						$e = $(pos, $this);
 						if (!$e.length) return;
 						pos = $e.offset().top - $this.offset().top;
 					}
+					$container.scrollTop(0);
 					ceaseAnimation();
 					var destDragPosition = -pos/(paneHeight-contentHeight) * maxY;
 					if (preventAni || !settings.animateTo) {
@@ -403,10 +404,9 @@ $.fn.jScrollPane = function(settings)
 						var maxVisibleEleTop = viewportTop + paneHeight;
 						var eleInView = eleTop > viewportTop && eleTop < maxVisibleEleTop;
 						if (!eleInView) {
-							$container.scrollTop(0);
 							var destPos = eleTop - settings.scrollbarMargin;
 							if (eleTop > viewportTop) { // element is below viewport - scroll so it is at bottom.
-								destPos += $(this).height() + 15+ settings.scrollbarMargin - paneHeight;
+								destPos += $(this).height() + 15 + settings.scrollbarMargin - paneHeight;
 							}
 							scrollTo(destPos);
 						}
@@ -415,10 +415,7 @@ $.fn.jScrollPane = function(settings)
 				
 				
 				if (location.hash) {
-					// the timeout needs to be longer in IE when not loading from cache...
-					setTimeout(function() {
-						$(location.hash, $this).trigger('focus');
-					}, $.browser.msie ? 100 : 0);
+					scrollTo(location.hash);
 				}
 				
 				// use event delegation to listen for all clicks on links and hijack them if they are links to
@@ -431,11 +428,7 @@ $.fn.jScrollPane = function(settings)
 						if ($target.is('a')) {
 							var h = $target.attr('href');
 							if (h.substr(0, 1) == '#') {
-								$linkedEle = $(h, $this);
-								if ($linkedEle.length) {
-									$linkedEle.trigger('focus');
-									return false;
-								}
+								scrollTo(h);
 							}
 						}
 					}
