@@ -452,6 +452,7 @@ $.fn.jScrollPane = function(settings)
 					}
 				);
 				// remove from active list?
+				$this.parent().unbind('mousewheel');
 			}
 			
 		}
