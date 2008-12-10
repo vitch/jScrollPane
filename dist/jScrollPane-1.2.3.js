@@ -3,7 +3,7 @@
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * 
  * See http://kelvinluck.com/assets/jquery/jScrollPane/
- * $Id: jScrollPane.js 22 2008-11-20 01:58:02Z kelvin.luck $
+ * $Id: jScrollPane.js 33 2008-12-10 22:55:28Z kelvin.luck $
  */
 
 /**
@@ -56,7 +56,7 @@ $.fn.jScrollPane = function(settings)
 			var paneEle = this;
 			
 			if ($(this).parent().is('.jScrollPaneContainer')) {
-				var currentScrollPosition = settings.maintainPosition ? $this.offset({relativeTo:$(this).parent()[0]}).top : 0;
+				var currentScrollPosition = settings.maintainPosition ? $this.position().top : 0;
 				var $c = $(this).parent();
 				var paneWidth = $c.innerWidth();
 				var paneHeight = $c.outerHeight();
@@ -357,10 +357,11 @@ $.fn.jScrollPane = function(settings)
 				var scrollTo = function(pos, preventAni)
 				{
 					if (typeof pos == "string") {
-						$e = $(pos, this);
+						$e = $(pos, $this);
 						if (!$e.length) return;
 						pos = $e.offset().top - $this.offset().top;
 					}
+					$container.scrollTop(0);
 					ceaseAnimation();
 					var destDragPosition = -pos/(paneHeight-contentHeight) * maxY;
 					if (preventAni || !settings.animateTo) {
@@ -387,15 +388,25 @@ $.fn.jScrollPane = function(settings)
 					'focus',
 					function(event)
 					{
-						var eleTop = $(this).position().top;
+						var $e = $(this);
+						
+						// loop through parents adding the offset top of any elements that are relatively positioned between
+						// the focused element and the jScrollPaneContainer so we can get the true distance from the top
+						// of the focused element to the top of the scrollpane...
+						var eleTop = 0;
+						
+						while ($e[0] != $this[0]) {
+							eleTop += $e.position().top;
+							$e = $e.offsetParent();
+						}
+						
 						var viewportTop = -parseInt($pane.css('top')) || 0;
 						var maxVisibleEleTop = viewportTop + paneHeight;
 						var eleInView = eleTop > viewportTop && eleTop < maxVisibleEleTop;
 						if (!eleInView) {
-							$container.scrollTop(0);
 							var destPos = eleTop - settings.scrollbarMargin;
 							if (eleTop > viewportTop) { // element is below viewport - scroll so it is at bottom.
-								destPos += $(this).height() + 15+ settings.scrollbarMargin - paneHeight;
+								destPos += $(this).height() + 15 + settings.scrollbarMargin - paneHeight;
 							}
 							scrollTo(destPos);
 						}
@@ -404,10 +415,7 @@ $.fn.jScrollPane = function(settings)
 				
 				
 				if (location.hash) {
-					// the timeout needs to be longer in IE when not loading from cache...
-					setTimeout(function() {
-						$(location.hash, $this).trigger('focus');
-					}, $.browser.msie ? 100 : 0);
+					scrollTo(location.hash);
 				}
 				
 				// use event delegation to listen for all clicks on links and hijack them if they are links to
@@ -420,11 +428,7 @@ $.fn.jScrollPane = function(settings)
 						if ($target.is('a')) {
 							var h = $target.attr('href');
 							if (h.substr(0, 1) == '#') {
-								$linkedEle = $(h, $this);
-								if ($linkedEle.length) {
-									$linkedEle.trigger('focus');
-									return false;
-								}
+								scrollTo(h);
 							}
 						}
 					}
@@ -441,6 +445,7 @@ $.fn.jScrollPane = function(settings)
 					}
 				);
 				// remove from active list?
+				$this.parent().unbind('mousewheel');
 			}
 			
 		}
