@@ -56,7 +56,7 @@ $.fn.jScrollPane = function(settings)
 			var paneEle = this;
 			
 			if ($(this).parent().is('.jScrollPaneContainer')) {
-				var currentScrollPosition = settings.maintainPosition ? $this.offset({relativeTo:$(this).parent()[0]}).top : 0;
+				var currentScrollPosition = settings.maintainPosition ? $this.position().top : 0;
 				var $c = $(this).parent();
 				var paneWidth = $c.innerWidth();
 				var paneHeight = $c.outerHeight();
