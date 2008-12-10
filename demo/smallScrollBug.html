@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>jScrollPane small height problem</title>
+		<script language='JavaScript' type='text/javascript' src='scripts/jquery-1.2.6.min.js'></script>
+		<script language='JavaScript' type='text/javascript' src='scripts/jScrollPane.js'></script>
+		<link type='text/css' rel='StyleSheet' media='screen' href='http://82.170.249.144/mediaBeez/theme/mediaBeez_default/mediaBeez_theme.css'>
+		<link type='text/css' rel='StyleSheet' media='screen' href='http://82.170.249.144/mediaBeez/theme/mediaBeez_default/mediaBeez_theme_css3.css'>
+		<link type='text/css' rel='StyleSheet' media='screen' href='http://82.170.249.144/mediaBeez/theme/mediaBeez_default/mediaBeez_theme_ie5.css'>
+
+	</head>
+	<body>
+		<script language='JavaScript1.3' type='text/javascript'><!--
+   
+		$(document).ready(function() {
+			$('div#scroller.jScrollPane', document.body).jScrollPane(
+				{
+					showArrows: true,
+					scrollbarWidth: 15
+				}
+			);
+		});
+
+		--></script>
+
+		<div class="osX">
+			<div class="jScrollPaneContainer osX" style="height:100px">
+				<div id="scroller" class="jScrollPane">
+					content1<br/>	
+					content2<br/>	
+					content3<br/>	
+					content4<br/>	
+					content5<br/>	
+					content6<br/>	
+					content7<br/>	
+					content8<br/>	
+					content9<br/>	
+				</div>
+
+			</div>
+		</div>
+	</body>
+</html>
