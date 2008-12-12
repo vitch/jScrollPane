@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
+<html>
+	<head>
+		<title>jScrollPane - basic examples</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/demoStyles.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="styles/jScrollPane.css" />
+		<script type="text/javascript" src="scripts/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="scripts/jScrollPane.js"></script>
+		<!--script type="text/javascript" src="../dist/jScrollPane.min.js"></script-->
+		<script type="text/javascript">
+			
+			$(function()
+			{
+				$('#add-content').bind(
+					'click',
+					function()
+					{
+						$('#pane1')
+							.append(
+								$('<p></p>')
+									.html(
+										$('#intro').html()
+									)
+								)
+							.jScrollPane(
+								{
+									scrollbarWidth: 20, 
+									scrollbarMargin: 10,
+									animateTo: true
+								}
+							)[0].scrollTo(100000000);
+						$('#pane2')
+							.append(
+								$('<p></p>')
+									.html(
+										$('#intro').html()
+									)
+								)
+							.jScrollPane(
+								{
+									scrollbarWidth: 20, 
+									scrollbarMargin: 10
+								}
+							)[0].scrollTo(100000000);
+					}
+				);
+			});
+			
+		</script>
+	</head>
+	<body>
+		<h1>jScrollPane</h1>
+		<h2>Scroll to bottom example</h2>
+		<p id="intro">
+			These simple example shows how you can use <a href="jScrollPane.html">jScrollPane</a> and after updating via ajax you can make sure that
+			it is always scrolled to the bottom of the pane. This would be useful in e.g. a chat room scenario. As you will see from the sourcecode,
+			#pane1 has animateTo: true and #pane2 leaves it at it's default value of false...
+		</p>
+		
+		<div class="holder">
+		<div class="holder orange-bar">
+			<h3>#pane1</h3>
+			<div id="pane1" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet.&lt;</p>
+			</div>
+		</div>
+		<div class="holder orange-bar">
+			<h3>#pane2</h3>
+			<div id="pane2" class="scroll-pane">
+				<p>&gt;Lorem ipsum dolor sit amet.&lt;</p>
+			</div>
+		</div>
+		<p style="clear: left;">
+			You can add more copy to panes 1&2 by clicking <a href="javascript:;" id="add-content">here</a>.
+		</p>
+	</body>
+</html>

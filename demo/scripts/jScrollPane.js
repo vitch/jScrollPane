@@ -363,7 +363,9 @@ $.fn.jScrollPane = function(settings)
 					}
 					$container.scrollTop(0);
 					ceaseAnimation();
-					var destDragPosition = -pos/(paneHeight-contentHeight) * maxY;
+					var maxScroll = contentHeight - paneHeight;
+					pos = pos > maxScroll ? maxScroll : pos;
+					var destDragPosition = pos/maxScroll * maxY;
 					if (preventAni || !settings.animateTo) {
 						positionDrag(destDragPosition);
 					} else {
