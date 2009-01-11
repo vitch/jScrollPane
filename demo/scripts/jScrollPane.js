@@ -454,6 +454,28 @@ $.fn.jScrollPane = function(settings)
 	)
 };
 
+$.fn.jScrollPaneRemove = function()
+{
+	$(this).each(function()
+	{
+		$this = $(this);
+		var $c = $this.parent();
+		if ($c.is('.jScrollPaneContainer')) {
+			$this.css(
+				{
+					'top':'',
+					'height':'',
+					'width':'',
+					'padding':'',
+					'overflow':'',
+					'position':''
+				}
+			);
+			$c.after($this).remove();
+		}
+	});
+}
+
 $.fn.jScrollPane.defaults = {
 	scrollbarWidth : 10,
 	scrollbarMargin : 5,
