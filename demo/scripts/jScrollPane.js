@@ -274,6 +274,7 @@ $.fn.jScrollPane = function(settings)
 					dragPosition = destY;
 					$drag.css({'top':destY+'px'});
 					var p = destY / maxY;
+					$this.data('jScrollPanePosition', (paneHeight-contentHeight)*-p);
 					$pane.css({'top':((paneHeight-contentHeight)*p) + 'px'});
 					$this.trigger('scroll');
 					if (settings.showArrows) {
@@ -365,6 +366,7 @@ $.fn.jScrollPane = function(settings)
 					ceaseAnimation();
 					var maxScroll = contentHeight - paneHeight;
 					pos = pos > maxScroll ? maxScroll : pos;
+					$this.data('jScrollPaneMaxScroll', maxScroll);
 					var destDragPosition = pos/maxScroll * maxY;
 					if (preventAni || !settings.animateTo) {
 						positionDrag(destDragPosition);

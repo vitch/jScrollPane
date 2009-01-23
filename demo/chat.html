@@ -18,8 +18,9 @@
 					'click',
 					function()
 					{
-						$('#pane1')
-							.append(
+						$pane1 = $('#pane1');
+						var autoScroll = $pane1.data('jScrollPanePosition') == $pane1.data('jScrollPaneMaxScroll');
+						$pane1.append(
 								$('<p></p>')
 									.html(
 										$('#intro').html()
@@ -31,9 +32,14 @@
 									scrollbarMargin: 10,
 									animateTo: true
 								}
-							)[0].scrollTo(100000000);
-						$('#pane2')
-							.append(
+							);
+						if (autoScroll)
+						{
+							$pane1[0].scrollTo($pane1.data('jScrollPaneMaxScroll'));
+						}
+						$pane2 = $('#pane2');
+						autoScroll = $pane2.data('jScrollPanePosition') == $pane2.data('jScrollPaneMaxScroll');
+						$pane2.append(
 								$('<p></p>')
 									.html(
 										$('#intro').html()
@@ -44,7 +50,11 @@
 									scrollbarWidth: 20, 
 									scrollbarMargin: 10
 								}
-							)[0].scrollTo(100000000);
+							);
+						if (autoScroll)
+						{
+							$pane2[0].scrollTo($pane2.data('jScrollPaneMaxScroll'));
+						}
 					}
 				);
 			});
