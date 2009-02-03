@@ -431,7 +431,7 @@ $.fn.jScrollPane = function(settings)
 						$target = $(e.target);
 						if ($target.is('a')) {
 							var h = $target.attr('href');
-							if (h.substr(0, 1) == '#') {
+							if (h && h.substr(0, 1) == '#') {
 								scrollTo(h);
 							}
 						}
