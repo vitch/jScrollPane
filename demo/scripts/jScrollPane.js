@@ -320,6 +320,7 @@ $.fn.jScrollPane = function(settings)
 					$('html').bind('mouseup', onStopTrackClick).bind('mousemove', onTrackMouseMove);
 					trackScrollInterval = setInterval(doTrackScroll, 100);
 					doTrackScroll();
+					return false;
 				};
 				
 				$track.bind('mousedown', onTrackClick);
