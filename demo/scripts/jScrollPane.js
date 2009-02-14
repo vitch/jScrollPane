@@ -110,7 +110,7 @@ $.fn.jScrollPane = function(settings)
 								});
 								$.data(paneEle, 'jScrollPaneImagesToLoad', $imagesToLoad);
 								// TODO: Does this nuke the reinitialiseOnImageLoad from the global settings?
-								var s2 = $.extend({ reinitialiseOnImageLoad:false}, settings);
+								var s2 = $.extend(settings, {reinitialiseOnImageLoad:false});
 								$this.jScrollPane(s2); // re-initialise
 							}
 						}).each(function(i, val) {
