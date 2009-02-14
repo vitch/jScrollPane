@@ -102,15 +102,16 @@ $.fn.jScrollPane = function(settings)
 				
 				if ($imagesToLoad.length) {
 					$imagesToLoad.each(function(i, val)	{
-						$(this).bind('load', function() {
+						$(this).bind('load readystatechange', function() {
 							if($.inArray(i, loadedImages) == -1){ //don't double count images
 								loadedImages.push(val); //keep a record of images we've seen
 								$imagesToLoad = $.grep($imagesToLoad, function(n, i) {
 									return n != val;
 								});
 								$.data(paneEle, 'jScrollPaneImagesToLoad', $imagesToLoad);
-								settings.reinitialiseOnImageLoad = false;
-								$this.jScrollPane(settings); // re-initialise
+								// TODO: Does this nuke the reinitialiseOnImageLoad from the global settings?
+								var s2 = $.extend({ reinitialiseOnImageLoad:false}, settings);
+								$this.jScrollPane(s2); // re-initialise
 							}
 						}).each(function(i, val) {
 							if(this.complete || this.complete===undefined) { 
