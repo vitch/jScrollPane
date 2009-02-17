@@ -78,6 +78,9 @@ $.fn.jScrollPane = function(settings)
 							'height':paneHeight+'px', 
 							'width':paneWidth+'px'
 						}
+					).attr(
+						'tabindex', 
+						settings.tabIndex
 					)
 				);
 				// deal with text size changes (if the jquery.em plugin is included)
@@ -155,19 +158,64 @@ $.fn.jScrollPane = function(settings)
 				var $track = $('>.jScrollPaneTrack', $container);
 				var $drag = $('>.jScrollPaneTrack .jScrollPaneDrag', $container);
 				
+				
+				var currentArrowDirection;
+				var currentArrowTimerArr = [];// Array is used to store timers since they can stack up when dealing with keyboard events. This ensures all timers are cleaned up in the end, preventing an acceleration bug.
+				var currentArrowInc;
+				var whileArrowButtonDown = function() 
+				{
+					if (currentArrowInc > 4 || currentArrowInc % 4 == 0) {
+						positionDrag(dragPosition + currentArrowDirection * mouseWheelMultiplier);
+					}
+					currentArrowInc++;
+				};
+
+				if (settings.enableKeyboardNavigation) {
+					$container.bind(
+						'keydown.jscrollpane',
+						function(e) 
+						{
+							switch (e.keyCode) {
+								case 38: //up
+									currentArrowDirection = -1;
+									currentArrowInc = 0;
+									whileArrowButtonDown();
+									currentArrowTimerArr[currentArrowTimerArr.length] = setInterval(whileArrowButtonDown, 100);
+									return false;
+								case 40: //down
+									currentArrowDirection = 1;
+									currentArrowInc = 0;
+									whileArrowButtonDown();
+									currentArrowTimerArr[currentArrowTimerArr.length] = setInterval(whileArrowButtonDown, 100);
+									return false;
+								case 32: // space
+								case 33: // page up
+								case 34: // page down
+									// TODO
+									return false;
+								default:
+									console.log(e.keyCode);
+							}
+						}
+					).bind(
+						'keyup.jscrollpane',
+						function(e) 
+						{
+							if (e.keyCode == 38 || e.keyCode == 40) {
+								for (var i = 0; i < currentArrowTimerArr.length; i++) {
+									clearInterval(currentArrowTimerArr[i]);
+								}
+								return false;
+							}
+						}
+					);
+				}
+
 				if (settings.showArrows) {
 					
 					var currentArrowButton;
-					var currentArrowDirection;
 					var currentArrowInterval;
-					var currentArrowInc;
-					var whileArrowButtonDown = function()
-					{
-						if (currentArrowInc > 4 || currentArrowInc%4==0) {
-							positionDrag(dragPosition + currentArrowDirection * mouseWheelMultiplier);
-						}
-						currentArrowInc ++;
-					};
+
 					var onArrowMouseUp = function(event)
 					{
 						$('html').unbind('mouseup', onArrowMouseUp);
@@ -184,7 +232,7 @@ $.fn.jScrollPane = function(settings)
 					$container
 						.append(
 							$('<a></a>')
-								.attr({'href':'javascript:;', 'className':'jScrollArrowUp'})
+								.attr({'href':'javascript:;', 'className':'jScrollArrowUp', 'tabindex':-1})
 								.css({'width':settings.scrollbarWidth+'px'})
 								.html('Scroll up')
 								.bind('mousedown', function()
@@ -197,7 +245,7 @@ $.fn.jScrollPane = function(settings)
 								})
 								.bind('click', rf),
 							$('<a></a>')
-								.attr({'href':'javascript:;', 'className':'jScrollArrowDown'})
+								.attr({'href':'javascript:;', 'className':'jScrollArrowDown', 'tabindex':-1})
 								.css({'width':settings.scrollbarWidth+'px'})
 								.html('Scroll down')
 								.bind('mousedown', function()
@@ -501,8 +549,8 @@ $.fn.jScrollPane = function(settings)
 						'padding':this.originalPadding
 					}
 				);
-				// remove from active list?
-				$this.parent().unbind('mousewheel').unbind('mousedown.jScrollPane');
+				// clean up listeners
+				$this.parent().unbind('mousewheel').unbind('mousedown.jScrollPane').unbind('keydown.jscrollpane').unbind('keyup.jscrollpane');
 			}
 			
 		}
@@ -544,7 +592,9 @@ $.fn.jScrollPane.defaults = {
 	animateStep: 3,
 	maintainPosition: true,
 	scrollbarOnLeft: false,
-	reinitialiseOnImageLoad: false
+	reinitialiseOnImageLoad: false,
+	tabIndex : 0,
+	enableKeyboardNavigation: true
 };
 
 // clean up the scrollTo expandos
