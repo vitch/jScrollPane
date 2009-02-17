@@ -124,10 +124,11 @@ $.fn.jScrollPane = function(settings)
 			}
 
 			var p = this.originalSidePaddingTotal;
-			
+			var realPaneWidth = paneWidth - settings.scrollbarWidth - settings.scrollbarMargin - p;
+
 			var cssToApply = {
 				'height':'auto',
-				'width':paneWidth - settings.scrollbarWidth - settings.scrollbarMargin - p + 'px'
+				'width': realPaneWidth + 'px'
 			}
 
 			if(settings.scrollbarOnLeft) {
@@ -438,7 +439,80 @@ $.fn.jScrollPane = function(settings)
 							}
 						}
 					}
-				);
+				); 
+				
+				// Enable the selection drag
+				var selectScrollInterval = false;
+				function onSelectScrollMouseDown(e)
+				{
+				   $(document).bind('mousemove.jScrollPaneDragging', onSelectScrollMouseMove);
+				   $(document).bind('mouseup.jScrollPaneDragging',   onSelectScrollMouseUp);
+				}
+				
+				var offset;
+				var maxOffset;
+				var mouseOffset;
+				
+				function whileSelectScrollMouseMove()
+				{
+				   var delta = 0;
+
+				   // This is for the mouse being AFTER the panel
+				   if(mouseOffset.top >= offset.top &&
+					  mouseOffset.left >= offset.left )
+					  direction = 1;
+				   // This is for the mouse being BEFORE the panel
+				   else
+					  direction = -1;
+
+				   if(direction != 0)
+					  $this[0].scrollBy(direction * mouseWheelMultiplier);
+				}
+				
+				function onSelectScrollMouseMove(e)
+				{
+				   // Take all the offsets/positions
+				   offset = $this.parent().offset();
+				   maxOffset = {top: offset.top + paneHeight, left: offset.left + realPaneWidth};
+				   mouseOffset = {top: getPos(e, 'Y'), left: getPos(e, 'X')};
+
+				   // This is for the mouse being inside the panel
+				   if(mouseOffset.top <= maxOffset.top &&
+					  mouseOffset.top >= offset.top &&
+					  mouseOffset.left <= maxOffset.left &&
+					  mouseOffset.left >= offset.left)
+				   {
+					  if(selectScrollInterval != false)
+					  {
+						 clearInterval(selectScrollInterval);
+						 selectScrollInterval = false;
+					  }
+						 
+					  return;
+				   }
+				   
+				   if(selectScrollInterval != false)
+					  return;
+
+				   selectScrollInterval = setInterval(whileSelectScrollMouseMove, 100);
+				}
+
+				// On stop selecting (onmouseup), clean event listeners
+				function onSelectScrollMouseUp(e)
+				{
+				   $(document)
+					  .unbind('mousemove.jScrollPaneDragging')
+					  .unbind('mouseup.jScrollPaneDragging');
+				   
+				   if(selectScrollInterval != false)
+				   {
+					  clearInterval(selectScrollInterval);
+					  selectScrollInterval = false;
+				   }
+				}
+
+				// Bind the event listener for selection start inside the panel
+				$container.bind('mousedown.jScrollPane', onSelectScrollMouseDown);
 				
 				$.jScrollPane.active.push($this[0]);
 				
@@ -451,7 +525,7 @@ $.fn.jScrollPane = function(settings)
 					}
 				);
 				// remove from active list?
-				$this.parent().unbind('mousewheel');
+				$this.parent().unbind('mousewheel').unbind('mousedown.jScrollPane');
 			}
 			
 		}
