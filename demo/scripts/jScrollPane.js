@@ -109,7 +109,6 @@ $.fn.jScrollPane = function(settings)
 									return n != val;
 								});
 								$.data(paneEle, 'jScrollPaneImagesToLoad', $imagesToLoad);
-								// TODO: Does this nuke the reinitialiseOnImageLoad from the global settings?
 								var s2 = $.extend(settings, {reinitialiseOnImageLoad:false});
 								$this.jScrollPane(s2); // re-initialise
 							}
@@ -446,6 +445,7 @@ $.fn.jScrollPane = function(settings)
 				{
 				   $(document).bind('mousemove.jScrollPaneDragging', onTextSelectionScrollMouseMove);
 				   $(document).bind('mouseup.jScrollPaneDragging',   onSelectScrollMouseUp);
+				  
 				}
 				
 				var textDragDistanceAway;
