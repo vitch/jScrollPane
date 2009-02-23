@@ -482,7 +482,7 @@ $.fn.jScrollPane = function(settings)
 						if ($target.is('a')) {
 							var h = $target.attr('href');
 							if (h && h.substr(0, 1) == '#') {
-								setTimeout(function() {scrollTo(h);}, $.browser.safari ? 100 : 0);
+								setTimeout(function() {scrollTo(h, !settings.animateToInternalLinks);}, $.browser.safari ? 100 : 0);
 							}
 						}
 					}
@@ -594,7 +594,8 @@ $.fn.jScrollPane.defaults = {
 	scrollbarOnLeft: false,
 	reinitialiseOnImageLoad: false,
 	tabIndex : 0,
-	enableKeyboardNavigation: true
+	enableKeyboardNavigation: true,
+	animateToInternalLinks: false
 };
 
 // clean up the scrollTo expandos
