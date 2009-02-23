@@ -469,7 +469,7 @@ $.fn.jScrollPane = function(settings)
 				
 				
 				if (location.hash) {
-					scrollTo(location.hash);
+					setTimeout(function() {scrollTo(location.hash);}, $.browser.safari ? 100 : 0);
 				}
 				
 				// use event delegation to listen for all clicks on links and hijack them if they are links to
@@ -482,7 +482,7 @@ $.fn.jScrollPane = function(settings)
 						if ($target.is('a')) {
 							var h = $target.attr('href');
 							if (h && h.substr(0, 1) == '#') {
-								scrollTo(h);
+								setTimeout(function() {scrollTo(h);}, $.browser.safari ? 100 : 0);
 							}
 						}
 					}
