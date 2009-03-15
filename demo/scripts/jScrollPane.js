@@ -188,13 +188,11 @@ $.fn.jScrollPane = function(settings)
 									whileArrowButtonDown();
 									currentArrowTimerArr[currentArrowTimerArr.length] = setInterval(whileArrowButtonDown, 100);
 									return false;
-								case 32: // space
 								case 33: // page up
 								case 34: // page down
 									// TODO
 									return false;
 								default:
-									console.log(e.keyCode);
 							}
 						}
 					).bind(
