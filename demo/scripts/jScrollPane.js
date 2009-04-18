@@ -479,7 +479,7 @@ $.fn.jScrollPane = function(settings)
 						$target = $(e.target);
 						if ($target.is('a')) {
 							var h = $target.attr('href');
-							if (h && h.substr(0, 1) == '#') {
+							if (h && h.substr(0, 1) == '#' && h.length > 1) {
 								setTimeout(function() {scrollTo(h, !settings.animateToInternalLinks);}, $.browser.safari ? 100 : 0);
 							}
 						}
