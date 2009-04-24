@@ -547,6 +547,7 @@ $.fn.jScrollPane = function(settings)
 						'padding':this.originalPadding
 					}
 				);
+				$this[0].scrollTo = $this[0].scrollBy = function() {};
 				// clean up listeners
 				$this.parent().unbind('mousewheel').unbind('mousedown.jScrollPane').unbind('keydown.jscrollpane').unbind('keyup.jscrollpane');
 			}
