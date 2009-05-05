@@ -123,6 +123,13 @@ $(function()
 		</p>
 		<h2>Bugs</h2>
 		<p>Bug reports and enhancement requests should be made through the <a href="http://code.google.com/p/jscrollpane/issues/list">jScrollPane issues page</a> on googlecode. All bug reports should include full details of the browser/ OS that the bug appears on and a link to a test URL displaying the bug. This is the only avenue that I can accept bug reports through as otherwise it is too hard to keep track of them.</p>
+		<h2 id="faqs">FAQs</h2>
+		<h3>jScrollPane doesn't work in Internet Explorer on my site</h3>
+		<p>There are two common reasons for jScrollPane failing in IE:</p>
+		<ul>
+			<li>You have a trailing comma in your settings initialiser. Trailing commas in array or object literals break in IE.</li>
+			<li>You are manually adding the jScrollPaneContainer in your markup. This container is added by jScrollPane - you should not add it yourself. View source of the examples (e.g. not the GENERATED source in firebug) to get the correct syntax.</li>
+		</ul>
 		<h2>Support</h2>
 		<p>All support requests should also be made through the <a href="http://code.google.com/p/jscrollpane/issues/list">jScrollPane issues page</a> on googlecode or through the comments on my <a href="http://www.kelvinluck.com/projects/jscrollpane-custom-cross-browser-scrollbars/">jScrollPane project page</a>.
 	</body>
