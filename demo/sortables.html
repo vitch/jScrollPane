@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>jScrollPane and jQuery UI Sortables...</title>
+		<link type="text/css" href="styles/smoothness/jquery-ui-1.7.1.custom.css" rel="stylesheet" />	
+		<link type="text/css" href="styles/jScrollPane.css" rel="stylesheet" />	
+		<script type="text/javascript" src="scripts/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="scripts/jScrollPane.js"></script>
+		<script type="text/javascript" src="scripts/jquery-ui-1.7.1.for-sortables.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				
+				$('.sortinate').sortable();
+				$('.scrollpane').jScrollPane();
+				
+			});
+		</script>
+		<style type="text/css">
+			.wrapper 
+			{
+				height: 200px;
+				width: 150px;
+				float: left;
+				margin: 0 2em;
+				overflow: auto;
+			}
+			ul.sortinate
+			{
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			ul.sortinate li
+			{
+				list-style: none;
+				margin: 3px 0;
+				border: 1px solid #333;
+				padding: 3px 5px;
+				background: #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Sortables testing!</h1>
+		<p>
+			Sortables within a jScrollPane should behave in the same manner as
+			sortables within a normal overflow: auto container.
+		</p>
+		<div class="wrapper">
+			<ul class="sortinate">
+				<li>Item 1</li>
+				<li>Item 2</li>
+				<li>Item 3</li>
+				<li>Item 4</li>
+				<li>Item 5</li>
+				<li>Item 6</li>
+				<li>Item 7</li>
+				<li>Item 8</li>
+				<li>Item 9</li>
+				<li>Item 10</li>
+				<li>Item 11</li>
+				<li>Item 12</li>
+				<li>Item 13</li>
+				<li>Item 14</li>
+			</ul>
+		</div>
+		<div class="wrapper scrollpane">
+			<ul class="sortinate">
+				<li>Item 1</li>
+				<li>Item 2</li>
+				<li>Item 3</li>
+				<li>Item 4</li>
+				<li>Item 5</li>
+				<li>Item 6</li>
+				<li>Item 7</li>
+				<li>Item 8</li>
+				<li>Item 9</li>
+				<li>Item 10</li>
+				<li>Item 11</li>
+				<li>Item 12</li>
+				<li>Item 13</li>
+				<li>Item 14</li>
+			</ul>
+		</div>
+	</body>
+</html>
+
+
