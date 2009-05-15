@@ -378,6 +378,8 @@ $.fn.jScrollPane = function(settings)
 				$container.bind(
 					'mousewheel',
 					function (event, delta) {
+						delta = delta || (event.wheelDelta ? event.wheelDelta / 120 : (event.detail) ?
+-event.detail/3 : 0);
 						initDrag();
 						ceaseAnimation();
 						var d = dragPosition;
