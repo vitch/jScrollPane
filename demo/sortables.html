@@ -11,8 +11,27 @@
 		<script type="text/javascript">
 			$(function(){
 				
-				$('.sortinate').sortable();
-				$('.scrollpane').jScrollPane();
+				// normal set up of sortables...
+				$('#sort1').sortable(
+					{
+					}
+				);
+				// We need to do it differently so it works in jScrollPane...
+				$('#sort2').sortable(
+					{
+						appendTo: 'body',
+						helper: 'clone'
+					}
+				);
+				$('.scrollpane')
+					.jScrollPane().
+					bind(
+						'scroll',
+						function(e)
+						{
+							$('.sortinate', this).sortable('refreshPositions');
+						}
+				);
 				
 			});
 		</script>
@@ -22,7 +41,7 @@
 				height: 200px;
 				width: 150px;
 				float: left;
-				margin: 0 2em;
+				margin: 0 2em 0 0;
 				overflow: auto;
 			}
 			ul.sortinate
@@ -31,7 +50,7 @@
 				margin: 0;
 				padding: 0;
 			}
-			ul.sortinate li
+			/*ul.sortinate */li /* because the helper is cloned and placed outside the ul we can't use specific CSS styles */
 			{
 				list-style: none;
 				margin: 3px 0;
@@ -48,7 +67,7 @@
 			sortables within a normal overflow: auto container.
 		</p>
 		<div class="wrapper">
-			<ul class="sortinate">
+			<ul id="sort1" class="sortinate">
 				<li>Item 1</li>
 				<li>Item 2</li>
 				<li>Item 3</li>
@@ -66,7 +85,7 @@
 			</ul>
 		</div>
 		<div class="wrapper scrollpane">
-			<ul class="sortinate">
+			<ul id="sort2" class="sortinate">
 				<li>Item 1</li>
 				<li>Item 2</li>
 				<li>Item 3</li>
