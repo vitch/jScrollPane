@@ -73,19 +73,21 @@ $.fn.jScrollPane = function(settings)
 				var paneWidth = $this.innerWidth();
 				var paneHeight = $this.innerHeight();
 				var trackHeight = paneHeight;
-				$this.wrap(
-					$('<div></div>').attr(
-						{'className':'jScrollPaneContainer'}
-					).css(
+				var $container = $('<div></div>')
+					.attr({'className':'jScrollPaneContainer'})
+					.css(
 						{
 							'height':paneHeight+'px', 
 							'width':paneWidth+'px'
 						}
-					).attr(
+					);
+				if (settings.enableKeyboardNavigation) {
+					$container.attr(
 						'tabindex', 
 						settings.tabIndex
-					)
-				);
+					);
+				}
+				$this.wrap($container);
 				// deal with text size changes (if the jquery.em plugin is included)
 				// and re-initialise the scrollPane so the track maintains the
 				// correct size
