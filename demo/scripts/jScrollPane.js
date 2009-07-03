@@ -54,8 +54,6 @@ $.fn.jScrollPane = function(settings)
 		function()
 		{
 			var $this = $(this);
-			// Switch the element's overflow to hidden to ensure we get the size of the element without the scrollbars [http://plugins.jquery.com/node/1208]
-			$this.css('overflow', 'hidden');
 			var paneEle = this;
 			
 			if ($(this).parent().is('.jScrollPaneContainer')) {
@@ -67,6 +65,9 @@ $.fn.jScrollPane = function(settings)
 				$('>.jScrollPaneTrack, >.jScrollArrowUp, >.jScrollArrowDown', $c).remove();
 				$this.css({'top':0});
 			} else {
+				$this.data('originalStyleTag', $this.attr('style'));
+				// Switch the element's overflow to hidden to ensure we get the size of the element without the scrollbars [http://plugins.jquery.com/node/1208]
+				$this.css('overflow', 'hidden');
 				var currentScrollPosition = 0;
 				this.originalPadding = $this.css('paddingTop') + ' ' + $this.css('paddingRight') + ' ' + $this.css('paddingBottom') + ' ' + $this.css('paddingLeft');
 				this.originalSidePaddingTotal = (parseInt($this.css('paddingLeft')) || 0) + (parseInt($this.css('paddingRight')) || 0);
@@ -580,6 +581,7 @@ $.fn.jScrollPaneRemove = function()
 					'position':''
 				}
 			);
+			$this.attr('style', $this.data('originalStyleTag'));
 			$c.after($this).remove();
 		}
 	});
