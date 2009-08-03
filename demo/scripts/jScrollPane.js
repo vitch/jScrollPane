@@ -323,6 +323,7 @@ $.fn.jScrollPane = function(settings)
 				};
 				var positionDrag = function(destY)
 				{
+					$container.scrollTop(0);
 					destY = destY < 0 ? 0 : (destY > maxY ? maxY : destY);
 					dragPosition = destY;
 					$drag.css({'top':destY+'px'});
@@ -418,7 +419,6 @@ $.fn.jScrollPane = function(settings)
 						if (!$e.length) return;
 						pos = $e.offset().top - $this.offset().top;
 					}
-					$container.scrollTop(0);
 					ceaseAnimation();
 					var maxScroll = contentHeight - paneHeight;
 					pos = pos > maxScroll ? maxScroll : pos;
@@ -427,6 +427,7 @@ $.fn.jScrollPane = function(settings)
 					if (preventAni || !settings.animateTo) {
 						positionDrag(destDragPosition);
 					} else {
+						$container.scrollTop(0);
 						_animateToPosition = destDragPosition;
 						_animateToInterval = setInterval(animateToPosition, settings.animateInterval);
 					}
