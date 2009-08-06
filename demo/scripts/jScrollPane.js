@@ -34,6 +34,8 @@
  *								animateToInternalLinks - Whether the move to an internal link (e.g. when it's focused by tabbing or by a hash change in the URL) should be animated or instant (default false)
  *								scrollbarOnLeft	-	Display the scrollbar on the left side?  (needs stylesheet changes, see examples.html)
  *								reinitialiseOnImageLoad - Whether the jScrollPane should automatically re-initialise itself when any contained images are loaded (default false)
+ *								topCapHeight	-	The height of the "cap" area between the top of the jScrollPane and the top of the track/ buttons
+ *								bottomCapHeight	-	The height of the "cap" area between the bottom of the jScrollPane and the bottom of the track/ buttons
  * @return jQuery
  * @cat Plugins/jScrollPane
  * @author Kelvin Luck (kelvin AT kelvinluck DOT com || http://www.kelvinluck.com)
@@ -59,7 +61,7 @@ $.fn.jScrollPane = function(settings)
 			var paneWidth;
 			var paneHeight;
 			var trackHeight;
-			var trackOffset = 0;
+			var trackOffset = settings.topCapHeight;
 			
 			if ($(this).parent().is('.jScrollPaneContainer')) {
 				currentScrollPosition = settings.maintainPosition ? $this.position().top : 0;
@@ -156,12 +158,14 @@ $.fn.jScrollPane = function(settings)
 			if (percentInView < .99) {
 				var $container = $this.parent();
 				$container.append(
+					$('<div></div>').addClass('jScrollCap jScrollCapTop').css({height:settings.topCapHeight}),
 					$('<div></div>').attr({'className':'jScrollPaneTrack'}).css({'width':settings.scrollbarWidth+'px'}).append(
 						$('<div></div>').attr({'className':'jScrollPaneDrag'}).css({'width':settings.scrollbarWidth+'px'}).append(
 							$('<div></div>').attr({'className':'jScrollPaneDragTop'}).css({'width':settings.scrollbarWidth+'px'}),
 							$('<div></div>').attr({'className':'jScrollPaneDragBottom'}).css({'width':settings.scrollbarWidth+'px'})
 						)
-					)
+					),
+					$('<div></div>').addClass('jScrollCap jScrollCapBottom').css({height:settings.bottomCapHeight})
 				);
 				
 				var $track = $('>.jScrollPaneTrack', $container);
@@ -239,8 +243,19 @@ $.fn.jScrollPane = function(settings)
 					$container
 						.append(
 							$('<a></a>')
-								.attr({'href':'javascript:;', 'className':'jScrollArrowUp', 'tabindex':-1})
-								.css({'width':settings.scrollbarWidth+'px'})
+								.attr(
+									{
+										'href':'javascript:;', 
+										'className':'jScrollArrowUp', 
+										'tabindex':-1
+									}
+								)
+								.css(
+									{
+										'width':settings.scrollbarWidth+'px',
+										'top':settings.topCapHeight + 'px'
+									}
+								)
 								.html('Scroll up')
 								.bind('mousedown', function()
 								{
@@ -252,8 +267,19 @@ $.fn.jScrollPane = function(settings)
 								})
 								.bind('click', rf),
 							$('<a></a>')
-								.attr({'href':'javascript:;', 'className':'jScrollArrowDown', 'tabindex':-1})
-								.css({'width':settings.scrollbarWidth+'px'})
+								.attr(
+									{
+										'href':'javascript:;', 
+										'className':'jScrollArrowDown', 
+										'tabindex':-1
+									}
+								)
+								.css(
+									{
+										'width':settings.scrollbarWidth+'px',
+										'bottom':settings.bottomCapHeight + 'px'
+									}
+								)
 								.html('Scroll down')
 								.bind('mousedown', function()
 								{
@@ -267,18 +293,19 @@ $.fn.jScrollPane = function(settings)
 						);
 					var $upArrow = $('>.jScrollArrowUp', $container);
 					var $downArrow = $('>.jScrollArrowDown', $container);
-					if (settings.arrowSize) {
-						trackHeight = paneHeight - settings.arrowSize - settings.arrowSize;
-						$track
-							.css({'height': trackHeight+'px', top:settings.arrowSize+'px'})
-					} else {
-						var topArrowHeight = $upArrow.height();
-						settings.arrowSize = topArrowHeight;
-						trackHeight = paneHeight - topArrowHeight - $downArrow.height();
-						$track
-							.css({'height': trackHeight+'px', top:topArrowHeight+'px'})
-					}
 				}
+				
+				if (settings.arrowSize) {
+					trackHeight = paneHeight - settings.arrowSize - settings.arrowSize;
+					trackOffset += settings.arrowSize;
+				} else if ($upArrow) {
+					var topArrowHeight = $upArrow.height();
+					settings.arrowSize = topArrowHeight;
+					trackHeight = paneHeight - topArrowHeight - $downArrow.height();
+					trackOffset += topArrowHeight;
+				}
+				trackHeight -= settings.topCapHeight + settings.bottomCapHeight;
+				$track.css({'height': trackHeight+'px', top:trackOffset+'px'})
 				
 				var $pane = $(this).css({'position':'absolute', 'overflow':'visible'});
 				
@@ -607,7 +634,9 @@ $.fn.jScrollPane.defaults = {
 	reinitialiseOnImageLoad: false,
 	tabIndex : 0,
 	enableKeyboardNavigation: true,
-	animateToInternalLinks: false
+	animateToInternalLinks: false,
+	topCapHeight: 0,
+	bottomCapHeight: 0
 };
 
 // clean up the scrollTo expandos
