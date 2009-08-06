@@ -1,2 +1,3 @@
 .project
 ._.gitignore
+.tmp*~
