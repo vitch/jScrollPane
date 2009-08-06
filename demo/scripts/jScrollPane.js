@@ -55,25 +55,27 @@ $.fn.jScrollPane = function(settings)
 		{
 			var $this = $(this);
 			var paneEle = this;
+			var currentScrollPosition = 0;
+			var paneWidth;
+			var paneHeight;
+			var trackHeight;
+			var trackOffset = 0;
 			
 			if ($(this).parent().is('.jScrollPaneContainer')) {
-				var currentScrollPosition = settings.maintainPosition ? $this.position().top : 0;
+				currentScrollPosition = settings.maintainPosition ? $this.position().top : 0;
 				var $c = $(this).parent();
-				var paneWidth = $c.innerWidth();
-				var paneHeight = $c.outerHeight();
-				var trackHeight = paneHeight;
-				$('>.jScrollPaneTrack, >.jScrollArrowUp, >.jScrollArrowDown', $c).remove();
+				paneWidth = $c.innerWidth();
+				paneHeight = $c.outerHeight();
+				$('>.jScrollPaneTrack, >.jScrollArrowUp, >.jScrollArrowDown, >.jScollCap', $c).remove();
 				$this.css({'top':0});
 			} else {
 				$this.data('originalStyleTag', $this.attr('style'));
 				// Switch the element's overflow to hidden to ensure we get the size of the element without the scrollbars [http://plugins.jquery.com/node/1208]
 				$this.css('overflow', 'hidden');
-				var currentScrollPosition = 0;
 				this.originalPadding = $this.css('paddingTop') + ' ' + $this.css('paddingRight') + ' ' + $this.css('paddingBottom') + ' ' + $this.css('paddingLeft');
 				this.originalSidePaddingTotal = (parseInt($this.css('paddingLeft')) || 0) + (parseInt($this.css('paddingRight')) || 0);
-				var paneWidth = $this.innerWidth();
-				var paneHeight = $this.innerHeight();
-				var trackHeight = paneHeight;
+				paneWidth = $this.innerWidth();
+				paneHeight = $this.innerHeight();
 				var $container = $('<div></div>')
 					.attr({'className':'jScrollPaneContainer'})
 					.css(
@@ -101,6 +103,7 @@ $.fn.jScrollPane = function(settings)
 				);
 				
 			}
+			trackHeight = paneHeight;
 			
 			if (settings.reinitialiseOnImageLoad) {
 				// code inspired by jquery.onImagesLoad: http://plugins.jquery.com/project/onImagesLoad
