@@ -505,7 +505,7 @@ $.fn.jScrollPane = function(settings)
 				)
 				
 				
-				if (location.hash) {
+				if (location.hash && location.hash.length > 1) {
 					setTimeout(function() {scrollTo(location.hash);}, $.browser.safari ? 100 : 0);
 				}
 				
