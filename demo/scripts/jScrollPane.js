@@ -68,7 +68,7 @@ $.fn.jScrollPane = function(settings)
 				var $c = $(this).parent();
 				paneWidth = $c.innerWidth();
 				paneHeight = $c.outerHeight();
-				$('>.jScrollPaneTrack, >.jScrollArrowUp, >.jScrollArrowDown, >.jScollCap', $c).remove();
+				$('>.jScrollPaneTrack, >.jScrollArrowUp, >.jScrollArrowDown, >.jScrollCap', $c).remove();
 				$this.css({'top':0});
 			} else {
 				$this.data('originalStyleTag', $this.attr('style'));
