@@ -36,6 +36,7 @@
  *								reinitialiseOnImageLoad - Whether the jScrollPane should automatically re-initialise itself when any contained images are loaded (default false)
  *								topCapHeight	-	The height of the "cap" area between the top of the jScrollPane and the top of the track/ buttons
  *								bottomCapHeight	-	The height of the "cap" area between the bottom of the jScrollPane and the bottom of the track/ buttons
+ *								observeHash		-	Whether jScrollPane should attempt to automagically scroll to the correct place when an anchor inside the scrollpane is linked to (default true)
  * @return jQuery
  * @cat Plugins/jScrollPane
  * @author Kelvin Luck (kelvin AT kelvinluck DOT com || http://www.kelvinluck.com)
@@ -505,25 +506,27 @@ $.fn.jScrollPane = function(settings)
 				)
 				
 				
-				if (location.hash && location.hash.length > 1) {
-					setTimeout(function() {scrollTo(location.hash);}, $.browser.safari ? 100 : 0);
-				}
-				
-				// use event delegation to listen for all clicks on links and hijack them if they are links to
-				// anchors within our content...
-				$(document).bind(
-					'click',
-					function(e)
-					{
+				if (settings.observeHash) {
+					if (location.hash && location.hash.length > 1) {
+						setTimeout(function(){
+							scrollTo(location.hash);
+						}, $.browser.safari ? 100 : 0);
+					}
+					
+					// use event delegation to listen for all clicks on links and hijack them if they are links to
+					// anchors within our content...
+					$(document).bind('click', function(e){
 						$target = $(e.target);
 						if ($target.is('a')) {
 							var h = $target.attr('href');
 							if (h && h.substr(0, 1) == '#' && h.length > 1) {
-								setTimeout(function() {scrollTo(h, !settings.animateToInternalLinks);}, $.browser.safari ? 100 : 0);
+								setTimeout(function(){
+									scrollTo(h, !settings.animateToInternalLinks);
+								}, $.browser.safari ? 100 : 0);
 							}
 						}
-					}
-				); 
+					});
+				}
 				
 				// Deal with dragging and selecting text to make the scrollpane scroll...
 				function onSelectScrollMouseDown(e)
@@ -636,7 +639,8 @@ $.fn.jScrollPane.defaults = {
 	enableKeyboardNavigation: true,
 	animateToInternalLinks: false,
 	topCapHeight: 0,
-	bottomCapHeight: 0
+	bottomCapHeight: 0,
+	observeHash: true
 };
 
 // clean up the scrollTo expandos
