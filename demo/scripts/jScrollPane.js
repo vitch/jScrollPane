@@ -63,8 +63,10 @@ $.fn.jScrollPane = function(settings)
 			var paneHeight;
 			var trackHeight;
 			var trackOffset = settings.topCapHeight;
+			var $container;
 			
 			if ($(this).parent().is('.jScrollPaneContainer')) {
+				$container = $(this).parent();
 				currentScrollPosition = settings.maintainPosition ? $this.position().top : 0;
 				var $c = $(this).parent();
 				paneWidth = $c.innerWidth();
@@ -79,7 +81,7 @@ $.fn.jScrollPane = function(settings)
 				this.originalSidePaddingTotal = (parseInt($this.css('paddingLeft')) || 0) + (parseInt($this.css('paddingRight')) || 0);
 				paneWidth = $this.innerWidth();
 				paneHeight = $this.innerHeight();
-				var $container = $('<div></div>')
+				$container = $('<div></div>')
 					.attr({'className':'jScrollPaneContainer'})
 					.css(
 						{
@@ -94,6 +96,7 @@ $.fn.jScrollPane = function(settings)
 					);
 				}
 				$this.wrap($container);
+				$container = $this.parent();
 				// deal with text size changes (if the jquery.em plugin is included)
 				// and re-initialise the scrollPane so the track maintains the
 				// correct size
@@ -155,9 +158,11 @@ $.fn.jScrollPane = function(settings)
 
 			var contentHeight = $this.outerHeight();
 			var percentInView = paneHeight / contentHeight;
+			
+			var isScrollable = percentInView < .99;
+			$container[isScrollable ? 'addClass' : 'removeClass']('jScrollPaneScrollable');
 
-			if (percentInView < .99) {
-				var $container = $this.parent();
+			if (isScrollable) {
 				$container.append(
 					$('<div></div>').addClass('jScrollCap jScrollCapTop').css({height:settings.topCapHeight}),
 					$('<div></div>').attr({'className':'jScrollPaneTrack'}).css({'width':settings.scrollbarWidth+'px'}).append(
