@@ -451,7 +451,13 @@ $.fn.jScrollPane = function(settings)
 				var scrollTo = function(pos, preventAni)
 				{
 					if (typeof pos == "string") {
-						$e = $(pos, $this);
+						// Legal hash values aren't necessarily legal jQuery selectors so we need to catch any
+						// errors from the lookup...
+						try {
+							$e = $(pos, $this);
+						} catch (err) {
+							return;
+						}
 						if (!$e.length) return;
 						pos = $e.offset().top - $this.offset().top;
 					}
