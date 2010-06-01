@@ -343,7 +343,7 @@ $.fn.jScrollPane = function(settings)
 				{
 					initDrag();
 					dragMiddle = getPos(event, 'Y') - dragPosition - currentOffset.top;
-					$('html').bind('mouseup', onStopDrag).bind('mousemove', updateScroll);
+					$('html').bind('mouseup', onStopDrag).bind('mousemove', updateScroll).bind('mouseleave', onStopDrag)
 					if ($.browser.msie) {
 						$('html').bind('dragstart', ignoreNativeDrag).bind('selectstart', ignoreNativeDrag);
 					}
