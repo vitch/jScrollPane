@@ -498,9 +498,14 @@ $.fn.jScrollPane = function(settings)
 						// of the focused element to the top of the scrollpane...
 						var eleTop = 0;
 						
+						var preventInfiniteLoop = 100;
+						
 						while ($e[0] != $this[0]) {
 							eleTop += $e.position().top;
 							$e = $e.offsetParent();
+							if (!preventInfiniteLoop--) {
+								return;
+							}
 						}
 						
 						var viewportTop = -parseInt($pane.css('top')) || 0;
