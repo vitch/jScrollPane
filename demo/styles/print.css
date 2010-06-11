@@ -1,0 +1,20 @@
+
+.jScrollPaneContainer {
+	position: relative;
+	overflow: visible;
+	height: auto !important;
+	z-index: 1;
+}
+
+.jScrollPaneContainer>*
+{
+	position: relative !important;
+}
+
+.jScrollCap,
+.jScrollPaneTrack,
+a.jScrollArrowUp,
+a.jScrollArrowDown
+{
+	display: none;
+}
