@@ -46,7 +46,71 @@
 		return this.each(
 			function()
 			{
+				var elem = $(this);
+				var paneWidth, paneHeight;
 
+				var savedSettings = elem.data('jsp');
+				if (savedSettings == undefined) {
+					savedSettings = {
+						/*
+						'originalPadding' : elem.css('paddingTop') + ' ' +
+											elem.css('paddingRight') + ' ' +
+											elem.css('paddingBottom') + ' ' +
+											elem.css('paddingLeft'),
+						'originalSidePaddingTotal' : (parseInt(elem.css('paddingLeft')) || 0) +
+														(parseInt(elem.css('paddingRight')) || 0)
+						*/
+					};
+					elem.data('jsp', savedSettings);
+				}
+				var container = elem.parent('.jScrollPaneContainer');
+				if (container.length == 0) {
+					elem.css('overflow', 'hidden'); // So we are measuring it without scrollbars
+					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
+					// come back to it later and check once it is unhidden...
+					paneWidth = elem.innerWidth();
+					paneHeight = elem.innerHeight();
+					elem.css('overflow', 'visible');
+					container = $('<div />')
+									.addClass('jScrollPaneContainer')
+									.css({
+										'width': paneWidth + 'px',
+										'height': paneHeight + 'px'
+									});
+					elem.wrap(container);
+				} else {
+					paneWidth = container.outerWidth();
+					paneHeight = container.outerHeight();
+				}
+
+				elem.css({
+					'width': 'auto',
+					'height': 'auto'
+				});
+
+				// Unfortunately it isn't that easy to find out the width of the element as it will always report the
+				// width as allowed by its container, regardless of overflow settings.
+				// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
+				// container. Now it will push outwards to its maxium real width...
+				var clonedElem = elem.clone().css('position', 'absolute');
+				var tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
+				$('body').append(tempWrapper);
+				var contentWidth = Math.max(elem.outerWidth(), clonedElem.outerWidth());
+				tempWrapper.remove();
+
+				var contentHeight = elem.outerHeight();
+				var percentInViewH = contentWidth / paneWidth;
+				var percentInViewV = contentHeight / paneHeight;
+				var isScrollableV = percentInViewV > .99;
+				var isScrollableH = percentInViewH > 1;
+
+				console.log(contentWidth, contentHeight, paneWidth, paneHeight, isScrollableH, isScrollableV);
+
+				if (!(isScrollableH || isScrollableV)) {
+					elem.removeClass('scrollable');
+				} else {
+					elem.addClass('scrollable');
+				}
 			}
 		)
 	};
@@ -64,6 +128,7 @@
 	*/
 
 	$.fn.jScrollPane.defaults = {
+		'showArrows'		: false
 	};
 
 })(jQuery,this);

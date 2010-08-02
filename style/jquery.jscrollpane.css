@@ -5,4 +5,7 @@
  * may not operate correctly without them.
  */
 
-
+.jScrollPaneContainer
+{
+	overflow: hidden;
+}
