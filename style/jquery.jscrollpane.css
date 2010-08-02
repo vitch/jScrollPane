@@ -11,6 +11,11 @@
 	position: relative;
 }
 
+.jspScrollable
+{
+	position: absolute;
+}
+
 .jspCap
 {
 	display: none;
@@ -29,11 +34,15 @@
 .jspVerticalBar .jspTrack
 {
 	background: #dde;
+	position: relative;
 }
 
 .jspVerticalBar .jspDrag
 {
 	background: #bbd;
+	position: relative;
+	top: 0;
+	cursor: pointer;
 }
 
 .jspVerticalBar .jspArrow
@@ -42,4 +51,5 @@
 	height: 16px;
 	text-indent: -2000px;
 	display: block;
+	cursor: pointer;
 }

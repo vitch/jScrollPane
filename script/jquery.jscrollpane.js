@@ -108,13 +108,11 @@
 				var isScrollableV = percentInViewV > .99;
 				var isScrollableH = percentInViewH > 1;
 
-				//console.log(contentWidth, contentHeight, paneWidth, paneHeight, isScrollableH, isScrollableV);
-
 				if (!(isScrollableH || isScrollableV)) {
-					elem.removeClass('scrollable');
+					elem.removeClass('jspScrollable');
 					elem.css('top', 0);
 				} else {
-					elem.addClass('scrollable');
+					elem.addClass('jspScrollable');
 					
 					var getArrowScroll = function(dirX, dirY) {
 						return function()
@@ -174,8 +172,52 @@
 						);
 
 						verticalTrack.height(verticalTrackHeight + 'px');
-						verticalDrag.height((1 / percentInViewV * verticalTrackHeight) + 'px');
+						var verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
+						verticalDrag.height(verticalDragHeight + 'px');
+						var dragMaxY = verticalTrackHeight - verticalDragHeight;
 
+						verticalDrag.bind(
+							'mousedown.jsp',
+							function(e)
+							{
+								// Stop IE from allowing text selection
+								$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
+
+								var startY = e.pageY - verticalDrag.position().top;
+
+								$('html').bind(
+									'mousemove.jsp',
+									function(e)
+									{
+										positionDrag(e.pageY - startY);
+									}
+								).bind(
+									'mouseup.jsp mouseleave.jsp',
+									function()
+									{
+										$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
+									}
+								);
+								return false;
+							}
+						);
+
+						var positionDrag = function(destY)
+						{
+							if (destY < 0) {
+								destY = 0;
+							} else if (destY > dragMaxY) {
+								destY = dragMaxY;
+							}
+							verticalDrag.css('top', destY);
+							container.scrollTop(0);
+							var percentScrolled = destY / dragMaxY;
+							console.log(elem);
+							elem.css(
+								'top',
+								-percentScrolled * (contentHeight - paneHeight)
+							);
+						};
 
 					}
 					var arrowScroll = function(dirX, dirY)
