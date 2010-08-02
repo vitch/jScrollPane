@@ -63,3 +63,19 @@ p
 	font-size: 93%;
 	margin: 1em 0;
 }
+
+a
+{
+	color: #7171D4;
+	text-decoration: none;
+}
+
+a:hover
+{
+	color: #f60;
+}
+
+ul
+{
+	padding: 0 0 0 1em;
+}
