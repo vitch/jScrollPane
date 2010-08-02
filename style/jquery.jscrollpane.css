@@ -5,7 +5,41 @@
  * may not operate correctly without them.
  */
 
-.jScrollPaneContainer
+.jspContainer
 {
 	overflow: hidden;
+	position: relative;
+}
+
+.jspCap
+{
+	display: none;
+}
+
+.jspVerticalBar
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 16px;
+	background: red;
+}
+
+.jspVerticalBar .jspTrack
+{
+	background: #dde;
+}
+
+.jspVerticalBar .jspDrag
+{
+	background: #bbd;
+}
+
+.jspVerticalBar .jspArrow
+{
+	background: #50506d;
+	height: 16px;
+	text-indent: -2000px;
+	display: block;
 }

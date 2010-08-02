@@ -63,7 +63,7 @@
 					};
 					elem.data('jsp', savedSettings);
 				}
-				var container = elem.parent('.jScrollPaneContainer');
+				var container = elem.parent('.jspContainer');
 				if (container.length == 0) {
 					elem.css('overflow', 'hidden'); // So we are measuring it without scrollbars
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
@@ -71,16 +71,20 @@
 					paneWidth = elem.innerWidth();
 					paneHeight = elem.innerHeight();
 					elem.css('overflow', 'visible');
-					container = $('<div />')
-									.addClass('jScrollPaneContainer')
-									.css({
-										'width': paneWidth + 'px',
-										'height': paneHeight + 'px'
-									});
-					elem.wrap(container);
+					elem.wrap(
+						$('<div />')
+							.addClass('jspContainer')
+							.css({
+								'width': paneWidth + 'px',
+								'height': paneHeight + 'px'
+							}
+						)
+					);
+					container = elem.parent();
 				} else {
 					paneWidth = container.outerWidth();
 					paneHeight = container.outerHeight();
+					container.find('.jspVerticalBar,.jspHorizontalBar').remove().end();
 				}
 
 				elem.css({
@@ -108,8 +112,76 @@
 
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('scrollable');
+					elem.css('top', 0);
 				} else {
 					elem.addClass('scrollable');
+					
+					var getArrowScroll = function(dirX, dirY) {
+						return function()
+						{
+							arrowScroll(dirX, dirY);
+							this.blur();
+							return false;
+						}
+					};
+
+					if (isScrollableV) {
+
+						container.append(
+							$('<div class="jspVerticalBar" />').append(
+								$('<div class="jspCap jspCapTop" />'),
+								$('<div class="jspTrack" />').append(
+									$('<div class="jspDrag" />').append(
+										$('<div class="jspDragTop" />'),
+										$('<div class="jspDragBottom" />')
+									)
+								),
+								$('<div class="jspCap jspCapBottom" />')
+							)
+						);
+
+						var verticalBar = container.find('>.jspVerticalBar');
+						var verticalTrack = verticalBar.find('>.jspTrack');
+						var verticalDrag = verticalTrack.find('>.jspDrag');
+
+						// Add margin to the relevant side of the content to make space for the scrollbar (to position
+						// the scrollbar on the left or right set it's left or right property in CSS)
+						var scrollbarSide = parseInt(verticalBar.css('left')) > parseInt(verticalBar.css('right')) ?
+								'right' :
+								'left';
+						elem.css('margin-' + scrollbarSide, (settings.gutter + verticalTrack.outerWidth()) + 'px');
+
+						// Now we have reflowed the content we need to update the percentInView
+						contentHeight = elem.outerHeight();
+						percentInViewV = contentHeight / paneHeight;
+
+						if (settings.showArrows) {
+							var arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
+								'click', getArrowScroll(0, -1)
+							);
+							var arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
+								'click', getArrowScroll(0, 1)
+							);
+							verticalTrack.before(arrowUp).after(arrowDown);
+						}
+
+						var verticalTrackHeight = paneHeight;
+						container.find('>.jspVerticalBar>.jspCap,>.jspVerticalBar>.jspArrow').each(
+							function()
+							{
+								verticalTrackHeight -= $(this).outerHeight();
+							}
+						);
+
+						verticalTrack.height(verticalTrackHeight + 'px');
+						verticalDrag.height((1 / percentInViewV * verticalTrackHeight) + 'px');
+
+
+					}
+					var arrowScroll = function(dirX, dirY)
+					{
+						// TODO:
+					};
 				}
 			}
 		)
@@ -128,7 +200,8 @@
 	*/
 
 	$.fn.jScrollPane.defaults = {
-		'showArrows'		: false
+		'showArrows'		: false,
+		'gutter'			: 4
 	};
 
 })(jQuery,this);
