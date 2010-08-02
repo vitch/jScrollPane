@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+
+		<title>Horizontal jScrollPane demo</title>
+
+		<!-- styles specific to demo site -->
+		<link type="text/css" href="style/demo.css" rel="stylesheet" media="all" />
+		<!-- styles needed by jScrollPane - include in your own sites -->
+		<link type="text/css" href="style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
+
+		<style type="text/css">
+			/* Styles specific to this particular page */
+			.scroll-pane
+			{
+				max-height: 200px;
+				overflow: auto;
+			}
+		</style>
+
+		<!-- latest jQuery direct from google's CDN -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<!-- scripts specific to this demo site -->
+		<script type="text/javascript" src="script/demo.js"></script>
+		<!-- the jScrollPane script -->
+		<script type="text/javascript" src="script/jquery.jscrollpane.js"></script>
+
+		<script type="text/javascript" id="sourcecode">
+			$(function()
+			{
+				$('.scroll-pane').jScrollPane();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<h1>jScrollPane - horizontal demo page</h1>
+			<p>
+				This demonstration shows how jScrollPane works in a situation where the content of the scrollpane
+				requires horizontal scrolling (e.g. it is wider than the space that is meant to contain it). The div
+				below contains a very long unbroken text string which forces horizontal scrollbars when the overflow
+				is set to "auto". jScrollPane recognises this and creates it's own horizontal scrollbars.
+			</p>
+			<div class="scroll-pane">
+				<p>
+					Vestibulumdictumconsecteturmagnaeuegestas.Praesentmolestiedapibuserat,sitametsodaleslectuscongueut.Namadipiscing,tortoracblanditegestas,loremligulaposuereipsum,nec
+					faucibus nisl enim eu purus. Quisque bibendum diam quis nunc eleifend at molestie libero tincidunt.
+					Quisque tincidunt sapien a sapien pellentesque consequat. Mauris adipiscing venenatis augue ut
+					tempor. Donec auctor mattis quam quis aliquam. Nullam ultrices erat in dolor pharetra bibendum.
+					Suspendisse eget odio ut libero imperdiet rhoncus. Curabitur aliquet, ipsum sit amet aliquet varius,
+					est urna ullamcorper magna, sed eleifend libero nunc non erat. Vivamus semper turpis ac turpis
+					volutpat non cursus velit aliquam. Fusce id tortor id sapien porta egestas. Nulla venenatis luctus
+					libero et suscipit. Sed sed purus risus. Donec auctor, leo nec eleifend vehicula, lacus felis
+					sollicitudin est, vitae lacinia lectus urna nec libero. Aliquam pellentesque, arcu condimentum
+					pharetra vestibulum, lectus felis malesuada felis, vel fringilla dolor dui tempus nisi. In hac
+					habitasse platea dictumst. Ut imperdiet mauris vitae eros varius eget accumsan lectus adipiscing.
+				</p>
+			</div>
+			<h2>Page sourcecode</h2>
+			<div id="sourcecode-display">
+				<p>The contents of this div will be replaced by the javascript added to this page</p>
+			</div>
+		</div>
+	</body>
+</html>
