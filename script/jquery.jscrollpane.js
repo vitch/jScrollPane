@@ -175,6 +175,7 @@
 						var verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
 						verticalDrag.height(verticalDragHeight + 'px');
 						var dragMaxY = verticalTrackHeight - verticalDragHeight;
+						var verticalDragPosition = 0;
 
 						verticalDrag.bind(
 							'mousedown.jsp',
@@ -209,6 +210,7 @@
 							} else if (destY > dragMaxY) {
 								destY = dragMaxY;
 							}
+							verticalDragPosition = destY;
 							verticalDrag.css('top', destY);
 							container.scrollTop(0);
 							var percentScrolled = destY / dragMaxY;
@@ -217,6 +219,17 @@
 								-percentScrolled * (contentHeight - paneHeight)
 							);
 						};
+
+
+						container.bind(
+							'mousewheel',
+							function (event, delta) {
+								var d = verticalDragPosition;
+								positionDrag(verticalDragPosition - delta * settings.mouseWheelSpeed);
+								// return true if there was no movement so rest of screen can scroll
+								return d == verticalDragPosition;
+							}
+						);
 
 					}
 					var arrowScroll = function(dirX, dirY)
@@ -242,7 +255,8 @@
 
 	$.fn.jScrollPane.defaults = {
 		'showArrows'		: false,
-		'gutter'			: 4
+		'gutter'			: 4,
+		'mouseWheelSpeed'	: 10
 	};
 
 })(jQuery,this);
