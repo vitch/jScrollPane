@@ -104,7 +104,7 @@
 				var isScrollableV = percentInViewV > .99;
 				var isScrollableH = percentInViewH > 1;
 
-				console.log(contentWidth, contentHeight, paneWidth, paneHeight, isScrollableH, isScrollableV);
+				//console.log(contentWidth, contentHeight, paneWidth, paneHeight, isScrollableH, isScrollableV);
 
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('scrollable');
