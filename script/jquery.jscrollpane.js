@@ -144,7 +144,7 @@
 
 						// Add margin to the relevant side of the content to make space for the scrollbar (to position
 						// the scrollbar on the left or right set it's left or right property in CSS)
-						var scrollbarSide = parseInt(verticalBar.css('left')) > parseInt(verticalBar.css('right')) ?
+						var scrollbarSide = verticalBar.position().left > 0 ?
 								'right' :
 								'left';
 						elem.css('margin-' + scrollbarSide, (settings.gutter + verticalTrack.outerWidth()) + 'px');
@@ -212,7 +212,6 @@
 							verticalDrag.css('top', destY);
 							container.scrollTop(0);
 							var percentScrolled = destY / dragMaxY;
-							console.log(elem);
 							elem.css(
 								'top',
 								-percentScrolled * (contentHeight - paneHeight)
