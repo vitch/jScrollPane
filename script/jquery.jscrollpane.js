@@ -153,7 +153,13 @@
 					scrollbarSide = verticalBar.position().left > 0 ?
 							'right' :
 							'left';
-					elem.css('margin-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
+					// Horrible temporary workaround because IE7 doesn't seem to respect the margin (but using padding
+					// causes problems for other browsers)
+					if ($.browser.msie && $.browser.version < 8) {
+						elem.css('padding-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
+					} else {
+						elem.css('margin-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
+					}
 
 					// Now we have reflowed the content we need to update the percentInView
 					contentHeight = elem.outerHeight();
