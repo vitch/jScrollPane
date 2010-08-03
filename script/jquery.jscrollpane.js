@@ -149,7 +149,7 @@
 					var scrollbarSide = verticalBar.position().left > 0 ?
 							'right' :
 							'left';
-					elem.css('margin-' + scrollbarSide, (settings.gutter + verticalTrack.outerWidth()) + 'px');
+					elem.css('margin-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
 
 					// Now we have reflowed the content we need to update the percentInView
 					contentHeight = elem.outerHeight();
@@ -325,7 +325,7 @@
 
 	$.fn.jScrollPane.defaults = {
 		'showArrows'		: false,
-		'gutter'			: 4,
+		'verticalGutter'	: 4,
 		'mouseWheelSpeed'	: 10,
 		'arrowButtonSpeed'	: 10,
 		'arrowRepeatFreq'	: 100
