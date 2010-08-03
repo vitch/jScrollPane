@@ -45,11 +45,9 @@
 		function JScrollPane(elem, settings)
 		{
 
-			var jsp = this;
-
-			var paneWidth, paneHeight, container, contentWidth, contentHeight, percentInViewH, percentInViewV,
-					isScrollableV, isScrollableH, verticalDrag, dragMaxY, verticalDragPosition, horizontalDrag,
-					dragMaxX, horizontalDragPosition;
+			var jsp = this, savedSettings, paneWidth, paneHeight, container, contentWidth, contentHeight,
+					percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
+					verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition;
 
 			savedSettings = {
 				/*
@@ -66,6 +64,8 @@
 
 			function initialise(settings)
 			{
+
+				var clonedElem, tempWrapper;
 
 				container = elem.parent('.jspContainer');
 				if (container.length == 0) {
@@ -100,8 +100,8 @@
 				// width as allowed by its container, regardless of overflow settings.
 				// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
 				// container. Now it will push outwards to its maxium real width...
-				var clonedElem = elem.clone().css('position', 'absolute');
-				var tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
+				clonedElem = elem.clone().css('position', 'absolute');
+				tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
 				$('body').append(tempWrapper);
 				contentWidth = Math.max(elem.outerWidth(), clonedElem.outerWidth());
 				tempWrapper.remove();
@@ -128,6 +128,9 @@
 			{
 				if (isScrollableV) {
 
+					var verticalBar, verticalTrack, scrollbarSide, verticalTrackHeight, verticalDragHeight, arrowUp,
+							arrowDown;
+
 					container.append(
 						$('<div class="jspVerticalBar" />').append(
 							$('<div class="jspCap jspCapTop" />'),
@@ -141,13 +144,13 @@
 						)
 					);
 
-					var verticalBar = container.find('>.jspVerticalBar');
-					var verticalTrack = verticalBar.find('>.jspTrack');
+					verticalBar = container.find('>.jspVerticalBar');
+					verticalTrack = verticalBar.find('>.jspTrack');
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
 					// Add margin to the relevant side of the content to make space for the scrollbar (to position
 					// the scrollbar on the left or right set it's left or right property in CSS)
-					var scrollbarSide = verticalBar.position().left > 0 ?
+					scrollbarSide = verticalBar.position().left > 0 ?
 							'right' :
 							'left';
 					elem.css('margin-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
@@ -157,16 +160,16 @@
 					percentInViewV = contentHeight / paneHeight;
 
 					if (settings.showArrows) {
-						var arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
+						arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
 						);
-						var arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
+						arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						);
 						verticalTrack.before(arrowUp).after(arrowDown);
 					}
 
-					var verticalTrackHeight = paneHeight;
+					verticalTrackHeight = paneHeight;
 					container.find('>.jspVerticalBar>.jspCap,>.jspVerticalBar>.jspArrow').each(
 						function()
 						{
@@ -175,7 +178,7 @@
 					);
 
 					verticalTrack.height(verticalTrackHeight + 'px');
-					var verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
+					verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
 					verticalDrag.height(verticalDragHeight + 'px');
 					dragMaxY = verticalTrackHeight - verticalDragHeight;
 					verticalDragPosition = 0;
@@ -219,6 +222,9 @@
 			{
 				if (isScrollableH) {
 
+					var horizontalBar, horizontalTrack, scrollbarHeightH, horizontalTrackWidth, horizontalDragWidth,
+							arrowLeft, arrowRight;
+
 					container.append(
 						$('<div class="jspHorizontalBar" />').append(
 							$('<div class="jspCap jspCapLeft" />'),
@@ -232,11 +238,11 @@
 						)
 					);
 
-					var horizontalBar = container.find('>.jspHorizontalBar');
-					var horizontalTrack = horizontalBar.find('>.jspTrack');
+					horizontalBar = container.find('>.jspHorizontalBar');
+					horizontalTrack = horizontalBar.find('>.jspTrack');
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
-					var scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
+					scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
 					elem.css('margin-bottom', scrollbarHeightH + 'px');
 
 					// FIXME: 
@@ -247,16 +253,16 @@
 					// TODO: Recalculate the size of the vertical drag etc...
 
 					if (settings.showArrows) {
-						var arrowLeft = $('<a href="#" class="jspArrow jspArrowLeft">Scroll left</a>').bind(
+						arrowLeft = $('<a href="#" class="jspArrow jspArrowLeft">Scroll left</a>').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
 						);
-						var arrowRight = $('<a href="#" class="jspArrow jspArrowRight">Scroll right</a>').bind(
+						arrowRight = $('<a href="#" class="jspArrow jspArrowRight">Scroll right</a>').bind(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						);
 						horizontalTrack.before(arrowLeft).after(arrowRight);
 					}
 
-					var horizontalTrackWidth = container.innerWidth();
+					horizontalTrackWidth = container.innerWidth();
 					container.find('>.jspHorizontalBar>.jspCap,>.jspHorizontalBar>.jspArrow').each(
 						function()
 						{
@@ -265,7 +271,7 @@
 					);
 
 					horizontalTrack.width(horizontalTrackWidth + 'px');
-					var horizontalDragWidth = 1 / percentInViewH * horizontalTrackWidth;
+					horizontalDragWidth = 1 / percentInViewH * horizontalTrackWidth;
 					horizontalDrag.width(horizontalDragWidth + 'px');
 					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
 					horizontalDragPosition = 0;
@@ -415,8 +421,7 @@
 		this.each(
 			function()
 			{
-				var elem = $(this);
-				var jspApi = elem.data('jsp');
+				var elem = $(this), jspApi = elem.data('jsp');
 				if (jspApi) {
 					jspApi.reinitialise(settings);
 				} else {
