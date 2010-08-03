@@ -170,7 +170,7 @@
 					}
 
 					verticalTrackHeight = paneHeight;
-					container.find('>.jspVerticalBar>.jspCap,>.jspVerticalBar>.jspArrow').each(
+					container.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
 						function()
 						{
 							verticalTrackHeight -= $(this).outerHeight();
@@ -263,7 +263,7 @@
 					}
 
 					horizontalTrackWidth = container.innerWidth();
-					container.find('>.jspHorizontalBar>.jspCap,>.jspHorizontalBar>.jspArrow').each(
+					container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 						function()
 						{
 							horizontalTrackWidth -= $(this).outerHeight();
