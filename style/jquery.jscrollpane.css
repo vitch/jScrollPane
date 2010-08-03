@@ -36,6 +36,13 @@
 	background: red;
 }
 
+.jspVerticalBar *,
+.jspHorizontalBar *
+{
+	margin: 0;
+	padding: 0;
+}
+
 .jspCap
 {
 	display: none;
@@ -85,6 +92,7 @@
 {
 	width: 16px;
 	float: left;
+	height: 100%;
 }
 
 .jspVerticalBar .jspArrow:focus
