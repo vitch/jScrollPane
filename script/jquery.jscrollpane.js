@@ -109,7 +109,7 @@
 				contentHeight = elem.outerHeight();
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
-				isScrollableV = percentInViewV > .99;
+				isScrollableV = percentInViewV > 1;
 				isScrollableH = percentInViewH > 1;
 
 				if (!(isScrollableH || isScrollableV)) {
