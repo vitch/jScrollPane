@@ -41,29 +41,32 @@
 
 	$.fn.jScrollPane = function(settings)
 	{
-		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
+		// JScrollPane "class" - public methods are available through $('selector').data('jsp')
+		function JScrollPane(elem, settings)
+		{
 
-		return this.each(
-			function()
+			var jsp = this;
+
+			var paneWidth, paneHeight, container, contentWidth, contentHeight, percentInViewH, percentInViewV,
+					isScrollableV, isScrollableH, verticalDrag, dragMaxY, verticalDragPosition;
+
+			savedSettings = {
+				/*
+				'originalPadding' : elem.css('paddingTop') + ' ' +
+									elem.css('paddingRight') + ' ' +
+									elem.css('paddingBottom') + ' ' +
+									elem.css('paddingLeft'),
+				'originalSidePaddingTotal' : (parseInt(elem.css('paddingLeft')) || 0) +
+												(parseInt(elem.css('paddingRight')) || 0)
+				*/
+			};
+
+			initialise(settings);
+
+			function initialise(settings)
 			{
-				var elem = $(this);
-				var paneWidth, paneHeight;
 
-				var savedSettings = elem.data('jsp');
-				if (savedSettings == undefined) {
-					savedSettings = {
-						/*
-						'originalPadding' : elem.css('paddingTop') + ' ' +
-											elem.css('paddingRight') + ' ' +
-											elem.css('paddingBottom') + ' ' +
-											elem.css('paddingLeft'),
-						'originalSidePaddingTotal' : (parseInt(elem.css('paddingLeft')) || 0) +
-														(parseInt(elem.css('paddingRight')) || 0)
-						*/
-					};
-					elem.data('jsp', savedSettings);
-				}
-				var container = elem.parent('.jspContainer');
+				container = elem.parent('.jspContainer');
 				if (container.length == 0) {
 					elem.css('overflow', 'hidden'); // So we are measuring it without scrollbars
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
@@ -99,159 +102,207 @@
 				var clonedElem = elem.clone().css('position', 'absolute');
 				var tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
 				$('body').append(tempWrapper);
-				var contentWidth = Math.max(elem.outerWidth(), clonedElem.outerWidth());
+				contentWidth = Math.max(elem.outerWidth(), clonedElem.outerWidth());
 				tempWrapper.remove();
 
-				var contentHeight = elem.outerHeight();
-				var percentInViewH = contentWidth / paneWidth;
-				var percentInViewV = contentHeight / paneHeight;
-				var isScrollableV = percentInViewV > .99;
-				var isScrollableH = percentInViewH > 1;
+				contentHeight = elem.outerHeight();
+				percentInViewH = contentWidth / paneWidth;
+				percentInViewV = contentHeight / paneHeight;
+				isScrollableV = percentInViewV > .99;
+				isScrollableH = percentInViewH > 1;
 
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					elem.css('top', 0);
+					removeMousewheel();
 				} else {
 					elem.addClass('jspScrollable');
-					
-					var getArrowScroll = function(dirX, dirY) {
-						return function()
-						{
-							arrowScroll(dirX, dirY);
-							this.blur();
-							return false;
-						}
-					};
 
-					if (isScrollableV) {
-
-						container.append(
-							$('<div class="jspVerticalBar" />').append(
-								$('<div class="jspCap jspCapTop" />'),
-								$('<div class="jspTrack" />').append(
-									$('<div class="jspDrag" />').append(
-										$('<div class="jspDragTop" />'),
-										$('<div class="jspDragBottom" />')
-									)
-								),
-								$('<div class="jspCap jspCapBottom" />')
-							)
-						);
-
-						var verticalBar = container.find('>.jspVerticalBar');
-						var verticalTrack = verticalBar.find('>.jspTrack');
-						var verticalDrag = verticalTrack.find('>.jspDrag');
-
-						// Add margin to the relevant side of the content to make space for the scrollbar (to position
-						// the scrollbar on the left or right set it's left or right property in CSS)
-						var scrollbarSide = verticalBar.position().left > 0 ?
-								'right' :
-								'left';
-						elem.css('margin-' + scrollbarSide, (settings.gutter + verticalTrack.outerWidth()) + 'px');
-
-						// Now we have reflowed the content we need to update the percentInView
-						contentHeight = elem.outerHeight();
-						percentInViewV = contentHeight / paneHeight;
-
-						if (settings.showArrows) {
-							var arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
-								'click', getArrowScroll(0, -1)
-							);
-							var arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
-								'click', getArrowScroll(0, 1)
-							);
-							verticalTrack.before(arrowUp).after(arrowDown);
-						}
-
-						var verticalTrackHeight = paneHeight;
-						container.find('>.jspVerticalBar>.jspCap,>.jspVerticalBar>.jspArrow').each(
-							function()
-							{
-								verticalTrackHeight -= $(this).outerHeight();
-							}
-						);
-
-						verticalTrack.height(verticalTrackHeight + 'px');
-						var verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
-						verticalDrag.height(verticalDragHeight + 'px');
-						var dragMaxY = verticalTrackHeight - verticalDragHeight;
-						var verticalDragPosition = 0;
-
-						verticalDrag.bind(
-							'mousedown.jsp',
-							function(e)
-							{
-								// Stop IE from allowing text selection
-								$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
-
-								var startY = e.pageY - verticalDrag.position().top;
-
-								$('html').bind(
-									'mousemove.jsp',
-									function(e)
-									{
-										positionDrag(e.pageY - startY);
-									}
-								).bind(
-									'mouseup.jsp mouseleave.jsp',
-									function()
-									{
-										$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
-									}
-								);
-								return false;
-							}
-						);
-
-						var positionDrag = function(destY)
-						{
-							if (destY < 0) {
-								destY = 0;
-							} else if (destY > dragMaxY) {
-								destY = dragMaxY;
-							}
-							verticalDragPosition = destY;
-							verticalDrag.css('top', destY);
-							container.scrollTop(0);
-							var percentScrolled = destY / dragMaxY;
-							elem.css(
-								'top',
-								-percentScrolled * (contentHeight - paneHeight)
-							);
-						};
-
-
-						container.bind(
-							'mousewheel',
-							function (event, delta) {
-								var d = verticalDragPosition;
-								positionDrag(verticalDragPosition - delta * settings.mouseWheelSpeed);
-								// return true if there was no movement so rest of screen can scroll
-								return d == verticalDragPosition;
-							}
-						);
-
-					}
-					var arrowScroll = function(dirX, dirY)
-					{
-						// TODO:
-					};
+					initialiseVerticalScroll();
+					// TODO: initialiseHorizontalScroll
 				}
 			}
-		)
-	};
 
-	/*
-	$.fn.jScrollPaneRemove = function()
-	{
-		$(this).each(
+			function initialiseVerticalScroll()
+			{
+				if (isScrollableV) {
+
+					container.append(
+						$('<div class="jspVerticalBar" />').append(
+							$('<div class="jspCap jspCapTop" />'),
+							$('<div class="jspTrack" />').append(
+								$('<div class="jspDrag" />').append(
+									$('<div class="jspDragTop" />'),
+									$('<div class="jspDragBottom" />')
+								)
+							),
+							$('<div class="jspCap jspCapBottom" />')
+						)
+					);
+
+					var verticalBar = container.find('>.jspVerticalBar');
+					var verticalTrack = verticalBar.find('>.jspTrack');
+					verticalDrag = verticalTrack.find('>.jspDrag');
+
+					// Add margin to the relevant side of the content to make space for the scrollbar (to position
+					// the scrollbar on the left or right set it's left or right property in CSS)
+					var scrollbarSide = verticalBar.position().left > 0 ?
+							'right' :
+							'left';
+					elem.css('margin-' + scrollbarSide, (settings.gutter + verticalTrack.outerWidth()) + 'px');
+
+					// Now we have reflowed the content we need to update the percentInView
+					contentHeight = elem.outerHeight();
+					percentInViewV = contentHeight / paneHeight;
+
+					if (settings.showArrows) {
+						var arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
+							'click', getArrowScroll(0, -1)
+						);
+						var arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
+							'click', getArrowScroll(0, 1)
+						);
+						verticalTrack.before(arrowUp).after(arrowDown);
+					}
+
+					var verticalTrackHeight = paneHeight;
+					container.find('>.jspVerticalBar>.jspCap,>.jspVerticalBar>.jspArrow').each(
+						function()
+						{
+							verticalTrackHeight -= $(this).outerHeight();
+						}
+					);
+
+					verticalTrack.height(verticalTrackHeight + 'px');
+					var verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
+					verticalDrag.height(verticalDragHeight + 'px');
+					dragMaxY = verticalTrackHeight - verticalDragHeight;
+					verticalDragPosition = 0;
+
+					verticalDrag.hover(
+						function()
+						{
+							verticalDrag.addClass('jspHover');
+						},
+						function()
+						{
+							verticalDrag.removeClass('jspHover');
+						}
+					).bind(
+						'mousedown.jsp',
+						function(e)
+						{
+							// Stop IE from allowing text selection
+							$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
+
+							var startY = e.pageY - verticalDrag.position().top;
+
+							$('html').bind(
+								'mousemove.jsp',
+								function(e)
+								{
+									positionDragY(e.pageY - startY);
+								}
+							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
+							return false;
+						}
+					);
+					initMousewheel();
+				} else {
+					// no vertical scroll
+					removeMousewheel();
+				}
+			}
+
+			function getArrowScroll(dirX, dirY) {
+				return function()
+				{
+					arrowScroll(dirX, dirY);
+					this.blur();
+					return false;
+				}
+			};
+
+			function arrowScroll(dirX, dirY)
+			{
+				console.log('Scrolling', dirX, dirY);
+			};
+
+			function cancelDrag()
+			{
+				$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
+			}
+
+			function positionDragY(destY)
+			{
+				if (destY < 0) {
+					destY = 0;
+				} else if (destY > dragMaxY) {
+					destY = dragMaxY;
+				}
+				verticalDragPosition = destY;
+				verticalDrag.css('top', destY);
+				container.scrollTop(0);
+				var percentScrolled = destY / dragMaxY;
+				elem.css(
+					'top',
+					-percentScrolled * (contentHeight - paneHeight)
+				);
+			};
+
+			function initMousewheel()
+			{
+				container.bind(
+					'mousewheel.jsp',
+					function (event, delta) {
+						var d = verticalDragPosition;
+						positionDragY(verticalDragPosition - delta * settings.mouseWheelSpeed);
+						// return true if there was no movement so rest of screen can scroll
+						return d == verticalDragPosition;
+					}
+				);
+			}
+
+			function removeMousewheel()
+			{
+				container.unbind('mousewheel.jsp');
+			}
+
+			// Public API
+			$.extend(
+				jsp,
+				{
+					reinitialise: function(settings)
+					{
+						// TODO: In this case, any settings set originally should override any defaults...
+						// Need to make sure that this is happening...
+						initialise(settings);
+					}
+				}
+			);
+		}
+
+		// Pluginifying code...
+
+		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
+
+		var ret;
+		this.each(
 			function()
 			{
-
+				var elem = $(this);
+				var jspApi = elem.data('jsp');
+				if (jspApi) {
+					jspApi.reinitialise(settings);
+				} else {
+					jspApi = new JScrollPane(elem, settings);
+					elem.data('jsp', jspApi);
+				}
+				ret = ret ? ret.add(elem) : elem;
 			}
-		);
-	}
-	*/
+		)
+		return ret;
+	};
 
 	$.fn.jScrollPane.defaults = {
 		'showArrows'		: false,

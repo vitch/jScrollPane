@@ -53,3 +53,8 @@
 	display: block;
 	cursor: pointer;
 }
+
+.jspVerticalBar .jspArrow:focus
+{
+	outline: none;
+}
