@@ -48,7 +48,8 @@
 			var jsp = this;
 
 			var paneWidth, paneHeight, container, contentWidth, contentHeight, percentInViewH, percentInViewV,
-					isScrollableV, isScrollableH, verticalDrag, dragMaxY, verticalDragPosition;
+					isScrollableV, isScrollableH, verticalDrag, dragMaxY, verticalDragPosition, horizontalDrag,
+					dragMaxX, horizontalDragPosition;
 
 			savedSettings = {
 				/*
@@ -119,7 +120,7 @@
 					elem.addClass('jspScrollable');
 
 					initialiseVerticalScroll();
-					// TODO: initialiseHorizontalScroll
+					initialiseHorizontalScroll();
 				}
 			}
 
@@ -214,6 +215,94 @@
 				}
 			}
 
+			function initialiseHorizontalScroll()
+			{
+				if (isScrollableH) {
+
+					container.append(
+						$('<div class="jspHorizontalBar" />').append(
+							$('<div class="jspCap jspCapLeft" />'),
+							$('<div class="jspTrack" />').append(
+								$('<div class="jspDrag" />').append(
+									$('<div class="jspDragLeft" />'),
+									$('<div class="jspDragRight" />')
+								)
+							),
+							$('<div class="jspCap jspCapRight" />')
+						)
+					);
+
+					var horizontalBar = container.find('>.jspHorizontalBar');
+					var horizontalTrack = horizontalBar.find('>.jspTrack');
+					horizontalDrag = horizontalTrack.find('>.jspDrag');
+
+					var scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
+					elem.css('margin-bottom', scrollbarHeightH + 'px');
+
+					// FIXME: 
+					// Now we have reflowed the content we need to update the percentInView
+					//percentInViewV = contentHeight / (paneHeight - scrollbarHeightH);
+					// TODO: Deal with the rare situation where we just made vertical scrollbars necessary by adding a
+					// horizontal scrollbar.
+					// TODO: Recalculate the size of the vertical drag etc...
+
+					if (settings.showArrows) {
+						var arrowLeft = $('<a href="#" class="jspArrow jspArrowLeft">Scroll left</a>').bind(
+							'mousedown.jsp', getArrowScroll(-1, 0)
+						);
+						var arrowRight = $('<a href="#" class="jspArrow jspArrowRight">Scroll right</a>').bind(
+							'mousedown.jsp', getArrowScroll(1, 0)
+						);
+						horizontalTrack.before(arrowLeft).after(arrowRight);
+					}
+
+					var horizontalTrackWidth = container.innerWidth();
+					container.find('>.jspHorizontalBar>.jspCap,>.jspHorizontalBar>.jspArrow').each(
+						function()
+						{
+							horizontalTrackWidth -= $(this).outerHeight();
+						}
+					);
+
+					horizontalTrack.width(horizontalTrackWidth + 'px');
+					var horizontalDragWidth = 1 / percentInViewH * horizontalTrackWidth;
+					horizontalDrag.width(horizontalDragWidth + 'px');
+					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
+					horizontalDragPosition = 0;
+
+					horizontalDrag.hover(
+						function()
+						{
+							horizontalDrag.addClass('jspHover');
+						},
+						function()
+						{
+							horizontalDrag.removeClass('jspHover');
+						}
+					).bind(
+						'mousedown.jsp',
+						function(e)
+						{
+							// Stop IE from allowing text selection
+							$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
+
+							var startX = e.pageX - horizontalDrag.position().left;
+
+							$('html').bind(
+								'mousemove.jsp',
+								function(e)
+								{
+									positionDragX(e.pageX - startX);
+								}
+							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
+							return false;
+						}
+					);
+				} else {
+					// no horizontal scroll
+				}
+			}
+
 			function getArrowScroll(dirX, dirY) {
 				return function()
 				{
@@ -229,7 +318,7 @@
 					function()
 					{
 						if (dirX != 0) {
-							// TODO
+							positionDragX(horizontalDragPosition + dirX * settings.arrowButtonSpeed);
 						}
 						if (dirY != 0) {
 							positionDragY(verticalDragPosition + dirY * settings.arrowButtonSpeed);
@@ -266,6 +355,23 @@
 				elem.css(
 					'top',
 					-percentScrolled * (contentHeight - paneHeight)
+				);
+			};
+
+			function positionDragX(destX)
+			{
+				if (destX < 0) {
+					destX = 0;
+				} else if (destX > dragMaxX) {
+					destX = dragMaxX;
+				}
+				horizontalDragPosition = destX;
+				horizontalDrag.css('left', destX);
+				container.scrollTop(0);
+				var percentScrolled = destX / dragMaxX;
+				elem.css(
+					'left',
+					-percentScrolled * (contentWidth - paneWidth)
 				);
 			};
 
@@ -326,6 +432,7 @@
 	$.fn.jScrollPane.defaults = {
 		'showArrows'		: false,
 		'verticalGutter'	: 4,
+		'horizontalGutter'	: 4,
 		'mouseWheelSpeed'	: 10,
 		'arrowButtonSpeed'	: 10,
 		'arrowRepeatFreq'	: 100
