@@ -162,10 +162,10 @@
 					if (settings.showArrows) {
 						arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
-						);
+						).bind('click.jsp', nil);
 						arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
 							'mousedown.jsp', getArrowScroll(0, 1)
-						);
+						).bind('click.jsp', nil);
 						verticalTrack.before(arrowUp).after(arrowDown);
 					}
 
@@ -255,10 +255,10 @@
 					if (settings.showArrows) {
 						arrowLeft = $('<a href="#" class="jspArrow jspArrowLeft">Scroll left</a>').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
-						);
+						).bind('click.jsp', nil);
 						arrowRight = $('<a href="#" class="jspArrow jspArrowRight">Scroll right</a>').bind(
 							'mousedown.jsp', getArrowScroll(1, 0)
-						);
+						).bind('click.jsp', nil);
 						horizontalTrack.before(arrowLeft).after(arrowRight);
 					}
 
@@ -397,6 +397,11 @@
 			function removeMousewheel()
 			{
 				container.unbind('mousewheel.jsp');
+			}
+
+			function nil()
+			{
+				return false;
 			}
 
 			// Public API
