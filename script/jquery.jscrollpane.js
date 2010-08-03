@@ -272,7 +272,7 @@
 					container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 						function()
 						{
-							horizontalTrackWidth -= $(this).outerHeight();
+							horizontalTrackWidth -= $(this).outerWidth();
 						}
 					);
 
