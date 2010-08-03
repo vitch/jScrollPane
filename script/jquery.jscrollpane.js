@@ -157,10 +157,10 @@
 
 					if (settings.showArrows) {
 						var arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
-							'click', getArrowScroll(0, -1)
+							'mousedown.jsp', getArrowScroll(0, -1)
 						);
 						var arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
-							'click', getArrowScroll(0, 1)
+							'mousedown.jsp', getArrowScroll(0, 1)
 						);
 						verticalTrack.before(arrowUp).after(arrowDown);
 					}
@@ -225,7 +225,26 @@
 
 			function arrowScroll(dirX, dirY)
 			{
-				console.log('Scrolling', dirX, dirY);
+				var scrollInt = setInterval(
+					function()
+					{
+						if (dirX != 0) {
+							// TODO
+						}
+						if (dirY != 0) {
+							positionDragY(verticalDragPosition + dirY * settings.arrowButtonSpeed);
+						}
+					},
+					settings.arrowRepeatFreq
+				)
+				$('html').bind(
+					'mouseup.jsp',
+					function()
+					{
+						clearInterval(scrollInt);
+						$('html').unbind('mouseup.jsp');
+					}
+				);
 			};
 
 			function cancelDrag()
@@ -307,7 +326,9 @@
 	$.fn.jScrollPane.defaults = {
 		'showArrows'		: false,
 		'gutter'			: 4,
-		'mouseWheelSpeed'	: 10
+		'mouseWheelSpeed'	: 10,
+		'arrowButtonSpeed'	: 10,
+		'arrowRepeatFreq'	: 100
 	};
 
 })(jQuery,this);
