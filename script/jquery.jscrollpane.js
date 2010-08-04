@@ -45,7 +45,7 @@
 		function JScrollPane(elem, settings)
 		{
 
-			var jsp = this, savedSettings, paneWidth, paneHeight, container, contentWidth, contentHeight,
+			var jsp = this, pane, savedSettings, paneWidth, paneHeight, container, contentWidth, contentHeight,
 					percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 					verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition;
 
@@ -67,25 +67,34 @@
 
 				var clonedElem, tempWrapper;
 
-				container = elem.parent('.jspContainer');
-				if (container.length == 0) {
+				if (pane == undefined) {
+
 					elem.css('overflow', 'hidden'); // So we are measuring it without scrollbars
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
 					// come back to it later and check once it is unhidden...
 					paneWidth = elem.innerWidth();
 					paneHeight = elem.innerHeight();
-					elem.css('overflow', 'visible');
-					elem.wrap(
-						$('<div />')
-							.addClass('jspContainer')
+					pane = $('<div class="jspPane" />').wrap(
+						$('<div class="jspContainer" />')
 							.css({
 								'width': paneWidth + 'px',
 								'height': paneHeight + 'px'
 							}
 						)
 					);
-					container = elem.parent();
+					elem.css('overflow', 'visible');
+					elem.wrap(pane.parent());
+					// Need to get the vars after being added to the document, otherwise they reference weird
+					// disconnected orphan elements...
+					pane = elem.parent();
+					container = pane.parent();
+
+					// Add classes to allow us to trim relevant margins from top and bottom of element which cause
+					// problems when measuring height of elements.
+					elem.find(':first-child').addClass('jspFirst');
+					elem.find(':last-child').addClass('jspLast');
 				} else {
+
 					paneWidth = container.outerWidth();
 					paneHeight = container.outerHeight();
 					container.find('.jspVerticalBar,.jspHorizontalBar').remove().end();
@@ -112,9 +121,11 @@
 				isScrollableV = percentInViewV > 1;
 				isScrollableH = percentInViewH > 1;
 
+				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
+
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
-					elem.css('top', 0);
+					pane.css('top', 0);
 					removeMousewheel();
 				} else {
 					elem.addClass('jspScrollable');
@@ -128,9 +139,8 @@
 			{
 				if (isScrollableV) {
 
-					var verticalBar, verticalTrack, scrollbarSide, verticalTrackHeight, verticalDragHeight, arrowUp,
+					var verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp,
 							arrowDown;
-
 					container.append(
 						$('<div class="jspVerticalBar" />').append(
 							$('<div class="jspCap jspCapTop" />'),
@@ -148,21 +158,17 @@
 					verticalTrack = verticalBar.find('>.jspTrack');
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
-					// Add margin to the relevant side of the content to make space for the scrollbar (to position
-					// the scrollbar on the left or right set it's left or right property in CSS)
-					scrollbarSide = verticalBar.position().left > 0 ?
-							'right' :
-							'left';
+					scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
-					// Horrible temporary workaround because IE7 doesn't seem to respect the margin. Opera respects the
-					// margin on first call but if you re-initialise then clonedElem.outerWidth() comes out crazy.
-					// But using padding causes problems for webkit browsers (e.g. the calculation of the height of the
-					// content is off as it doesn't take into account the reflowed content).
-					if (true || ($.browser.msie && $.browser.version < 8) || $.browser.opera) {
-						elem.css('padding-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
-					} else {
-						elem.css('margin-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
+					// Make the pane thinner to allow for the vertical scrollbar
+					pane.width(paneWidth - scrollbarWidth);
+
+					// Add margin to the left of the pane if scrollbars are on that side (to position
+					// the scrollbar on the left or right set it's left or right property in CSS)
+					if (verticalBar.position().left == 0) {
+						pane.css('margin-left', scrollbarWidth + 'px');
 					}
+
 
 					// Now we have reflowed the content we need to update the percentInView
 					contentHeight = elem.outerHeight();
@@ -252,7 +258,7 @@
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
 					scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
-					elem.css('margin-bottom', scrollbarHeightH + 'px');
+					pane.height(paneHeight - scrollbarHeightH);
 
 					// FIXME: 
 					// Now we have reflowed the content we need to update the percentInView
@@ -367,7 +373,7 @@
 				verticalDrag.css('top', destY);
 				container.scrollTop(0);
 				var percentScrolled = destY / dragMaxY;
-				elem.css(
+				pane.css(
 					'top',
 					-percentScrolled * (contentHeight - paneHeight)
 				);
@@ -384,7 +390,7 @@
 				horizontalDrag.css('left', destX);
 				container.scrollTop(0);
 				var percentScrolled = destX / dragMaxX;
-				elem.css(
+				pane.css(
 					'left',
 					-percentScrolled * (contentWidth - paneWidth)
 				);

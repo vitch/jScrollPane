@@ -11,9 +11,19 @@
 	position: relative;
 }
 
-.jspScrollable
+.jspPane
 {
 	position: absolute;
+}
+
+.jspPane .jspFirst
+{
+	margin-top: 0;
+}
+
+.jpsPane .jspLast
+{
+	margin-bottom: 0;
 }
 
 .jspVerticalBar
