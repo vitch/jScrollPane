@@ -49,8 +49,7 @@
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
-				horizontalBar, horizontalTrack, scrollbarHeightH, horizontalTrackWidth, horizontalDragWidth, arrowLeft,
-				arrowRight
+				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight
 				;
 
 			savedSettings = {
@@ -291,6 +290,7 @@
 							return false;
 						}
 					);
+					horizontalTrackWidth = container.innerWidth();
 					sizeHorizontalScrollbar();
 				} else {
 					// no horizontal scroll
@@ -299,11 +299,9 @@
 
 			function sizeHorizontalScrollbar()
 			{
-			
-				scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
-				pane.height(paneHeight - scrollbarHeightH);
 
-				horizontalTrackWidth = container.innerWidth();
+				pane.height(paneHeight - settings.horizontalGutter - horizontalTrack.outerHeight());
+
 				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 					function()
 					{
@@ -318,7 +316,17 @@
 			function resizeScrollbars()
 			{
 				if (isScrollableH && isScrollableV) {
-					// TODO: Some complex stuff!
+					var verticalScrollWidth = horizontalTrack.outerHeight(),
+						horizontalScrollHeight = verticalTrack.outerWidth();
+					verticalTrackHeight -= verticalScrollWidth;
+					horizontalTrackWidth -= horizontalScrollHeight;
+					paneHeight -= horizontalScrollHeight;
+					paneWidth -= verticalScrollWidth;
+					horizontalTrack.parent().append(
+						$('<div class="jspCorner" />').css('width', verticalScrollWidth + 'px')
+					);
+					sizeVerticalScrollbar();
+					sizeHorizontalScrollbar();
 				}
 				// reflow content
 				if (isScrollableH) {

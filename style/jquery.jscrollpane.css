@@ -109,3 +109,10 @@
 {
 	outline: none;
 }
+
+.jspCorner
+{
+	background: #eeeef4;
+	float: left;
+	height: 100%;
+}
