@@ -39,16 +39,40 @@
 		<div id="container">
 			<h1>jScrollPane - horizontal with arrows demo page</h1>
 			<p>
-				This demonstration shows how jScrollPane works in a situation where the content of the scrollpane
-				requires horizontal scrolling (e.g. it is wider than the space that is meant to contain it). The div
-				below contains a very long unbroken text string which forces horizontal scrollbars when the overflow
-				is set to "auto". jScrollPane recognises this and creates it's own horizontal scrollbars. <strong>
-				showArrows</strong> is set to true so there are navigation arrows which can be clicked to scroll
-				sideways.
+				This demonstration enhances the <a href="horizontal.html">basic horizontal</a> demo and shows how you
+				can pass <strong>showArrows: true</strong> in the settings to add arrows to the generated scrollbars.
+			</p>
+			<p>
+				The first div below contains a very long unbroken text string which forces horizontal scrollbars when
+				the overflow is set to "auto". jScrollPane recognises this and creates it's own horizontal scrollbars.
+				Note that the behaviour is the same as native scrollbars - only the one overflowing element flows
+				outside the original width, the rest of the content is contained within it.
+			</p>
+			<p>
+				The second div below here contains an element whose own width is pushing the content out. Note that the
+				scrollbar works as expected and all of the content flows within the 940px specifed as the width of the
+				child paragraph.
 			</p>
 			<div class="scroll-pane">
 				<p>
 					Vestibulumdictumconsecteturmagnaeuegestas.Praesentmolestiedapibuserat,sitametsodaleslectuscongueut.Namadipiscing,tortoracblanditegestas,loremligulaposuereipsum,nec
+					faucibus nisl enim eu purus. Quisque bibendum diam quis nunc eleifend at molestie libero tincidunt.
+					Quisque tincidunt sapien a sapien pellentesque consequat. Mauris adipiscing venenatis augue ut
+					tempor. Donec auctor mattis quam quis aliquam. Nullam ultrices erat in dolor pharetra bibendum.
+					Suspendisse eget odio ut libero imperdiet rhoncus. Curabitur aliquet, ipsum sit amet aliquet varius,
+					est urna ullamcorper magna, sed eleifend libero nunc non erat. Vivamus semper turpis ac turpis
+					volutpat non cursus velit aliquam. Fusce id tortor id sapien porta egestas. Nulla venenatis luctus
+					libero et suscipit. Sed sed purus risus. Donec auctor, leo nec eleifend vehicula, lacus felis
+					sollicitudin est, vitae lacinia lectus urna nec libero. Aliquam pellentesque, arcu condimentum
+					pharetra vestibulum, lectus felis malesuada felis, vel fringilla dolor dui tempus nisi. In hac
+					habitasse platea dictumst. Ut imperdiet mauris vitae eros varius eget accumsan lectus adipiscing.
+				</p>
+			</div>
+			<p></p>
+			<div class="scroll-pane">
+				<p style="width: 940px">
+					Vestibulumdic tumconsecte turmagnaeuegestas.Praesentmolestie dapibuserat,sitametsodaleslectus
+					congueut. Namadipiscing, tortoracblanditeges tas,lor emligula posuereipsum, nec
 					faucibus nisl enim eu purus. Quisque bibendum diam quis nunc eleifend at molestie libero tincidunt.
 					Quisque tincidunt sapien a sapien pellentesque consequat. Mauris adipiscing venenatis augue ut
 					tempor. Donec auctor mattis quam quis aliquam. Nullam ultrices erat in dolor pharetra bibendum.

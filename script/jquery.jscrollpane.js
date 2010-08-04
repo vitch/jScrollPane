@@ -321,6 +321,9 @@
 					// TODO: Some complex stuff!
 				}
 				// reflow content
+				if (isScrollableH) {
+					pane.width(container.outerWidth() + 'px');
+				}
 				contentHeight = elem.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
 
