@@ -153,9 +153,12 @@
 					scrollbarSide = verticalBar.position().left > 0 ?
 							'right' :
 							'left';
-					// Horrible temporary workaround because IE7 doesn't seem to respect the margin (but using padding
-					// causes problems for other browsers)
-					if ($.browser.msie && $.browser.version < 8) {
+
+					// Horrible temporary workaround because IE7 doesn't seem to respect the margin. Opera respects the
+					// margin on first call but if you re-initialise then clonedElem.outerWidth() comes out crazy.
+					// But using padding causes problems for webkit browsers (e.g. the calculation of the height of the
+					// content is off as it doesn't take into account the reflowed content).
+					if (true || ($.browser.msie && $.browser.version < 8) || $.browser.opera) {
 						elem.css('padding-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
 					} else {
 						elem.css('margin-' + scrollbarSide, (settings.verticalGutter + verticalTrack.outerWidth()) + 'px');
