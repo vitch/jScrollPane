@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+
+		<title>jScrollPane - temporary index page</title>
+
+		<!-- styles specific to demo site -->
+		<link type="text/css" href="style/demo.css" rel="stylesheet" media="all" />
+
+		<!-- latest jQuery direct from google's CDN -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<h1>jScrollPane - cross browser styleable scrollbars with jQuery and CSS</h1>
+			<p>
+				This page discusses known issues with jScrollPane and provides suggested workarounds for these issues.
+			</p>
+			<h2>In Opera the main window scrollbar appears when a jScrollPane contains lots of content</h2>
+			<p>
+				As far as I can tell this is due to a bug in Opera. The workaround is to include something absolutely
+				positioned as a parent of your jScrollPane. See <a href="http://code.google.com/p/jscrollpane/issues/detail?id=19">
+				this bug report</a> (from the previous version of jScrollPane) for discussion of this problem.
+			</p>
+		</div>
+	</body>
+</html>

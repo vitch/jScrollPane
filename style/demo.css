@@ -79,3 +79,13 @@ ul
 {
 	padding: 0 0 0 1em;
 }
+
+ul li
+{
+	margin: 0 0 .5em;
+}
+
+ul p
+{
+	margin: 0;
+}
