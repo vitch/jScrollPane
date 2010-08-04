@@ -161,17 +161,6 @@
 					verticalTrack = verticalBar.find('>.jspTrack');
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
-					scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
-
-					// Make the pane thinner to allow for the vertical scrollbar
-					pane.width(paneWidth - scrollbarWidth);
-
-					// Add margin to the left of the pane if scrollbars are on that side (to position
-					// the scrollbar on the left or right set it's left or right property in CSS)
-					if (verticalBar.position().left == 0) {
-						pane.css('margin-left', scrollbarWidth + 'px');
-					}
-
 					if (settings.showArrows) {
 						arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
@@ -190,8 +179,6 @@
 						}
 					);
 
-					verticalTrack.height(verticalTrackHeight + 'px');
-					verticalDragPosition = 0;
 
 					verticalDrag.hover(
 						function()
@@ -221,10 +208,27 @@
 							return false;
 						}
 					);
+					sizeVerticalScrollbar();
 					initMousewheel();
 				} else {
 					// no vertical scroll
 					removeMousewheel();
+				}
+			}
+
+			function sizeVerticalScrollbar()
+			{
+				verticalTrack.height(verticalTrackHeight + 'px');
+				verticalDragPosition = 0;
+				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
+
+				// Make the pane thinner to allow for the vertical scrollbar
+				pane.width(paneWidth - scrollbarWidth);
+
+				// Add margin to the left of the pane if scrollbars are on that side (to position
+				// the scrollbar on the left or right set it's left or right property in CSS)
+				if (verticalBar.position().left == 0) {
+					pane.css('margin-left', scrollbarWidth + 'px');
 				}
 			}
 
@@ -249,9 +253,6 @@
 					horizontalTrack = horizontalBar.find('>.jspTrack');
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
-					scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
-					pane.height(paneHeight - scrollbarHeightH);
-
 					if (settings.showArrows) {
 						arrowLeft = $('<a href="#" class="jspArrow jspArrowLeft">Scroll left</a>').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
@@ -261,17 +262,6 @@
 						).bind('click.jsp', nil);
 						horizontalTrack.before(arrowLeft).after(arrowRight);
 					}
-
-					horizontalTrackWidth = container.innerWidth();
-					container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
-						function()
-						{
-							horizontalTrackWidth -= $(this).outerWidth();
-						}
-					);
-
-					horizontalTrack.width(horizontalTrackWidth + 'px');
-					horizontalDragPosition = 0;
 
 					horizontalDrag.hover(
 						function()
@@ -301,9 +291,28 @@
 							return false;
 						}
 					);
+					sizeHorizontalScrollbar();
 				} else {
 					// no horizontal scroll
 				}
+			}
+
+			function sizeHorizontalScrollbar()
+			{
+			
+				scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
+				pane.height(paneHeight - scrollbarHeightH);
+
+				horizontalTrackWidth = container.innerWidth();
+				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
+					function()
+					{
+						horizontalTrackWidth -= $(this).outerWidth();
+					}
+				);
+
+				horizontalTrack.width(horizontalTrackWidth + 'px');
+				horizontalDragPosition = 0;
 			}
 
 			function resizeScrollbars()
