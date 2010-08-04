@@ -46,8 +46,12 @@
 		{
 
 			var jsp = this, pane, savedSettings, paneWidth, paneHeight, container, contentWidth, contentHeight,
-					percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
-					verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition;
+				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
+				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
+				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
+				horizontalBar, horizontalTrack, scrollbarHeightH, horizontalTrackWidth, horizontalDragWidth, arrowLeft,
+				arrowRight
+				;
 
 			savedSettings = {
 				/*
@@ -132,6 +136,7 @@
 
 					initialiseVerticalScroll();
 					initialiseHorizontalScroll();
+					resizeScrollbars();
 				}
 			}
 
@@ -139,8 +144,6 @@
 			{
 				if (isScrollableV) {
 
-					var verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp,
-							arrowDown;
 					container.append(
 						$('<div class="jspVerticalBar" />').append(
 							$('<div class="jspCap jspCapTop" />'),
@@ -169,11 +172,6 @@
 						pane.css('margin-left', scrollbarWidth + 'px');
 					}
 
-
-					// Now we have reflowed the content we need to update the percentInView
-					contentHeight = elem.outerHeight();
-					percentInViewV = contentHeight / paneHeight;
-
 					if (settings.showArrows) {
 						arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
@@ -193,9 +191,6 @@
 					);
 
 					verticalTrack.height(verticalTrackHeight + 'px');
-					verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
-					verticalDrag.height(verticalDragHeight + 'px');
-					dragMaxY = verticalTrackHeight - verticalDragHeight;
 					verticalDragPosition = 0;
 
 					verticalDrag.hover(
@@ -237,9 +232,6 @@
 			{
 				if (isScrollableH) {
 
-					var horizontalBar, horizontalTrack, scrollbarHeightH, horizontalTrackWidth, horizontalDragWidth,
-							arrowLeft, arrowRight;
-
 					container.append(
 						$('<div class="jspHorizontalBar" />').append(
 							$('<div class="jspCap jspCapLeft" />'),
@@ -260,13 +252,6 @@
 					scrollbarHeightH = settings.horizontalGutter + horizontalTrack.outerHeight();
 					pane.height(paneHeight - scrollbarHeightH);
 
-					// FIXME: 
-					// Now we have reflowed the content we need to update the percentInView
-					//percentInViewV = contentHeight / (paneHeight - scrollbarHeightH);
-					// TODO: Deal with the rare situation where we just made vertical scrollbars necessary by adding a
-					// horizontal scrollbar.
-					// TODO: Recalculate the size of the vertical drag etc...
-
 					if (settings.showArrows) {
 						arrowLeft = $('<a href="#" class="jspArrow jspArrowLeft">Scroll left</a>').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
@@ -286,9 +271,6 @@
 					);
 
 					horizontalTrack.width(horizontalTrackWidth + 'px');
-					horizontalDragWidth = 1 / percentInViewH * horizontalTrackWidth;
-					horizontalDrag.width(horizontalDragWidth + 'px');
-					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
 					horizontalDragPosition = 0;
 
 					horizontalDrag.hover(
@@ -321,6 +303,27 @@
 					);
 				} else {
 					// no horizontal scroll
+				}
+			}
+
+			function resizeScrollbars()
+			{
+				if (isScrollableH && isScrollableV) {
+					// TODO: Some complex stuff!
+				}
+				// reflow content
+				contentHeight = elem.outerHeight();
+				percentInViewV = contentHeight / paneHeight;
+
+				if (isScrollableH) {
+					horizontalDragWidth = 1 / percentInViewH * horizontalTrackWidth;
+					horizontalDrag.width(horizontalDragWidth + 'px');
+					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
+				}
+				if (isScrollableV) {
+					verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
+					verticalDrag.height(verticalDragHeight + 'px');
+					dragMaxY = verticalTrackHeight - verticalDragHeight;
 				}
 			}
 
