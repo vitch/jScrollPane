@@ -468,7 +468,7 @@
 				positionDragX(percentScrolled * dragMaxX);
 			}
 
-			function scrollToElement(ele)
+			function scrollToElement(ele, stickToTop)
 			{
 				var e, eleHeight, eleTop = 0, viewportTop, maxVisibleEleTop, destY;
 
@@ -498,7 +498,7 @@
 
 				viewportTop = -pane.position().top;
 				maxVisibleEleTop = viewportTop + paneHeight;
-				if (eleTop < viewportTop) { // element is above viewport
+				if (eleTop < viewportTop || stickToTop) { // element is above viewport
 					destY = eleTop - settings.verticalGutter;
 				} else if (eleTop + eleHeight > maxVisibleEleTop) { // element is below viewport
 					destY = eleTop - paneHeight + eleHeight + settings.verticalGutter;
@@ -538,7 +538,7 @@
 					'focus.jsp',
 					function()
 					{
-						scrollToElement(this);
+						scrollToElement(this, false);
 					}
 				);
 			}
@@ -567,7 +567,7 @@
 								function()
 								{
 									if (container.scrollTop() > 0) {
-										scrollToElement(location.hash);
+										scrollToElement(location.hash, true);
 										$(document).scrollTop(container.position().top);
 										clearInterval(retryInt);
 									}
@@ -575,7 +575,7 @@
 								50
 							)
 						} else {
-							scrollToElement(location.hash);
+							scrollToElement(location.hash, true);
 							$(document).scrollTop(container.position().top);
 						}
 					}
@@ -597,7 +597,7 @@
 						if (uriParts.length > 1) {
 							hash = uriParts[1];
 							if (hash.length > 0 && elem.find('#' + hash).length > 0) {
-								scrollToElement('#' + hash);
+								scrollToElement('#' + hash, true);
 								// Need to return false otherwise things mess up... Would be nice to maybe also scroll
 								// the window to the top of the scrollpane?
 								return false;
@@ -617,9 +617,9 @@
 						// Need to make sure that this is happening...
 						initialise(settings);
 					},
-					scrollToElement: function(ele)
+					scrollToElement: function(ele, stickToTop)
 					{
-						scrollToElement(ele);
+						scrollToElement(ele, stickToTop);
 					},
 					scrollTo: function(destX, destY)
 					{
