@@ -463,12 +463,20 @@
 
 			function scrollToElement(ele)
 			{
-				var e = $(ele), eleHeight = e.outerHeight(), eleTop = 0, viewportTop, maxVisibleEleTop, destY;
+				var e, eleHeight, eleTop = 0, viewportTop, maxVisibleEleTop, destY;
+
+				// Legal hash values aren't necessarily legal jQuery selectors so we need to catch any
+				// errors from the lookup...
+				try {
+					e = $(ele);
+				} catch (err) {
+					return;
+				}
+				eleHeight = e.outerHeight();
 
 				// loop through parents adding the offset top of any elements that are relatively positioned between
 				// the focused element and the jspPane so we can get the true distance from the top
 				// of the focused element to the top of the scrollpane...
-
 				while (!e.is('.jspPane')) {
 					eleTop += e.position().top;
 					e = e.offsetParent();
