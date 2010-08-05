@@ -85,6 +85,11 @@ ul li
 	margin: 0 0 .5em;
 }
 
+ul.link-list li
+{
+	margin: 0;
+}
+
 ul p
 {
 	margin: 0;
