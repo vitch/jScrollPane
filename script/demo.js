@@ -17,6 +17,13 @@ $(function()
 			)
 		)
 	);
+	$('#css-display').empty().append(
+		$('<code />').append(
+			$('<pre />').html(
+				$('#page-css').html().replace(/\n\t\t\t/gm, '\n')
+			)
+		)
+	);
 });
 
 
