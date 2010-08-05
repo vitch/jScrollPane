@@ -68,7 +68,7 @@
 			function initialise(settings)
 			{
 
-				var clonedElem, tempWrapper;
+				var clonedElem, tempWrapper, firstChild, lastChild;
 
 				if (pane == undefined) {
 
@@ -92,10 +92,18 @@
 					pane = elem.parent();
 					container = pane.parent();
 
-					// Add classes to allow us to trim relevant margins from top and bottom of element which cause
-					// problems when measuring height of elements.
-					elem.find(':first-child').addClass('jspFirst');
-					elem.find(':last-child').addClass('jspLast');
+					// Move any margins from the first and last children up to the container so they can still
+					// collapse with neighbouring elements as they would before jScrollPane 
+					firstChild = elem.find(':first-child');
+					lastChild = elem.find(':last-child');
+					container.css(
+						{
+							'margin-top': firstChild.css('margin-top'),
+							'margin-bottom': lastChild.css('margin-bottom')
+						}
+					);
+					firstChild.css('margin-top', 0);
+					lastChild.css('margin-bottom', 0);
 				} else {
 
 					paneWidth = container.outerWidth();
