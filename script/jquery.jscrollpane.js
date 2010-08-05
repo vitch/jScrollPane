@@ -528,15 +528,19 @@
 					},
 					scrollToElement: function(ele)
 					{
-						return scrollToElement(ele);
+						scrollToElement(ele);
 					},
 					scrollToY: function(destY)
 					{
-						return scrollToY(destY);
+						scrollToY(destY);
 					},
 					scrollToX: function(destX)
 					{
-						return scrollToX(destX);
+						scrollToX(destX);
+					},
+					scrollToBottom: function()
+					{
+						positionDragY(dragMaxY);
 					}
 				}
 			);
