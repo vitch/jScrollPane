@@ -147,6 +147,7 @@
 					initialiseHorizontalScroll();
 					resizeScrollbars();
 					initFocusHandler();
+					observeHash();
 					if (settings.hijackInternalLinks) {
 						hijackInternalLinks();
 					}
@@ -474,6 +475,8 @@
 				}
 				eleHeight = e.outerHeight();
 
+				container.scrollTop(0);
+				
 				// loop through parents adding the offset top of any elements that are relatively positioned between
 				// the focused element and the jspPane so we can get the true distance from the top
 				// of the focused element to the top of the scrollpane...
@@ -486,7 +489,6 @@
 					}
 				}
 
-				container.scrollTop(0);
 
 				viewportTop = -pane.position().top;
 				maxVisibleEleTop = viewportTop + paneHeight;
@@ -539,6 +541,39 @@
 			{
 
 				elem.find(':input,a').unbind('focus.jsp')
+			}
+
+			function observeHash()
+			{
+				if (location.hash && location.hash.length > 1) {
+					var e, retryInt;
+					try {
+						e = $(location.hash);
+					} catch (err) {
+						return;
+					}
+
+					if (e.length && elem.find(e)) {
+						// nasty workaround but it appears to take a little while before the hash has done its thing
+						// to the rendered page so we just wait until the container's scrollTop has been messed up.
+						if (container.scrollTop() == 0) {
+							retryInt = setInterval(
+								function()
+								{
+									if (container.scrollTop() > 0) {
+										scrollToElement(location.hash);
+										$(document).scrollTop(container.position().top);
+										clearInterval(retryInt);
+									}
+								},
+								50
+							)
+						} else {
+							scrollToElement(location.hash);
+							$(document).scrollTop(container.position().top);
+						}
+					}
+				}
 			}
 
 			function unhijackInternalLinks()
