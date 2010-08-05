@@ -329,9 +329,12 @@
 					var horizontalTrackHeight = horizontalTrack.outerHeight(),
 						verticalTrackWidth = verticalTrack.outerWidth();
 					verticalTrackHeight -= horizontalTrackHeight;
-					if (settings.showArrows) {
-						horizontalTrackWidth += arrowLeft.outerWidth() + arrowRight.outerWidth();
-					}
+					$(horizontalBar).find('>.jspCap:visible,>.jspArrow').each(
+						function()
+						{
+							horizontalTrackWidth += $(this).outerWidth();
+						}
+					);
 					horizontalTrackWidth -= verticalTrackWidth;
 					paneHeight -= verticalTrackWidth;
 					paneWidth -= horizontalTrackHeight;
