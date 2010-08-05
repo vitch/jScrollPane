@@ -353,11 +353,21 @@
 
 				if (isScrollableH) {
 					horizontalDragWidth = 1 / percentInViewH * horizontalTrackWidth;
+					if (horizontalDragWidth > settings.horizontalDragMaxWidth) {
+						horizontalDragWidth = settings.horizontalDragMaxWidth;
+					} else if (horizontalDragWidth < settings.horizontalDragMinWidth) {
+						horizontalDragWidth = settings.horizontalDragMinWidth;
+					}
 					horizontalDrag.width(horizontalDragWidth + 'px');
 					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
 				}
 				if (isScrollableV) {
 					verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
+					if (verticalDragHeight > settings.verticalDragMaxHeight) {
+						verticalDragHeight = settings.verticalDragMaxHeight;
+					} else if (verticalDragHeight < settings.verticalDragMinHeight) {
+						verticalDragHeight = settings.verticalDragMinHeight;
+					}
 					verticalDrag.height(verticalDragHeight + 'px');
 					dragMaxY = verticalTrackHeight - verticalDragHeight;
 				}
@@ -571,12 +581,16 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		'showArrows'		: false,
-		'verticalGutter'	: 4,
-		'horizontalGutter'	: 4,
-		'mouseWheelSpeed'	: 10,
-		'arrowButtonSpeed'	: 10,
-		'arrowRepeatFreq'	: 100
+		'showArrows'				: false,
+		'verticalDragMinHeight'		: 0,
+		'verticalDragMaxHeight'		: 99999,
+		'horizontalDragMinWidth'	: 0,
+		'horizontalDragMaxWidth'	: 99999,
+		'verticalGutter'			: 4,
+		'horizontalGutter'			: 4,
+		'mouseWheelSpeed'			: 10,
+		'arrowButtonSpeed'			: 10,
+		'arrowRepeatFreq'			: 100
 	};
 
 })(jQuery,this);
