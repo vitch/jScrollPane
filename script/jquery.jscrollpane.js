@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta1 - 2010-08-03
+ * jScrollPane - v2.0.0beta1 - 2010-08-05
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta1, Last updated: 2010-08-03*
+// *Version: 2.0.0beta1, Last updated: 2010-08-05*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -34,7 +34,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta1 - (2010-08-03) Rewrite to follow modern best practices and enable horizontal scrolling
+// 2.0.0beta1 - (2010-08-05) Rewrite to follow modern best practices and enable horizontal scrolling
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
 
 (function($,window,undefined){
@@ -130,12 +130,14 @@
 					elem.removeClass('jspScrollable');
 					pane.css('top', 0);
 					removeMousewheel();
+					removeFocusHandler();
 				} else {
 					elem.addClass('jspScrollable');
 
 					initialiseVerticalScroll();
 					initialiseHorizontalScroll();
 					resizeScrollbars();
+					initFocusHandler();
 				}
 			}
 
@@ -357,7 +359,7 @@
 					this.blur();
 					return false;
 				}
-			};
+			}
 
 			function arrowScroll(dirX, dirY)
 			{
@@ -381,7 +383,7 @@
 						$('html').unbind('mouseup.jsp');
 					}
 				);
-			};
+			}
 
 			function cancelDrag()
 			{
@@ -403,7 +405,7 @@
 					'top',
 					-percentScrolled * (contentHeight - paneHeight)
 				);
-			};
+			}
 
 			function positionDragX(destX)
 			{
@@ -420,7 +422,45 @@
 					'left',
 					-percentScrolled * (contentWidth - paneWidth)
 				);
-			};
+			}
+
+			function scrollToY(destY)
+			{
+				var percentScrolled = destY / (contentHeight - paneHeight);
+				positionDragY(percentScrolled * dragMaxY);
+			}
+
+			function scrollElementIntoView(ele)
+			{
+				var e = $(ele), eleHeight = e.outerHeight(), eleTop = 0, viewportTop, maxVisibleEleTop, destY;
+
+				// loop through parents adding the offset top of any elements that are relatively positioned between
+				// the focused element and the jspPane so we can get the true distance from the top
+				// of the focused element to the top of the scrollpane...
+
+				while (!e.is('.jspPane')) {
+					eleTop += e.position().top;
+					e = e.offsetParent();
+					if (/^body|html$/i.test(e[0].nodeName)) {
+						// we ended up too high in the document structure. Quit!
+						return;
+					}
+				}
+
+				container.scrollTop(0);
+
+				viewportTop = -pane.position().top;
+				maxVisibleEleTop = viewportTop + paneHeight;
+				if (eleTop < viewportTop) { // element is above viewport
+					destY = eleTop - settings.verticalGutter;
+				} else if (eleTop + eleHeight > maxVisibleEleTop) { // element is below viewport
+					destY = eleTop - paneHeight + eleHeight + settings.verticalGutter;
+				}
+				if (destY) {
+					scrollToY(destY);
+				}
+				// TODO: Implement automatic horizontal scrolling?
+			}
 
 			function initMousewheel()
 			{
@@ -443,6 +483,23 @@
 			function nil()
 			{
 				return false;
+			}
+
+			function initFocusHandler()
+			{
+				elem.find(':input,a').bind(
+					'focus.jsp',
+					function()
+					{
+						scrollElementIntoView(this);
+					}
+				);
+			}
+
+			function removeFocusHandler()
+			{
+
+				elem.find(':input,a').unbind('focus.jsp')
 			}
 
 			// Public API

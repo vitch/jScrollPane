@@ -89,3 +89,37 @@ ul p
 {
 	margin: 0;
 }
+
+/* For the form demo page */
+
+fieldset
+{
+	border: 0;
+}
+
+label
+{
+	clear: left;
+	float: left;
+	margin: .5em 6px 0 0;
+	text-align: right;
+	width: 100px;
+}
+
+input,
+select,
+textarea
+{
+	float: left;
+	border: 0;
+	padding: 3px 5px;
+	margin: 0 0 .5em;
+}
+
+input[type=submit]
+{
+	clear: left;
+	background: #fff;
+	width: auto;
+	margin: 0 0 0 106px;
+}
