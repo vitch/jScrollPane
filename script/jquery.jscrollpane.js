@@ -139,6 +139,7 @@
 					pane.css('top', 0);
 					removeMousewheel();
 					removeFocusHandler();
+					unhijackInternalLinks();
 				} else {
 					elem.addClass('jspScrollable');
 
@@ -146,6 +147,9 @@
 					initialiseHorizontalScroll();
 					resizeScrollbars();
 					initFocusHandler();
+					if (settings.hijackInternalLinks) {
+						hijackInternalLinks();
+					}
 				}
 			}
 
@@ -529,6 +533,25 @@
 				elem.find(':input,a').unbind('focus.jsp')
 			}
 
+			function unhijackInternalLinks()
+			{
+				$('a[href^=#]').unbind('click.jsp-hijack');
+			}
+
+			function hijackInternalLinks()
+			{
+				$('a[href^=#]').unbind('click.jsp-hijack').bind(
+					'click.jsp-hijack',
+					function()
+					{
+						var uriParts = this.href.split('#');
+						if (uriParts.length > 1 && elem.find('#' + uriParts[1]).length > 0) {
+							scrollToElement('#' + uriParts[1]);
+						}
+					}
+				)
+			}
+
 			// Public API
 			$.extend(
 				jsp,
@@ -554,6 +577,10 @@
 					scrollToBottom: function()
 					{
 						positionDragY(dragMaxY);
+					},
+					hijackInternalLinks: function()
+					{
+						hijackInternalLinks();
 					}
 				}
 			);
@@ -586,6 +613,7 @@
 		'verticalDragMaxHeight'		: 99999,
 		'horizontalDragMinWidth'	: 0,
 		'horizontalDragMaxWidth'	: 99999,
+		'hijackInternalLinks'		: false,
 		'verticalGutter'			: 4,
 		'horizontalGutter'			: 4,
 		'mouseWheelSpeed'			: 10,
