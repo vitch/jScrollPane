@@ -316,14 +316,17 @@
 			function resizeScrollbars()
 			{
 				if (isScrollableH && isScrollableV) {
-					var verticalScrollWidth = horizontalTrack.outerHeight(),
-						horizontalScrollHeight = verticalTrack.outerWidth();
-					verticalTrackHeight -= verticalScrollWidth;
-					horizontalTrackWidth -= horizontalScrollHeight;
-					paneHeight -= horizontalScrollHeight;
-					paneWidth -= verticalScrollWidth;
+					var horizontalTrackHeight = horizontalTrack.outerHeight(),
+						verticalTrackWidth = verticalTrack.outerWidth();
+					verticalTrackHeight -= horizontalTrackHeight;
+					if (settings.showArrows) {
+						horizontalTrackWidth += arrowLeft.outerWidth() + arrowRight.outerWidth();
+					}
+					horizontalTrackWidth -= verticalTrackWidth;
+					paneHeight -= verticalTrackWidth;
+					paneWidth -= horizontalTrackHeight;
 					horizontalTrack.parent().append(
-						$('<div class="jspCorner" />').css('width', verticalScrollWidth + 'px')
+						$('<div class="jspCorner" />').css('width', horizontalTrackHeight + 'px')
 					);
 					sizeVerticalScrollbar();
 					sizeHorizontalScrollbar();
