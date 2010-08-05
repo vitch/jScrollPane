@@ -544,9 +544,15 @@
 					'click.jsp-hijack',
 					function()
 					{
-						var uriParts = this.href.split('#');
-						if (uriParts.length > 1 && elem.find('#' + uriParts[1]).length > 0) {
-							scrollToElement('#' + uriParts[1]);
+						var uriParts = this.href.split('#'), hash;
+						if (uriParts.length > 1) {
+							hash = uriParts[1];
+							if (hash.length > 0 && elem.find('#' + hash).length > 0) {
+								scrollToElement('#' + hash);
+								// Need to return false otherwise things mess up... Would be nice to maybe also scroll
+								// the window to the top of the scrollpane?
+								return false;
+							}
 						}
 					}
 				)
