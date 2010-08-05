@@ -430,7 +430,13 @@
 				positionDragY(percentScrolled * dragMaxY);
 			}
 
-			function scrollElementIntoView(ele)
+			function scrollToX(destX)
+			{
+				var percentScrolled = destX / (contentWidth - paneWidth);
+				positionDragX(percentScrolled * dragMaxX);
+			}
+
+			function scrollToElement(ele)
 			{
 				var e = $(ele), eleHeight = e.outerHeight(), eleTop = 0, viewportTop, maxVisibleEleTop, destY;
 
@@ -491,7 +497,7 @@
 					'focus.jsp',
 					function()
 					{
-						scrollElementIntoView(this);
+						scrollToElement(this);
 					}
 				);
 			}
@@ -511,6 +517,18 @@
 						// TODO: In this case, any settings set originally should override any defaults...
 						// Need to make sure that this is happening...
 						initialise(settings);
+					},
+					scrollToElement: function(ele)
+					{
+						return scrollToElement(ele);
+					},
+					scrollToY: function(destY)
+					{
+						return scrollToY(destY);
+					},
+					scrollToX: function(destX)
+					{
+						return scrollToX(destX);
 					}
 				}
 			);
