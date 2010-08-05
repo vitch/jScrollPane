@@ -92,9 +92,21 @@ ul p
 
 /* For the form demo page */
 
+form
+{
+	overflow: hidden;
+}
+
 fieldset
 {
 	border: 0;
+	overflow: hidden;
+}
+
+legend
+{
+	font-weight: bold;
+	margin: 1em 0;
 }
 
 label
@@ -116,6 +128,7 @@ textarea
 	margin: 0 0 .5em;
 }
 
+input[type=button],
 input[type=submit]
 {
 	clear: left;

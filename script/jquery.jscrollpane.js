@@ -418,6 +418,9 @@
 
 			function positionDragY(destY)
 			{
+				if (!isScrollableV) {
+					return;
+				}
 				if (destY < 0) {
 					destY = 0;
 				} else if (destY > dragMaxY) {
@@ -435,6 +438,9 @@
 
 			function positionDragX(destX)
 			{
+				if (!isScrollableH) {
+					return;
+				}
 				if (destX < 0) {
 					destX = 0;
 				} else if (destX > dragMaxX) {
@@ -615,13 +621,35 @@
 					{
 						scrollToElement(ele);
 					},
-					scrollToY: function(destY)
+					scrollTo: function(destX, destY)
 					{
+						scrollToX(destX);
 						scrollToY(destY);
 					},
 					scrollToX: function(destX)
 					{
 						scrollToX(destX);
+					},
+					scrollToY: function(destY)
+					{
+						scrollToY(destY);
+					},
+					scrollBy: function(deltaX, deltaY)
+					{
+						jsp.scrollByX(deltaX);
+						jsp.scrollByY(deltaY);
+					},
+					scrollByX: function(deltaX)
+					{
+						var destX = -pane.position().left + deltaX,
+							percentScrolled = destX / (contentWidth - paneWidth);
+						positionDragX(percentScrolled * dragMaxX);
+					},
+					scrollByY: function(deltaY)
+					{
+						var destY = -pane.position().top + deltaY,
+							percentScrolled = destY / (contentHeight - paneHeight);
+						positionDragY(percentScrolled * dragMaxY);
 					},
 					scrollToBottom: function()
 					{
