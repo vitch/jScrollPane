@@ -250,7 +250,7 @@
 								'mousemove.jsp',
 								function(e)
 								{
-									positionDragY(e.pageY - startY);
+									positionDragY(e.pageY - startY, false);
 								}
 							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
 							return false;
@@ -333,7 +333,7 @@
 								'mousemove.jsp',
 								function(e)
 								{
-									positionDragX(e.pageX - startX);
+									positionDragX(e.pageX - startX, false);
 								}
 							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
 							return false;
@@ -427,10 +427,10 @@
 					function()
 					{
 						if (dirX != 0) {
-							positionDragX(horizontalDragPosition + dirX * settings.arrowButtonSpeed);
+							positionDragX(horizontalDragPosition + dirX * settings.arrowButtonSpeed, false);
 						}
 						if (dirY != 0) {
-							positionDragY(verticalDragPosition + dirY * settings.arrowButtonSpeed);
+							positionDragY(verticalDragPosition + dirY * settings.arrowButtonSpeed, false);
 						}
 					},
 					settings.arrowRepeatFreq
@@ -450,7 +450,7 @@
 				$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
 			}
 
-			function positionDragY(destY)
+			function positionDragY(destY, animate)
 			{
 				if (!isScrollableV) {
 					return;
@@ -464,13 +464,21 @@
 				verticalDrag.css('top', destY);
 				container.scrollTop(0);
 				var percentScrolled = destY / dragMaxY;
-				pane.css(
-					'top',
-					-percentScrolled * (contentHeight - paneHeight)
-				);
+
+				// can't just check if(animate) because false is a valid value that could be passed in...
+				if (animate == undefined) {
+					animate = settings.animateScroll;
+				}
+				var destTop = -percentScrolled * (contentHeight - paneHeight);
+				if (animate) {
+					jsp.ceaseAnimation(pane);
+					jsp.animate(pane, 'top', destTop);
+				} else {
+					pane.css('top', destTop);
+				}
 			}
 
-			function positionDragX(destX)
+			function positionDragX(destX, animate)
 			{
 				if (!isScrollableH) {
 					return;
@@ -484,10 +492,17 @@
 				horizontalDrag.css('left', destX);
 				container.scrollTop(0);
 				var percentScrolled = destX / dragMaxX;
-				pane.css(
-					'left',
-					-percentScrolled * (contentWidth - paneWidth)
-				);
+
+				if (animate == undefined) {
+					animate = settings.animateScroll;
+				}
+				var destLeft = -percentScrolled * (contentWidth - paneWidth);
+				if (animate) {
+					jsp.ceaseAnimation(pane);
+					jsp.animate(pane, 'left', destLeft);
+				} else {
+					pane.css('left', destLeft);
+				}
 			}
 
 			function scrollToY(destY)
@@ -559,7 +574,7 @@
 					'mousewheel.jsp',
 					function (event, delta) {
 						var d = verticalDragPosition;
-						positionDragY(verticalDragPosition - delta * settings.mouseWheelSpeed);
+						positionDragY(verticalDragPosition - delta * settings.mouseWheelSpeed, false);
 						// return true if there was no movement so rest of screen can scroll
 						return d == verticalDragPosition;
 					}
@@ -694,6 +709,16 @@
 							percentScrolled = destY / (contentHeight - paneHeight);
 						positionDragY(percentScrolled * dragMaxY);
 					},
+					ceaseAnimation: function(ele)
+					{
+						//ele.stop(true);
+					},
+					animate: function(ele, prop, value)
+					{
+						var params = {};
+						params[prop] = value;
+						ele.animate(params, 300, 'linear');
+					},
 					contentPositionX: function()
 					{
 						return contentPositionX();
@@ -744,6 +769,7 @@
 		'verticalDragMaxHeight'		: 99999,
 		'horizontalDragMinWidth'	: 0,
 		'horizontalDragMaxWidth'	: 99999,
+		'animateScroll'				: false,
 		'hijackInternalLinks'		: false,
 		'verticalGutter'			: 4,
 		'horizontalGutter'			: 4,
