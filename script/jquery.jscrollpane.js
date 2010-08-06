@@ -246,6 +246,8 @@
 							// Stop IE from allowing text selection
 							$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
 
+							verticalDrag.addClass('jspActive');
+
 							var startY = e.pageY - verticalDrag.position().top;
 
 							$('html').bind(
@@ -417,14 +419,15 @@
 			function getArrowScroll(dirX, dirY) {
 				return function()
 				{
-					arrowScroll(dirX, dirY);
+					arrowScroll(dirX, dirY, this);
 					this.blur();
 					return false;
 				}
 			}
 
-			function arrowScroll(dirX, dirY)
+			function arrowScroll(dirX, dirY, arrow)
 			{
+				arrow = $(arrow).addClass('jspActive');
 				var scrollInt = setInterval(
 					function()
 					{
@@ -441,6 +444,7 @@
 					'mouseup.jsp',
 					function()
 					{
+						arrow.removeClass('jspActive');
 						clearInterval(scrollInt);
 						$('html').unbind('mouseup.jsp');
 					}
@@ -450,6 +454,9 @@
 			function cancelDrag()
 			{
 				$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
+
+				verticalDrag && verticalDrag.removeClass('jspActive');
+				horizontalDrag && horizontalDrag.removeClass('jspActive');
 			}
 
 			function positionDragY(destY, animate)
