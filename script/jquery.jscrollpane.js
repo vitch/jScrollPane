@@ -460,21 +460,30 @@
 				} else if (destY > dragMaxY) {
 					destY = dragMaxY;
 				}
-				verticalDragPosition = destY;
-				verticalDrag.css('top', destY);
-				container.scrollTop(0);
-				var percentScrolled = destY / dragMaxY,
-					destTop = -percentScrolled * (contentHeight - paneHeight);
 
 				// can't just check if(animate) because false is a valid value that could be passed in...
 				if (animate == undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(pane, 'top', destTop);
+					jsp.animate(verticalDrag, 'top', destY,	_positionDragY);
 				} else {
-					pane.css('top', destTop);
+					verticalDrag.css('top', destY);
+					_positionDragY(destY);
 				}
+
+			}
+
+			function _positionDragY(destY)
+			{
+				if (destY == undefined) {
+					destY = verticalDrag.position().top;
+				}
+				container.scrollTop(0);
+				verticalDragPosition = destY;
+				var percentScrolled = destY/ dragMaxY,
+					destTop = -percentScrolled * (contentHeight - paneHeight);
+				pane.css('top', destTop);
 			}
 
 			function positionDragX(destX, animate)
@@ -487,20 +496,28 @@
 				} else if (destX > dragMaxX) {
 					destX = dragMaxX;
 				}
-				horizontalDragPosition = destX;
-				horizontalDrag.css('left', destX);
-				container.scrollTop(0);
-				var percentScrolled = destX / dragMaxX,
-					destLeft = -percentScrolled * (contentWidth - paneWidth);
 
 				if (animate == undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(pane, 'left', destLeft);
+					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX);
 				} else {
-					pane.css('left', destLeft);
+					horizontalDrag.css('left', destX);
+					_positionDragX(destX);
 				}
+			}
+
+			function _positionDragX(destX)
+			{
+				if (destX == undefined) {
+					destX = horizontalDrag.position().left;
+				}
+				container.scrollTop(0);
+				horizontalDragPosition = destX;
+				var percentScrolled = destX / dragMaxX,
+					destLeft = -percentScrolled * (contentWidth - paneWidth);
+				pane.css('left', destLeft);
 			}
 
 			function scrollToY(destY, animate)
@@ -732,8 +749,13 @@
 						positionDragY(percentScrolled * dragMaxY, animate);
 					},
 					// This method is called when jScrollPane is trying to animate to a new position. You can override
-					// it if you want to provide advanced animation functionality.
-					animate: function(ele, prop, value)
+					// it if you want to provide advanced animation functionality. It is passed the following arguments:
+					//  * ele          - the element whose position is being animated
+					//  * prop         - the property that is being animated
+					//  * value        - the value it's being animated to
+					//  * stepCallback - a function that you must execute each time you update the value of the property
+					// You can use the default implementation (below) as a starting point for your own implementation.
+					animate: function(ele, prop, value, stepCallback)
 					{
 						var params = {};
 						params[prop] = value;
@@ -742,7 +764,8 @@
 							{
 								'duration'	: settings.animateDuration,
 								'ease'		: settings.animateEase,
-								'queue'		: false
+								'queue'		: false,
+								'step'		: stepCallback
 							}
 						);
 					},
