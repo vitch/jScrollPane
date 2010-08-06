@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta1 - 2010-08-05
+ * jScrollPane - v2.0.0beta1 - 2010-08-06
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta1, Last updated: 2010-08-05*
+// *Version: 2.0.0beta1, Last updated: 2010-08-06*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -22,19 +22,22 @@
 //
 // About: Examples
 //
-// All examples are available through the jScrollPane example site at:
+// All examples and demos are available through the jScrollPane example site at:
 // http://jscrollpane.kelvinluck.com/
 //
 // About: Support and Testing
 //
-// TBC
+// This plugin is tested on the browsers below and has been found to work reliably on them. If you run
+// into a problem on one of the supported browsers then please visit the support section on the jScrollPane
+// website (http://jscrollpane.kelvinluck.com/) for more information on getting support. You are also
+// welcome to fork the project on GitHub if you can contribute a fix for a given issue. 
 //
 // jQuery Versions - 1.4.2
 // Browsers Tested - Firefox 3.6.8, Safari 5, Opera 10.6, Chrome 5.0, IE 7, 8
 //
 // About: Release History
 //
-// 2.0.0beta1 - (2010-08-05) Rewrite to follow modern best practices and enable horizontal scrolling
+// 2.0.0beta1 - (2010-08-06) Rewrite to follow modern best practices and enable horizontal scrolling
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
 
 (function($,window,undefined){
