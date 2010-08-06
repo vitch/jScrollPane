@@ -13,7 +13,7 @@ $(function()
 	$('#sourcecode-display').empty().append(
 		$('<code />').append(
 			$('<pre />').html(
-				$('#sourcecode').html().replace(/\n\t\t\t/gm, '\n')
+				$('#sourcecode').html().replace(/\n\t\t\t/gm, '\n').replace('>', '&gt;').replace('<', '&lt;')
 			)
 		)
 	);
