@@ -64,6 +64,18 @@ p
 	margin: 1em 0;
 }
 
+p.intro
+{
+	font-size: 116%;
+	padding: 10px;
+	background: #fff;
+
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+
+}
+
 a
 {
 	color: #7171D4;
