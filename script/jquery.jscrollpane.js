@@ -261,6 +261,7 @@
 						}
 					);
 					sizeVerticalScrollbar();
+					updateVerticalArrows();
 					initMousewheel();
 				} else {
 					// no vertical scroll
@@ -345,6 +346,7 @@
 					);
 					horizontalTrackWidth = container.innerWidth();
 					sizeHorizontalScrollbar();
+					updateHorizontalArrows();
 				} else {
 					// no horizontal scroll
 				}
@@ -488,8 +490,11 @@
 				if (destY == undefined) {
 					destY = verticalDrag.position().top;
 				}
+
 				container.scrollTop(0);
+
 				verticalDragPosition = destY;
+				updateVerticalArrows();
 				var percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
 				pane.css('top', destTop);
@@ -522,11 +527,30 @@
 				if (destX == undefined) {
 					destX = horizontalDrag.position().left;
 				}
+
 				container.scrollTop(0);
+
 				horizontalDragPosition = destX;
+				updateHorizontalArrows();
 				var percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
 				pane.css('left', destLeft);
+			}
+
+			function updateVerticalArrows()
+			{
+				if (settings.showArrows) {
+					arrowUp[verticalDragPosition == 0 ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowDown[verticalDragPosition == dragMaxY ? 'addClass' : 'removeClass']('jspDisabled');
+				}
+			}
+
+			function updateHorizontalArrows()
+			{
+				if (settings.showArrows) {
+					arrowLeft[horizontalDragPosition == 0 ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowRight[horizontalDragPosition == dragMaxX ? 'addClass' : 'removeClass']('jspDisabled');
+				}
 			}
 
 			function scrollToY(destY, animate)
