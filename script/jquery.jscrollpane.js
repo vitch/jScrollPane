@@ -463,15 +463,14 @@
 				verticalDragPosition = destY;
 				verticalDrag.css('top', destY);
 				container.scrollTop(0);
-				var percentScrolled = destY / dragMaxY;
+				var percentScrolled = destY / dragMaxY,
+					destTop = -percentScrolled * (contentHeight - paneHeight);
 
 				// can't just check if(animate) because false is a valid value that could be passed in...
 				if (animate == undefined) {
 					animate = settings.animateScroll;
 				}
-				var destTop = -percentScrolled * (contentHeight - paneHeight);
 				if (animate) {
-					jsp.ceaseAnimation(pane);
 					jsp.animate(pane, 'top', destTop);
 				} else {
 					pane.css('top', destTop);
@@ -491,14 +490,13 @@
 				horizontalDragPosition = destX;
 				horizontalDrag.css('left', destX);
 				container.scrollTop(0);
-				var percentScrolled = destX / dragMaxX;
+				var percentScrolled = destX / dragMaxX,
+					destLeft = -percentScrolled * (contentWidth - paneWidth);
 
 				if (animate == undefined) {
 					animate = settings.animateScroll;
 				}
-				var destLeft = -percentScrolled * (contentWidth - paneWidth);
 				if (animate) {
-					jsp.ceaseAnimation(pane);
 					jsp.animate(pane, 'left', destLeft);
 				} else {
 					pane.css('left', destLeft);
@@ -709,15 +707,18 @@
 							percentScrolled = destY / (contentHeight - paneHeight);
 						positionDragY(percentScrolled * dragMaxY);
 					},
-					ceaseAnimation: function(ele)
-					{
-						//ele.stop(true);
-					},
 					animate: function(ele, prop, value)
 					{
 						var params = {};
 						params[prop] = value;
-						ele.animate(params, 300, 'linear');
+						ele.animate(
+							params,
+							{
+								'duration'	: settings.animateDuration,
+								'ease'		: settings.animateEase,
+								'queue'		: false
+							}
+						);
 					},
 					contentPositionX: function()
 					{
@@ -770,6 +771,8 @@
 		'horizontalDragMinWidth'	: 0,
 		'horizontalDragMaxWidth'	: 99999,
 		'animateScroll'				: false,
+		'animateDuration'			: 300,
+		'animateEase'				: 'linear',
 		'hijackInternalLinks'		: false,
 		'verticalGutter'			: 4,
 		'horizontalGutter'			: 4,
