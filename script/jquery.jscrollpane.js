@@ -613,11 +613,10 @@
 			$.extend(
 				jsp,
 				{
-					reinitialise: function(settings)
+					reinitialise: function(s)
 					{
-						// TODO: In this case, any settings set originally should override any defaults...
-						// Need to make sure that this is happening...
-						initialise(settings);
+						s = $.extend({}, s, settings);
+						initialise(s);
 					},
 					scrollToElement: function(ele, stickToTop)
 					{
