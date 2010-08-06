@@ -332,6 +332,8 @@
 							// Stop IE from allowing text selection
 							$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
 
+							horizontalDrag.addClass('jspActive');
+
 							var startX = e.pageX - horizontalDrag.position().left;
 
 							$('html').bind(
