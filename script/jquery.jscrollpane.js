@@ -52,8 +52,8 @@
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
-				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight
-				;
+				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
+				reinitialiseInterval;
 
 			savedSettings = {
 				/*
@@ -110,9 +110,14 @@
 					firstChild.css('margin-top', 0);
 					lastChild.css('margin-bottom', 0);
 				} else {
+					if (elem.outerWidth() == contentWidth && elem.outerHeight() == contentHeight) {
+						// Nothing has changed since we last initialised, lets just abort
+						return;
+					}
 
 					paneWidth = container.outerWidth();
 					paneHeight = container.outerHeight();
+
 					container.find('.jspVerticalBar,.jspHorizontalBar').remove().end();
 				}
 
@@ -168,6 +173,18 @@
 					if (settings.hijackInternalLinks) {
 						hijackInternalLinks();
 					}
+				}
+
+				if (settings.autoReinitialise && !reinitialiseInterval) {
+					reinitialiseInterval = setInterval(
+						function()
+						{
+							initialise(settings);
+						},
+						settings.autoReinitialiseDelay
+					);
+				} else if (!settings.autoReinitialise && reinitialiseInterval) {
+					clearInterval(reinitialiseInterval)
 				}
 			}
 
@@ -721,6 +738,8 @@
 	$.fn.jScrollPane.defaults = {
 		'showArrows'				: false,
 		'maintainPosition'			: true,
+		'autoReinitialise'			: false,
+		'autoReinitialiseDelay'		: 500,
 		'verticalDragMinHeight'		: 0,
 		'verticalDragMaxHeight'		: 99999,
 		'horizontalDragMinWidth'	: 0,
