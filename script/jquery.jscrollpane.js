@@ -18,7 +18,9 @@
 // About: License
 //
 // Copyright (c) 2010 Kelvin Luck
-// Dual licensed under the MIT and GPL licenses.
+// Dual licensed under the MIT or GPL Version 2 licenses.
+// http://jscrollpane.kelvinluck.com/MIT-LICENSE.txt
+// http://jscrollpane.kelvinluck.com/GPL-LICENSE.txt
 //
 // About: Examples
 //

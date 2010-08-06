@@ -141,3 +141,16 @@ input[type=submit]
 	width: auto;
 	margin: 0 0 0 106px;
 }
+
+pre
+{
+	background: #fff;
+	padding: 10px;
+	font-size: 93%;
+	width: 740px;
+
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	overflow: auto;
+}

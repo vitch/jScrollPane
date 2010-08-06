@@ -7,9 +7,15 @@
 
 		<!-- styles specific to demo site -->
 		<link type="text/css" href="style/demo.css" rel="stylesheet" media="all" />
+		<!-- styles needed by jScrollPane - include in your own sites -->
+		<link type="text/css" href="style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 
 		<!-- latest jQuery direct from google's CDN -->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<!-- the mousewheel plugin -->
+		<script type="text/javascript" src="script/jquery.mousewheel.js"></script>
+		<!-- the jScrollPane script -->
+		<script type="text/javascript" src="script/jquery.jscrollpane.min.js"></script>
 		<!-- scripts specific to this demo site -->
 		<script type="text/javascript" src="script/demo.js"></script>
 	</head>
@@ -22,9 +28,72 @@
 				easily skinned using CSS.
 			</p>
 			<p>
-				The content of this page is still being written, for now I'm just using it to organise the links to the
-				various demo/ test pages which I'm writing as I rewrite jScrollPane.
+				Below you will find <a href="#examples">examples</a>, <a href="#download">download information</a> and
+				<a href="#usage">usage instructions</a> as well as information on <a href="#donate">donating to the
+				project</a> and <a href="#support">getting support</a>.
 			</p>
+
+			<h2 id="usage">Usage</h2>
+			<p>
+				It is very simple to use jScrollPane. You will need to <a href="#download">download</a> the necessary
+				files and place them on your server. Then you just need to include the relevant files in the &lt;head&gt;
+				of your document:
+			</p>
+			<pre>&lt;!-- styles needed by jScrollPane --&gt;
+&lt;link type="text/css" href="style/jquery.jscrollpane.css" rel="stylesheet" media="all" /&gt;
+
+&lt;!-- latest jQuery direct from google's CDN --&gt;
+&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"&gt;
+&lt;/script&gt;
+
+&lt;!-- the mousewheel plugin - optional to provide mousewheel support --&gt;
+&lt;script type="text/javascript" src="script/jquery.mousewheel.js"&gt;&lt;/script&gt;
+
+&lt;!-- the jScrollPane script --&gt;
+&lt;script type="text/javascript" src="script/jquery.jscrollpane.min.js"&gt;&lt;/script&gt;</pre>
+			<p>
+				Then you just need to initialise jScrollPane on document.ready (using a selector which will find the
+				content you want to apply jScrollPane to):
+			</p>
+			<pre>$(function()
+{
+	$('.scroll-pane').jScrollPane();
+});</pre>
+			<p>
+				There are plenty of different ways to use jScrollPane and each of the use cases is covered by an
+				<a href="examples">example</a> linked to from below.
+			</p>
+
+			<h2 id="download">Download</h2>
+			<p>
+				You can always find the latest code for jScrollPane on its <a href="http://github.com/vitch/jScrollPane">
+				github</a> page. You can either check out this entire website (including all examples) via git, or you
+				can use the handy github functionality to <a href="http://github.com/vitch/jScrollPane/archives/master">
+				download a zip</a> of the repository.
+			</p>
+			<p>
+				The particular files that you need are:
+			</p>
+			<ul class="link-list">
+				<li>
+					<a href="style/jquery.jscrollpane.css">jquery.jscrollpane.css</a> - the basic CSS styles that are
+					needed for jScrollPane to work.
+				</li>
+				<li>
+					<a href="http://www.jquery.com">The jQuery library</a> - although I recommend including this
+					directly from a CDN like I do above and in all of the examples.
+				</li>
+				<li>
+					<a href="script/jquery.mousewheel.js">jquery.mousewheel.js</a> - The
+					<a href="http://github.com/brandonaaron/jquery-mousewheel/">jQuery mouseweel</a> plugin. This is
+					optional but recommended, include it to allow people to scroll your content using their mouse wheel.
+				</li>
+				<li>
+					<a href="script/jquery.jscrollpane.min.js">jquery.jscrollpane.min.js</a> - the actual javascript file
+					for jScrollPane (you can also get the <a href="script/jquery.jscrollpane.js">unminified</a> version
+					if yu want to see the sourcecode and read the comments).
+				</li>
+			</ul>
 
 			<h2 id="examples">Simple examples/ tests</h2>
 			<p>
@@ -132,6 +201,30 @@
 				<a href="http://github.com/vitch/jScrollPane/issues">raise an issue</a> on the project's github
 				site.
 			</p>
+
+			<h2 id="donate">Donate</h2>
+			<p>
+				jScrollPane is a personal project that is open source for anybody to use as they want to. If you (and
+				your clients!) like jScrollPane then please consider donating to it's ongoing development. You can do
+				so via Pledgie or Paypal using the images below:
+			</p>
+			<p style="margin-top: 0; float: left;">
+				<a href='http://www.pledgie.com/campaigns/12524'>
+					<img alt='Click here to lend your support to: jScrollPane and make a donation at www.pledgie.com !'
+						 src='http://www.pledgie.com/campaigns/12524.png?skin_name=chrome' border='0'
+						/>
+				</a>
+			</p>
+			<form method="post" action="https://www.paypal.com/cgi-bin/webscr" style="margin: 15px 0 0 20px;">
+				<input type="hidden" value="_donations" name="cmd">
+				<input type="hidden" value="V2UG6D75CZ4SS" name="business">
+				<input type="hidden" value="GB" name="lc">
+				<input type="hidden" value="jScrollPane" name="item_name">
+				<input type="hidden" value="GBP" name="currency_code">
+				<input type="hidden" value="PP-DonationsBF:btn_donate_SM.gif:NonHosted" name="bn">
+				<input type="image" alt="" name="submit" style="border: 0pt none;" src="https://www.paypal.com/en_GB/i/btn/btn_donate_SM.gif">
+				<img height="1" border="0" width="1" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" style="padding: 0pt;" alt="">
+			</form>
 		</div>
 	</body>
 </html>
