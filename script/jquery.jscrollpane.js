@@ -555,7 +555,7 @@
 
 			function initMousewheel()
 			{
-				container.bind(
+				container.unbind('mousewheel.jsp').bind(
 					'mousewheel.jsp',
 					function (event, delta) {
 						var d = verticalDragPosition;
