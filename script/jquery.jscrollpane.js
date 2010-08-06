@@ -42,10 +42,10 @@
 	$.fn.jScrollPane = function(settings)
 	{
 		// JScrollPane "class" - public methods are available through $('selector').data('jsp')
-		function JScrollPane(elem, settings)
+		function JScrollPane(elem, s)
 		{
 
-			var jsp = this, pane, savedSettings, paneWidth, paneHeight, container, contentWidth, contentHeight,
+			var settings, jsp = this, pane, savedSettings, paneWidth, paneHeight, container, contentWidth, contentHeight,
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
@@ -63,12 +63,14 @@
 				*/
 			};
 
-			initialise(settings);
+			initialise(s);
 
-			function initialise(settings)
+			function initialise(s)
 			{
 
 				var clonedElem, tempWrapper, firstChild, lastChild;
+
+				settings = s;
 
 				if (pane == undefined) {
 
