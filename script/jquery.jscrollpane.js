@@ -503,19 +503,19 @@
 				}
 			}
 
-			function scrollToY(destY)
+			function scrollToY(destY, animate)
 			{
 				var percentScrolled = destY / (contentHeight - paneHeight);
-				positionDragY(percentScrolled * dragMaxY);
+				positionDragY(percentScrolled * dragMaxY, animate);
 			}
 
-			function scrollToX(destX)
+			function scrollToX(destX, animate)
 			{
 				var percentScrolled = destX / (contentWidth - paneWidth);
-				positionDragX(percentScrolled * dragMaxX);
+				positionDragX(percentScrolled * dragMaxX, animate);
 			}
 
-			function scrollToElement(ele, stickToTop)
+			function scrollToElement(ele, stickToTop, animate)
 			{
 				var e, eleHeight, eleTop = 0, viewportTop, maxVisibleEleTop, destY;
 
@@ -551,7 +551,7 @@
 					destY = eleTop - paneHeight + eleHeight + settings.verticalGutter;
 				}
 				if (destY) {
-					scrollToY(destY);
+					scrollToY(destY, animate);
 				}
 				// TODO: Implement automatic horizontal scrolling?
 			}
@@ -668,45 +668,71 @@
 			$.extend(
 				jsp,
 				{
+					// Reinitialises the scroll pane (if it's internal dimensions have changed since the last time it
+					// was initialised). The settings object which is passed in will override any settings from the
+					// previous time it was initialised - if you don't pass any settings then the ones from the previous
+					// initialisation will be used.
 					reinitialise: function(s)
 					{
 						s = $.extend({}, s, settings);
 						initialise(s);
 					},
-					scrollToElement: function(ele, stickToTop)
+					// Scrolls the specified element (a jQuery object, DOM node or jQuery selector string) into view so
+					// that it can be seen within the viewport. If stickToTop is true then the element will appear at
+					// the top of the viewport, if it is false then the viewport will scroll as little as possible to
+					// show the element. You can also specify if you want animation to occur. If you don't provide this
+					// argument then the animateScroll value from the settings object is used instead.
+					scrollToElement: function(ele, stickToTop, animate)
 					{
-						scrollToElement(ele, stickToTop);
+						scrollToElement(ele, stickToTop, animate);
 					},
-					scrollTo: function(destX, destY)
+					// Scrolls the pane so that the specified co-ordinates within the content are at the top left
+					// of the viewport. animate is optional and if not passed then the value of animateScroll from
+					// the settings object this jScrollPane was initialised with is used.
+					scrollTo: function(destX, destY, animate)
 					{
-						scrollToX(destX);
-						scrollToY(destY);
+						scrollToX(destX, animate);
+						scrollToY(destY, animate);
 					},
-					scrollToX: function(destX)
+					// Scrolls the pane so that the specified co-ordinate within the content is at the left of the
+					// viewport. animate is optional and if not passed then the value of animateScroll from the settings
+					// object this jScrollPane was initialised with is used.
+					scrollToX: function(destX, animate)
 					{
-						scrollToX(destX);
+						scrollToX(destX, animate);
 					},
-					scrollToY: function(destY)
+					// Scrolls the pane so that the specified co-ordinate within the content is at the top of the
+					// viewport. animate is optional and if not passed then the value of animateScroll from the settings
+					// object this jScrollPane was initialised with is used.
+					scrollToY: function(destY, animate)
 					{
-						scrollToY(destY);
+						scrollToY(destY, animate);
 					},
-					scrollBy: function(deltaX, deltaY)
+					// Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
+					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
+					scrollBy: function(deltaX, deltaY, animate)
 					{
-						jsp.scrollByX(deltaX);
-						jsp.scrollByY(deltaY);
+						jsp.scrollByX(deltaX, animate);
+						jsp.scrollByY(deltaY, animate);
 					},
-					scrollByX: function(deltaX)
+					// Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
+					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
+					scrollByX: function(deltaX, animate)
 					{
 						var destX = contentPositionX() + deltaX,
 							percentScrolled = destX / (contentWidth - paneWidth);
-						positionDragX(percentScrolled * dragMaxX);
+						positionDragX(percentScrolled * dragMaxX, animate);
 					},
-					scrollByY: function(deltaY)
+					// Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
+					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
+					scrollByY: function(deltaY, animate)
 					{
 						var destY = contentPositionY() + deltaY,
 							percentScrolled = destY / (contentHeight - paneHeight);
-						positionDragY(percentScrolled * dragMaxY);
+						positionDragY(percentScrolled * dragMaxY, animate);
 					},
+					// This method is called when jScrollPane is trying to animate to a new position. You can override
+					// it if you want to provide advanced animation functionality.
 					animate: function(ele, prop, value)
 					{
 						var params = {};
@@ -720,18 +746,25 @@
 							}
 						);
 					},
-					contentPositionX: function()
+					// Returns the current x position of the viewport with regards to the content pane.
+					getContentPositionX: function()
 					{
 						return contentPositionX();
 					},
-					contentPositionY: function()
+					// Returns the current y position of the viewport with regards to the content pane.
+					getContentPositionY: function()
 					{
 						return contentPositionY();
 					},
-					scrollToBottom: function()
+					// Scrolls this jScrollPane down as far as it can currently scroll. If animate isn't passed then the
+					// animateScroll value from settings is used instead.
+					scrollToBottom: function(animate)
 					{
-						positionDragY(dragMaxY);
+						positionDragY(dragMaxY, animate);
 					},
+					// Hijacks the links on the page which link to content inside the scrollpane. If you have changed
+					// the content of your page (e.g. via AJAX) and want to make sure any new anchor links to the
+					// contents of your scroll pane will work then call this function.
 					hijackInternalLinks: function()
 					{
 						hijackInternalLinks();
