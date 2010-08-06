@@ -71,7 +71,7 @@
 			function initialise(s)
 			{
 
-				var clonedElem, tempWrapper, firstChild, lastChild;
+				var clonedElem, tempWrapper, firstChild, lastChild, isMaintainingPositon, lastContentX, lastContentY;
 
 				settings = s;
 
@@ -148,9 +148,21 @@
 				} else {
 					elem.addClass('jspScrollable');
 
+					isMaintainingPositon = settings.maintainPosition && (verticalDragPosition || horizontalDragPosition);
+					if (isMaintainingPositon) {
+						lastContentX = contentPositionX();
+						lastContentY = contentPositionY();
+					}
+
 					initialiseVerticalScroll();
 					initialiseHorizontalScroll();
 					resizeScrollbars();
+
+					if (isMaintainingPositon) {
+						scrollToX(lastContentX);
+						scrollToY(lastContentY);
+					}
+
 					initFocusHandler();
 					observeHash();
 					if (settings.hijackInternalLinks) {
@@ -501,7 +513,7 @@
 				}
 
 
-				viewportTop = -pane.position().top;
+				viewportTop = contentPositionY();
 				maxVisibleEleTop = viewportTop + paneHeight;
 				if (eleTop < viewportTop || stickToTop) { // element is above viewport
 					destY = eleTop - settings.verticalGutter;
@@ -512,6 +524,16 @@
 					scrollToY(destY);
 				}
 				// TODO: Implement automatic horizontal scrolling?
+			}
+
+			function contentPositionX()
+			{
+				return -pane.position().left;
+			}
+
+			function contentPositionY()
+			{
+				return -pane.position().top;
 			}
 
 			function initMousewheel()
@@ -645,15 +667,23 @@
 					},
 					scrollByX: function(deltaX)
 					{
-						var destX = -pane.position().left + deltaX,
+						var destX = contentPositionX() + deltaX,
 							percentScrolled = destX / (contentWidth - paneWidth);
 						positionDragX(percentScrolled * dragMaxX);
 					},
 					scrollByY: function(deltaY)
 					{
-						var destY = -pane.position().top + deltaY,
+						var destY = contentPositionY() + deltaY,
 							percentScrolled = destY / (contentHeight - paneHeight);
 						positionDragY(percentScrolled * dragMaxY);
+					},
+					contentPositionX: function()
+					{
+						return contentPositionX();
+					},
+					contentPositionY: function()
+					{
+						return contentPositionY();
 					},
 					scrollToBottom: function()
 					{
@@ -690,6 +720,7 @@
 
 	$.fn.jScrollPane.defaults = {
 		'showArrows'				: false,
+		'maintainPosition'			: true,
 		'verticalDragMinHeight'		: 0,
 		'verticalDragMaxHeight'		: 99999,
 		'horizontalDragMinWidth'	: 0,
