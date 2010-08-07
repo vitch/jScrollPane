@@ -20,6 +20,46 @@ body
 	font: 13px/1.231 arial,helvetica,clean,sans-serif
 }
 
+#top-nav
+{
+	width: 760px;
+	background: #eeeef4;
+	padding: 20px;
+	margin: 0 auto 2px;
+
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+
+	-moz-border-radius-topleft: 0;
+	-moz-border-radius-topright: 0;
+	-webkit-border-radius-topleft: 0;
+	-webkit-border-radius-topright: 0;
+	border-radius-topleft: 0;
+	border-radius-topright: 0;
+}
+
+#top-nav ul
+{
+	margin: 0;
+	overflow: hidden;
+	float: right;
+}
+
+#top-nav ul li
+{
+	float: left;
+	padding: 0 1em;
+	list-style: none;
+	border-right: 1px solid #50506d;
+}
+
+#top-nav ul li:last-child
+{
+	border: none;
+	padding-right: 0;
+}
+
 #container
 {
 	width: 760px;
