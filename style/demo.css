@@ -24,7 +24,7 @@ body
 {
 	width: 760px;
 	background: #eeeef4;
-	padding: 20px;
+	padding: 15px 20px 20px;
 	margin: 0 auto 2px;
 
 	-moz-border-radius: 5px;
@@ -49,14 +49,30 @@ body
 #top-nav ul li
 {
 	float: left;
-	padding: 0 1em;
+	padding: 0 .5em;
 	list-style: none;
-	border-right: 1px solid #50506d;
+}
+
+#top-nav ul li a
+{
+	background: #fff;
+	color: #333;
+	display: block;
+	padding: 3px 7px;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+#top-nav ul li a:hover
+{
+	background: #8b8b9f;
+	color: #fff;
 }
 
 #top-nav ul li:last-child
 {
-	border: none;
 	padding-right: 0;
 }
 
