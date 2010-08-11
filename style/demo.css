@@ -22,26 +22,25 @@ body
 
 #top-nav
 {
-	width: 760px;
-	background: #eeeef4;
-	padding: 15px 20px 20px;
-	margin: 0 auto 2px;
+	width: 780px;
+	background: #50506d;
+	padding: 0 20px 12px 0;
+	margin: 0 auto 20px;
 
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-
 	-moz-border-radius-topleft: 0;
-	-moz-border-radius-topright: 0;
 	-webkit-border-radius-topleft: 0;
-	-webkit-border-radius-topright: 0;
 	border-radius-topleft: 0;
+	-moz-border-radius-topright: 0;
+	-webkit-border-radius-topright: 0;
 	border-radius-topright: 0;
 }
 
 #top-nav ul
 {
-	margin: 0;
+	margin: 28px 0 0;
 	overflow: hidden;
 	float: right;
 }
@@ -49,26 +48,18 @@ body
 #top-nav ul li
 {
 	float: left;
-	padding: 0 .5em;
+	padding: 0 0 0 1em;
 	list-style: none;
 }
 
 #top-nav ul li a
 {
-	background: #50506D;
 	color: #fff;
-	display: block;
-	padding: 3px 7px;
-	
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
 }
 
 #top-nav ul li a:hover
 {
-	background: #8b8b9f;
-	color: #fff;
+	color: #ffa;
 }
 
 #top-nav ul li:last-child
