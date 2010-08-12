@@ -454,14 +454,14 @@
 				)
 
 				eve = ele == undefined ? 'mouseup.jsp' : 'mouseout.jsp';
-				ele = ele || 'html';
-				$(ele).bind(
+				ele = ele || $('html');
+				ele.bind(
 					eve,
 					function()
 					{
 						arrow.removeClass('jspActive');
 						clearInterval(scrollInt);
-						$(ele).unbind(eve);
+						ele.unbind(eve);
 					}
 				);
 			}
