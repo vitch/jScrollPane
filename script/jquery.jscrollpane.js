@@ -218,6 +218,10 @@
 						arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						).bind('click.jsp', nil);
+						if (settings.arrowScrollOnHover) {
+							arrowUp.bind('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
+							arrowDown.bind('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
+						}
 						verticalTrack.before(arrowUp).after(arrowDown);
 					}
 
@@ -314,6 +318,10 @@
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).bind('click.jsp', nil);
 						horizontalTrack.before(arrowLeft).after(arrowRight);
+						if (settings.arrowScrollOnHover) {
+							arrowLeft.bind('mouseover.jsp', getArrowScroll(-1, 0, arrowLeft));
+							arrowRight.bind('mouseover.jsp', getArrowScroll(1, 0, arrowRight));
+						}
 					}
 
 					horizontalDrag.hover(
@@ -420,19 +428,19 @@
 				}
 			}
 
-			function getArrowScroll(dirX, dirY) {
+			function getArrowScroll(dirX, dirY, ele) {
 				return function()
 				{
-					arrowScroll(dirX, dirY, this);
+					arrowScroll(dirX, dirY, this, ele);
 					this.blur();
 					return false;
 				}
 			}
 
-			function arrowScroll(dirX, dirY, arrow)
+			function arrowScroll(dirX, dirY, arrow, ele)
 			{
 				arrow = $(arrow).addClass('jspActive');
-				var scrollInt = setInterval(
+				var eve, scrollInt = setInterval(
 					function()
 					{
 						if (dirX != 0) {
@@ -444,13 +452,16 @@
 					},
 					settings.arrowRepeatFreq
 				)
-				$('html').bind(
-					'mouseup.jsp',
+
+				eve = ele == undefined ? 'mouseup.jsp' : 'mouseout.jsp';
+				ele = ele || 'html';
+				$(ele).bind(
+					eve,
 					function()
 					{
 						arrow.removeClass('jspActive');
 						clearInterval(scrollInt);
-						$('html').unbind('mouseup.jsp');
+						$(ele).unbind(eve);
 					}
 				);
 			}
@@ -870,7 +881,8 @@
 		'horizontalGutter'			: 4,
 		'mouseWheelSpeed'			: 10,
 		'arrowButtonSpeed'			: 10,
-		'arrowRepeatFreq'			: 100
+		'arrowRepeatFreq'			: 100,
+		'arrowScrollOnHover'		: false
 	};
 
 })(jQuery,this);
