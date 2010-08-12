@@ -222,7 +222,8 @@
 							arrowUp.bind('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
 							arrowDown.bind('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
 						}
-						verticalTrack.before(arrowUp).after(arrowDown);
+
+						appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
 					}
 
 					verticalTrackHeight = paneHeight;
@@ -317,11 +318,11 @@
 						arrowRight = $('<a href="#" class="jspArrow jspArrowRight">Scroll right</a>').bind(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).bind('click.jsp', nil);
-						horizontalTrack.before(arrowLeft).after(arrowRight);
 						if (settings.arrowScrollOnHover) {
 							arrowLeft.bind('mouseover.jsp', getArrowScroll(-1, 0, arrowLeft));
 							arrowRight.bind('mouseover.jsp', getArrowScroll(1, 0, arrowRight));
 						}
+						appendArrows(horizontalTrack, settings.horizontalArrowPositions, arrowLeft, arrowRight);
 					}
 
 					horizontalDrag.hover(
@@ -426,6 +427,27 @@
 					verticalDrag.height(verticalDragHeight + 'px');
 					dragMaxY = verticalTrackHeight - verticalDragHeight;
 				}
+			}
+
+			function appendArrows(ele, p, a1, a2)
+			{
+				var p1 = "before", p2 = "after", aTemp;
+				
+				// Sniff for mac... Is there a better way to determine whether the arrows would naturally appear
+				// at the top or the bottom of the bar?
+				if (p == "os") {
+					p = /Mac/.test(navigator.platform) ? "after" : "split";
+				}
+				if (p == p1) {
+					p2 = p;
+				} else if (p == p2) {
+					p1 = p;
+					aTemp = a1;
+					a1 = a2;
+					a2 = aTemp;
+				}
+
+				ele[p1](a1)[p2](a2);
 			}
 
 			function getArrowScroll(dirX, dirY, ele) {
@@ -882,7 +904,9 @@
 		'mouseWheelSpeed'			: 10,
 		'arrowButtonSpeed'			: 10,
 		'arrowRepeatFreq'			: 100,
-		'arrowScrollOnHover'		: false
+		'arrowScrollOnHover'		: false,
+		'verticalArrowPositions'	: 'split',
+		'horizontalArrowPositions'	: 'split'
 	};
 
 })(jQuery,this);
