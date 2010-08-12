@@ -117,9 +117,6 @@
 						return;
 					}
 
-					paneWidth = container.outerWidth();
-					paneHeight = container.outerHeight();
-
 					container.find('.jspVerticalBar,.jspHorizontalBar').remove().end();
 				}
 
