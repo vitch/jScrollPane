@@ -704,13 +704,13 @@
 
 			function unhijackInternalLinks()
 			{
-				$('a.jsp-hijack').unbind('click.jsp-hijack').removeClass('jsp-hijack');
+				$('a.jspHijack').unbind('click.jsp-hijack').removeClass('jspHijack');
 			}
 
 			function hijackInternalLinks()
 			{
 				unhijackInternalLinks();
-				$('a[href^=#]').addClass('jsp-hijack').bind(
+				$('a[href^=#]').addClass('jspHijack').bind(
 					'click.jsp-hijack',
 					function()
 					{
