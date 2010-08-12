@@ -693,12 +693,13 @@
 
 			function unhijackInternalLinks()
 			{
-				$('a[href^=#]').unbind('click.jsp-hijack');
+				$('a.jsp-hijack').unbind('click.jsp-hijack').removeClass('jsp-hijack');
 			}
 
 			function hijackInternalLinks()
 			{
-				$('a[href^=#]').unbind('click.jsp-hijack').bind(
+				unhijackInternalLinks();
+				$('a[href^=#]').addClass('jsp-hijack').bind(
 					'click.jsp-hijack',
 					function()
 					{
