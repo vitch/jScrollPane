@@ -114,6 +114,17 @@
 					lastChild.css('margin-bottom', 0);
 					*/
 				} else {
+					var hasContainingSpaceChanged = elem.outerWidth() != paneWidth || elem.outerHeight() != paneHeight;
+					if (hasContainingSpaceChanged) {
+						paneWidth = elem.innerWidth();
+						paneHeight = elem.innerHeight();
+						container.css({
+							'width': paneWidth + 'px',
+							'height': paneHeight + 'px'
+						});
+						pane.css('width', paneWidth + 'px');
+					}
+
 					if (pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
 						// Nothing has changed since we last initialised, lets just abort
 						return;
