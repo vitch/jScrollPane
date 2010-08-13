@@ -37,13 +37,14 @@
 				};
 				var pane = $('.scroll-pane')
 				pane.jScrollPane(settings);
+				var contentPane = pane.data('jsp').getContentPane();
 				var i = 1;
 
 				// Every second add some new content...
 				setInterval(
 					function()
 					{
-						pane.append(
+						contentPane.append(
 							$('<p />').text('This is paragraph number ' + i++)
 						);
 					},
