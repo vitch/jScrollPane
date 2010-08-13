@@ -43,7 +43,7 @@
 				setInterval(
 					function()
 					{
-						pane.append(
+						api.getContentPane().append(
 							$('<p />').text('This is paragraph number ' + i++)
 						);
 						// we could call "pane.jScrollPane(settings)" again but it is
@@ -74,9 +74,10 @@
 			<h1>jScrollPane - dynamic content demo page</h1>
 			<p>
 				This demonstration shows how you can manually reinitialise jScrollPane when new content is added to it.
-				Every second we add a new line of content to the scrollpane and then call reinitialise via the
-				<a href="api.html">API</a>. As the <strong>maintainPosition</strong> setting is true by default then
-				the position of the scrollpane is maintained even if we are scrolling while the update happens.
+				Every second we add a new line of content to the scrollpane (using the <a href="api.html#getContentPane">
+				getContentPane</a> API method) and then <a href="api.html#reinitialise">reinitialise</a> the scrollpane.
+				As the <strong>maintainPosition</strong> setting is true by default then the position of the scrollpane
+				is maintained even if we are scrolling while the update happens.
 			</p>
 			<div class="scroll-pane">
 			</div>

@@ -73,7 +73,7 @@
 			function initialise(s)
 			{
 
-				var clonedElem, tempWrapper, firstChild, lastChild, isMaintainingPositon, lastContentX, lastContentY;
+				var clonedElem, tempWrapper, /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY;
 
 				settings = s;
 
@@ -92,18 +92,19 @@
 							}
 						)
 					);
-					elem.css('overflow', 'visible');
-					elem.wrap(pane.parent());
+
+					elem.wrapInner(pane.parent());
 					// Need to get the vars after being added to the document, otherwise they reference weird
 					// disconnected orphan elements...
-					pane = elem.parent();
-					container = pane.parent();
+					container = elem.find('>.jspContainer');
+					pane = container.find('>.jspPane');
 
+					/*
 					// Move any margins from the first and last children up to the container so they can still
 					// collapse with neighbouring elements as they would before jScrollPane 
-					firstChild = elem.find(':first-child');
-					lastChild = elem.find(':last-child');
-					container.css(
+					firstChild = pane.find(':first-child');
+					lastChild = pane.find(':last-child');
+					elem.css(
 						{
 							'margin-top': firstChild.css('margin-top'),
 							'margin-bottom': lastChild.css('margin-bottom')
@@ -111,8 +112,9 @@
 					);
 					firstChild.css('margin-top', 0);
 					lastChild.css('margin-bottom', 0);
+					*/
 				} else {
-					if (elem.outerWidth() == contentWidth && elem.outerHeight() == contentHeight) {
+					if (pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
 						// Nothing has changed since we last initialised, lets just abort
 						return;
 					}
@@ -120,22 +122,17 @@
 					container.find('.jspVerticalBar,.jspHorizontalBar').remove().end();
 				}
 
-				elem.css({
-					'width': 'auto',
-					'height': 'auto'
-				});
-
 				// Unfortunately it isn't that easy to find out the width of the element as it will always report the
 				// width as allowed by its container, regardless of overflow settings.
 				// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
 				// container. Now it will push outwards to its maxium real width...
-				clonedElem = elem.clone().css('position', 'absolute');
+				clonedElem = pane.clone().css('position', 'absolute');
 				tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
 				$('body').append(tempWrapper);
-				contentWidth = Math.max(elem.outerWidth(), clonedElem.outerWidth());
+				contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
 				tempWrapper.remove();
 
-				contentHeight = elem.outerHeight();
+				contentHeight = pane.outerHeight();
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
 				isScrollableV = percentInViewV > 1;
@@ -363,8 +360,6 @@
 			function sizeHorizontalScrollbar()
 			{
 
-				pane.height(paneHeight - settings.horizontalGutter - horizontalTrack.outerHeight());
-
 				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 					function()
 					{
@@ -401,7 +396,7 @@
 				if (isScrollableH) {
 					pane.width(container.outerWidth() + 'px');
 				}
-				contentHeight = elem.outerHeight();
+				contentHeight = pane.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
 
 				if (isScrollableH) {
@@ -673,7 +668,7 @@
 
 			function initFocusHandler()
 			{
-				elem.find(':input,a').bind(
+				pane.find(':input,a').bind(
 					'focus.jsp',
 					function()
 					{
@@ -685,7 +680,7 @@
 			function removeFocusHandler()
 			{
 
-				elem.find(':input,a').unbind('focus.jsp')
+				pane.find(':input,a').unbind('focus.jsp')
 			}
 
 			function observeHash()
@@ -698,7 +693,7 @@
 						return;
 					}
 
-					if (e.length && elem.find(e)) {
+					if (e.length && pane.find(e)) {
 						// nasty workaround but it appears to take a little while before the hash has done its thing
 						// to the rendered page so we just wait until the container's scrollTop has been messed up.
 						if (container.scrollTop() == 0) {
@@ -736,7 +731,7 @@
 						var uriParts = this.href.split('#'), hash;
 						if (uriParts.length > 1) {
 							hash = uriParts[1];
-							if (hash.length > 0 && elem.find('#' + hash).length > 0) {
+							if (hash.length > 0 && pane.find('#' + hash).length > 0) {
 								scrollToElement('#' + hash, true);
 								// Need to return false otherwise things mess up... Would be nice to maybe also scroll
 								// the window to the top of the scrollpane?
@@ -844,6 +839,10 @@
 					getContentPositionY: function()
 					{
 						return contentPositionY();
+					},
+					getContentPane: function()
+					{
+						return pane;
 					},
 					// Scrolls this jScrollPane down as far as it can currently scroll. If animate isn't passed then the
 					// animateScroll value from settings is used instead.
