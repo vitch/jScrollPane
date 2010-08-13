@@ -73,7 +73,8 @@
 			function initialise(s)
 			{
 
-				var clonedElem, tempWrapper, /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY;
+				var clonedElem, tempWrapper, /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
+						hasContainingSpaceChanged;
 
 				settings = s;
 
@@ -114,7 +115,8 @@
 					lastChild.css('margin-bottom', 0);
 					*/
 				} else {
-					var hasContainingSpaceChanged = elem.outerWidth() != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = elem.outerWidth() != paneWidth || elem.outerHeight() != paneHeight;
+
 					if (hasContainingSpaceChanged) {
 						paneWidth = elem.innerWidth();
 						paneHeight = elem.innerHeight();
@@ -122,10 +124,11 @@
 							'width': paneWidth + 'px',
 							'height': paneHeight + 'px'
 						});
-						pane.css('width', paneWidth + 'px');
 					}
 
-					if (pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
+					pane.css('width', null);
+
+					if (!hasContainingSpaceChanged && pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
 						// Nothing has changed since we last initialised, lets just abort
 						return;
 					}
@@ -142,11 +145,12 @@
 				$('body').append(tempWrapper);
 				contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
 				tempWrapper.remove();
-
+				
 				contentHeight = pane.outerHeight();
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
 				isScrollableV = percentInViewV > 1;
+
 				isScrollableH = percentInViewH > 1;
 
 				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
