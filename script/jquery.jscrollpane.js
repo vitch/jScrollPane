@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta1 - 2010-08-06
+ * jScrollPane - v2.0.0beta1 - 2010-08-17
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
