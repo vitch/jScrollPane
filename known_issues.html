@@ -32,6 +32,13 @@
 			<p>
 				This page discusses known issues with jScrollPane and provides suggested workarounds for these issues.
 			</p>
+			<h2>Horizontal scrollbars don't work in IE6</h2>
+			<p>
+				In IE6 it seems that the code which measures the width of an element isn't working correctly so any
+				scrollbar which requires horizontal scrolling doesn't work correctly. As a workaround, you can wrap the
+				jScrollPane initialisation call in <a href="http://msdn.microsoft.com/en-us/library/ms537512%28VS.85%29.aspx">
+				conditional comment</a> so that IE6 sees a browsers default scrollbars.
+			</p>
 			<h2>In Opera the main window scrollbar appears when a jScrollPane contains lots of content</h2>
 			<p>
 				As far as I can tell this is due to a bug in Opera. The workaround is to include something absolutely
