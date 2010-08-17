@@ -100,6 +100,7 @@ h1
 
 h2
 {
+	clear: left;
 	font-size: 100%;
 	color: #fff;
 	background: #8b8b9f;
