@@ -35,7 +35,7 @@
 // welcome to fork the project on GitHub if you can contribute a fix for a given issue. 
 //
 // jQuery Versions - 1.4.2
-// Browsers Tested - Firefox 3.6.8, Safari 5, Opera 10.6, Chrome 5.0, IE 7, 8
+// Browsers Tested - Firefox 3.6.8, Safari 5, Opera 10.6, Chrome 5.0, IE 6, 7, 8
 //
 // About: Release History
 //
