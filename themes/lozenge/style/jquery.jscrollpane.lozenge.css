@@ -15,8 +15,8 @@
 	border-radius: 10px;
 }
 
-.jspDrag.jspActive,
-.jspDrag.jspHover,
+.jspTrack .jspActive,
+.jspTrack .jspHover,
 .jspDrag:hover
 {
 	background: #8B8B9F;
@@ -32,14 +32,16 @@
 	border-radius: 10px;
 }
 
-.jspArrow.jspActive,
+.jspVerticalBar>.jspActive,
 .jspArrow:hover
 {
 	background-image: url('../image/ui-icons_cd0a0a_256x240.png');
 }
 
-.jspArrow.jspDisabled,
-.jspArrow.jspDisabled:hover
+.jspVerticalBar>.jspDisabled,
+.jspVerticalBar>.jspDisabled:hover,
+.jspHorizontalBar>.jspDisabled,
+.jspHorizontalBar>.jspDisabled:hover
 {
 	background-color: transparent;
 	background-image: url('../image/ui-icons_888888_256x240.png');
