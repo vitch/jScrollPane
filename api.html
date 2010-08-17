@@ -30,15 +30,106 @@
 		<div id="container">
 			<h1>jScrollPane - API documentation</h1>
 			<p>
-				Under construction.
+				This page shows how you can use the jScrollPane API to update your jScrollPane after it's has been
+				initially created.
 			</p>
-			<h2 id="reinitialise">reinitialise()</h2>
 			<p>
-				Under construction.
+				To get a reference to the API for a particular scrollpane you will need to access the 'jsp' variable in
+				the <em>data</em> of the element you applied jScrollPane to. e.g.
+			</p>
+			<pre>var element = $('#my-element').jScrollPane({/* ...settings... */});
+var api = element.data('jsp');</pre>
+			<p>
+				Once you have a reference to the API you can call any of the following methods on it:
+			</p>
+			<h2 id="reinitialise">reinitialise(s)</h2>
+			<p>
+				Reinitialises the scroll pane (if it's internal dimensions have changed since the last time it
+				was initialised). The settings object which is passed in will override any settings from the
+				previous time it was initialised - if you don't pass any settings then the ones from the previous
+				initialisation will be used.
+			</p>
+			<h2 id="scrollToElement">scrollToElement(ele, stickToTop, animate)</h2>
+			<p>
+				Scrolls the specified element (a jQuery object, DOM node or jQuery selector string) into view so
+				that it can be seen within the viewport. If stickToTop is true then the element will appear at
+				the top of the viewport, if it is false then the viewport will scroll as little as possible to
+				show the element. You can also specify if you want animation to occur. If you don't provide this
+				argument then the animateScroll value from the settings object is used instead.
+			</p>
+			<h2 id="scrollTo">scrollTo(destX, destY, animate)</h2>
+			<p>
+				Scrolls the pane so that the specified co-ordinates within the content are at the top left
+				of the viewport. animate is optional and if not passed then the value of animateScroll from
+				the settings object this jScrollPane was initialised with is used.
+			</p>
+			<h2 id="scrollToX">scrollToX(destX, animate)</h2>
+			<p>
+				Scrolls the pane so that the specified co-ordinate within the content is at the left of the
+				viewport. animate is optional and if not passed then the value of animateScroll from the settings
+				object this jScrollPane was initialised with is used.
+			</p>
+			<h2 id="scrollToY">scrollToY(destY, animate)</h2>
+			<p>
+				Scrolls the pane so that the specified co-ordinate within the content is at the top of the
+				viewport. animate is optional and if not passed then the value of animateScroll from the settings
+				object this jScrollPane was initialised with is used.
+			</p>
+			<h2 id="scrollBy">scrollBy(deltaX, deltaY, animate)</h2>
+			<p>
+				Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
+				the value of animateScroll from the settings object this jScrollPane was initialised with is used.
+			</p>
+			<h2 id="scrollByX">scrollByX(deltaX, animate)</h2>
+			<p>
+				Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
+				the value of animateScroll from the settings object this jScrollPane was initialised with is used.
+			</p>
+			<h2 id="scrollByY">scrollByY(deltaY, animate)</h2>
+			<p>
+				Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
+				the value of animateScroll from the settings object this jScrollPane was initialised with is used.
+			</p>
+			<h2 id="animate">animate(ele, prop, value, stepCallback)</h2>
+			<p>
+				This method is called when jScrollPane is trying to animate to a new position. You can override
+				it if you want to provide advanced animation functionality. It is passed the following arguments:
+			</p>
+			<ul class="link-list">
+				<li><strong>ele</strong> - the element whose position is being animated</li>
+				<li><strong>prop</strong> - the property that is being animated</li>
+				<li><strong>value</strong> - the value it's being animated to</li>
+				<li><strong>stepCallback</strong> - a function that you must execute each time you update the value of the property</li>
+			</ul>
+			<p>
+				You can use the default implementation (see <a href="script/jquery.jscrollpane.js">sourcecode</a>) as a
+				starting point for your own implementation.
+			</p>
+			<h2 id="getContentPositionX">getContentPositionX()</h2>
+			<p>
+				Returns the current x position of the viewport with regards to the content pane.
+			</p>
+			<h2 id="getContentPositionY">getContentPositionY()</h2>
+			<p>
+				Returns the current y position of the viewport with regards to the content pane.
 			</p>
 			<h2 id="getContentPane">getContentPane()</h2>
 			<p>
-				Under construction.
+				Gets a reference to the content pane. It is important that you use this method if you want to
+				edit the content of your jScrollPane as if you access the element directly then you may have some
+				problems (as your original element has had additional elements for the scrollbars etc added into
+				it).
+			</p>
+			<h2 id="scrollToBottom">scrollToBottom(animate)</h2>
+			<p>
+				Scrolls this jScrollPane down as far as it can currently scroll. If animate isn't passed then the
+				animateScroll value from settings is used instead.
+			</p>
+			<h2 id="hijackInternalLinks">hijackInternalLinks()</h2>
+			<p>
+				Hijacks the links on the page which link to content inside the scrollpane. If you have changed
+				the content of your page (e.g. via AJAX) and want to make sure any new anchor links to the
+				contents of your scroll pane will work then call this function.
 			</p>
 		</div>
 	</body>

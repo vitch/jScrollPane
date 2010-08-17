@@ -855,6 +855,10 @@
 					{
 						return contentPositionY();
 					},
+					// Gets a reference to the content pane. It is important that you use this method if you want to
+					// edit the content of your jScrollPane as if you access the element directly then you may have some
+					// problems (as your original element has had additional elements for the scrollbars etc added into
+					// it).
 					getContentPane: function()
 					{
 						return pane;

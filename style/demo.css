@@ -111,6 +111,11 @@ h2
 	border-radius: 3px;
 }
 
+h2 span.setting-type
+{
+	font-weight: normal;
+}
+
 p
 {
 	font-size: 93%;

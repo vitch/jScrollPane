@@ -31,12 +31,119 @@
 			<h1>jScrollPane - settings object documentation</h1>
 			<p>
 				This page details the various options that you can pass into the settings object when you initialise
-				jScrollPane.
+				jScrollPane. Note that there is also a number of changes you can make through the <a href="api.html">
+				API</a> after the scrollpane is already initialised.
 			</p>
-			<h2 id="autoReinitialise">autoReinitialise: bool</h2>
+			<h2 id="showArrows">showArrows <span class="setting-type">- boolean (default false)</span></h2>
 			<p>
-				Under construction.
+				Whether arrows should be shown on the generated scroll pane. When set to false only the scrollbar track
+				and drag will be shown, if set to true then arrows buttons will also be shown. <a href="arrows.html">
+				Demo</a>.
 			</p>
+			<h2 id="maintainPosition">maintainPosition <span class="setting-type">- boolean (default true)</span></h2>
+			<p>
+				Whether the scrollpane should attempt to maintain it's position whenever it is reinitialised. If true
+				then the viewport of the scrollpane will remain the same when it is reinitialised, if false then the
+				viewport will jump back up to the top when the scrollpane is reinitialised.
+			</p>
+			<h2 id="autoReinitialise">autoReinitialise <span class="setting-type">- boolean (default false)</span></h2>
+			<p>
+				Whether jScrollPane should automatically reinitialise itself periodically after you have initially
+				initialised it. This can help with instances when the size of the content of the scrollpane (or the
+				surrounding element) changes. However, it does involve an overhead of running a javascript function on
+				a timer so it is recommended only to activate where necessary. <a href="auto_reinitialise.html">Demo</a>.
+			</p>
+			<h2 id="autoReinitialiseDelay">autoReinitialiseDelay <span class="setting-type">- int (default 500)</span></h2>
+			<p>
+				The number of milliseconds between each reinitialisation (if <a href="#autoReinitialise">autoReinitialise</a>
+				is true).
+			</p>
+			<h2 id="verticalDragMinHeight">verticalDragMinHeight <span class="setting-type">- int (default 0)</span></h2>
+			<p>
+				The smallest height that the vertical drag can have. The size of the drag elements is based on the
+				proportion of the size of the content to the size of the viewport but is contrained within the minimum
+				and maximum dimensions given. <a href="drag_size.html">Demo</a>.
+			</p>
+			<h2 id="verticalDragMaxHeight">verticalDragMaxHeight <span class="setting-type">- int (default 99999)</span></h2>
+			<p>
+				See <a href="#verticalDragMinHeight">verticalDragMinHeight</a>.
+			</p>
+			<h2 id="horizontalDragMinWidth">horizontalDragMinWidth <span class="setting-type">- int (default 0)</span></h2>
+			<p>
+				See <a href="#verticalDragMinHeight">verticalDragMinHeight</a>.
+			</p>
+			<h2 id="horizontalDragMaxWidth">horizontalDragMaxWidth <span class="setting-type">- int (default 99999)</span></h2>
+			<p>
+				See <a href="#verticalDragMinHeight">verticalDragMinHeight</a>.
+			</p>
+			<h2 id="animateScroll">animateScroll <span class="setting-type">- boolean (default false)</span></h2>
+			<p>
+				Whether to use animation when calling <a href="api.html#scrollTo">scrollTo</a> or <a href="api.html#scrollBy">
+				scrollBy</a>. You can control the animation speed and easing by using the <a href="#animateDuration">
+				animateDuration</a> and <a href="#animateEase">animateEase</a> settings or if you want to exercise more
+				complete control then you can override the <a href="api.html#animate">animate</a> API method.
+				<a href="scroll_to_animate.html">Demo</a>.
+			</p>
+			<h2 id="animateDuration">animateDuration <span class="setting-type">- int (default 300)</span></h2>
+			<p>
+				The number of milliseconds taken to animate to a new position (see <a href="#animateScroll">animateScroll
+				</a>).
+			</p>
+			<h2 id="animateEase">animateEase <span class="setting-type">- string (default 'linear')</span></h2>
+			<p>
+				The type of easing to use when animating to a new position (see <a href="#animateScroll">animateScroll
+				</a> and <a href="http://api.jquery.com/animate/#easing">easing</a>).
+			</p>
+			<h2 id="hijackInternalLinks">hijackInternalLinks <span class="setting-type">- boolean (default false)</span></h2>
+			<p>
+				Whether internal links on the page should be hijacked so that if they point so content within a
+				jScrollPane then they automatically scroll the jScrollPane to the correct place. <a href="anchors.html">
+				Demo</a>.
+			</p>
+			<h2 id="verticalGutter">verticalGutter <span class="setting-type">- int (default 4)</span></h2>
+			<p>
+				The amount of space between the side of the content and the vertical scrollbar.
+			</p>
+			<h2 id="horizontalGutter">horizontalGutter <span class="setting-type">- int (default 4)</span></h2>
+			<p>
+				The amount of space between the bottom of the content and the horizontal scrollbar.
+			</p>
+			<h2 id="mouseWheelSpeed">mouseWheelSpeed <span class="setting-type">- int (default 10)</span></h2>
+			<p>
+				A multiplier which is used to control the amount that the scrollpane scrolls each time the mouse wheel
+				is turned.
+			</p>
+			<h2 id="arrowButtonSpeed">arrowButtonSpeed <span class="setting-type">- int (default 10)</span></h2>
+			<p>
+				A multiplier which is used to control the amount that the scrollpane scrolls each time on of the arrow
+				buttons is pressed.
+			</p>
+			<h2 id="arrowRepeatFreq">arrowRepeatFreq <span class="setting-type">- int (default 100)</span></h2>
+			<p>
+				The number of milliseconds between each repeated scroll event when the mouse is held down over one of
+				the arrow keys.
+			</p>
+			<h2 id="arrowScrollOnHover">arrowScrollOnHover <span class="setting-type">- boolean (default false)</span></h2>
+			<p>
+				Whether the arrow buttons should cause the jScrollPane to scroll while you are hovering over them.
+				<a href="arrow_hover.html">Demo</a>.
+			</p>
+			<h2 id="verticalArrowPositions">
+				verticalArrowPositions <span class="setting-type">- string [split|before|after|os] (default split)</span>
+			</h2>
+			<p>
+				Where the vertical arrows should appear relative to the vertical track. <a href="arrow_positions.html">
+				Demo</a>.
+			</p>
+			<h2 id="horizontalArrowPositions">
+				horizontalArrowPositions <span class="setting-type">- string [split|before|after|os] (default split)</span>
+			</h2>
+			<p>
+				Where the horizontal arrows should appear relative to the horizontal track. <a href="arrow_positions.html">
+				Demo</a>.
+			</p>
+
+
 		</div>
 	</body>
 </html>
