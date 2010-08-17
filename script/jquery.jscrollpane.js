@@ -39,7 +39,8 @@
 //
 // About: Release History
 //
-// 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling
+// 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
+//							 elements and dynamically sized elements.
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
 
 (function($,window,undefined){
