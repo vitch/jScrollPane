@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta1, Last updated: 2010-08-06*
+// *Version: 2.0.0beta1, Last updated: 2010-08-17*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta1 - (2010-08-06) Rewrite to follow modern best practices and enable horizontal scrolling
+// 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
 
 (function($,window,undefined){
