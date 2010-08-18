@@ -544,13 +544,16 @@
 				}
 
 				container.scrollTop(0);
-
 				verticalDragPosition = destY;
-				updateVerticalArrows();
-				var percentScrolled = destY/ dragMaxY,
+
+				var isAtTop = verticalDragPosition == 0,
+					isAtBottom = verticalDragPosition == dragMaxY,
+					percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
+				
+				updateVerticalArrows(isAtTop, isAtBottom);
 				pane.css('top', destTop);
-				elem.trigger('jsp-scroll-y', [-destTop, percentScrolled==0, percentScrolled==1]);
+				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]);
 			}
 
 			function positionDragX(destX, animate)
@@ -582,28 +585,31 @@
 				}
 
 				container.scrollTop(0);
-
 				horizontalDragPosition = destX;
-				updateHorizontalArrows();
-				var percentScrolled = destX / dragMaxX,
+
+				var isAtLeft = horizontalDragPosition == 0,
+					isAtRight = horizontalDragPosition == dragMaxY,
+					percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
+				
+				updateHorizontalArrows(isAtLeft, isAtRight);
 				pane.css('left', destLeft);
-				elem.trigger('jsp-scroll-x', [-destLeft, percentScrolled==0, percentScrolled==1]);
+				elem.trigger('jsp-scroll-x', [-destLeft, isAtLeft, isAtRight]);
 			}
 
-			function updateVerticalArrows()
+			function updateVerticalArrows(isAtTop, isAtBottom)
 			{
 				if (settings.showArrows) {
-					arrowUp[verticalDragPosition == 0 ? 'addClass' : 'removeClass']('jspDisabled');
-					arrowDown[verticalDragPosition == dragMaxY ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowUp[isAtTop ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowDown[isAtBottom ? 'addClass' : 'removeClass']('jspDisabled');
 				}
 			}
 
-			function updateHorizontalArrows()
+			function updateHorizontalArrows(isAtLeft, isAtRight)
 			{
 				if (settings.showArrows) {
-					arrowLeft[horizontalDragPosition == 0 ? 'addClass' : 'removeClass']('jspDisabled');
-					arrowRight[horizontalDragPosition == dragMaxX ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowLeft[isAtLeft ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowRight[isAtRight ? 'addClass' : 'removeClass']('jspDisabled');
 				}
 			}
 
