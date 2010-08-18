@@ -81,14 +81,14 @@
 					elem.css(
 						{
 							'overflow': 'hidden',
-							'padding': 0,
-							'width': elem.innerWidth() + 'px'
+							'padding': 0
 						}
 					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
 					// come back to it later and check once it is unhidden...
-					paneWidth = elem.innerWidth();
+					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					paneHeight = elem.innerHeight();
+					elem.css('width', 'auto');
 					pane = $('<div class="jspPane" />').wrap(
 						$('<div class="jspContainer" />')
 							.css({
