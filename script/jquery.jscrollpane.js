@@ -57,7 +57,7 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth;
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousPaneWidth;
 
 			originalPadding = elem.css('paddingTop') + ' ' +
 								elem.css('paddingRight') + ' ' +
@@ -131,10 +131,15 @@
 						});
 					}
 
+					previousPaneWidth = pane.innerWidth();
 					pane.css('width', null);
 
 					if (!hasContainingSpaceChanged && pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
-						// Nothing has changed since we last initialised, lets just abort
+						// Nothing has changed since we last initialised
+						if (isScrollableH || isScrollableV) { // If we had already set a width then re-set it
+							pane.css('width', previousPaneWidth + 'px');
+						}
+						// Then abort...
 						return;
 					}
 
