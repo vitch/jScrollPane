@@ -52,22 +52,19 @@
 		function JScrollPane(elem, s)
 		{
 
-			var settings, jsp = this, pane, savedSettings, paneWidth, paneHeight, container, contentWidth, contentHeight,
+			var settings, jsp = this, pane, paneWidth, paneHeight, container, contentWidth, contentHeight,
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval;
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth;
 
-			savedSettings = {
-				'originalPadding' : elem.css('paddingTop') + ' ' +
-									elem.css('paddingRight') + ' ' +
-									elem.css('paddingBottom') + ' ' +
-									elem.css('paddingLeft'),
-				'originalSidePaddingTotal' : (parseInt(elem.css('paddingLeft')) || 0) +
-												(parseInt(elem.css('paddingRight')) || 0)
-												
-			};
+			originalPadding = elem.css('paddingTop') + ' ' +
+								elem.css('paddingRight') + ' ' +
+								elem.css('paddingBottom') + ' ' +
+								elem.css('paddingLeft');
+			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft')) || 0) +
+										(parseInt(elem.css('paddingRight')) || 0);
 
 			initialise(s);
 
@@ -106,7 +103,7 @@
 					// disconnected orphan elements...
 					container = elem.find('>.jspContainer');
 					pane = container.find('>.jspPane');
-					pane.css('padding', savedSettings.originalPadding);
+					pane.css('padding', originalPadding);
 
 					/*
 					// Move any margins from the first and last children up to the container so they can still
@@ -298,7 +295,7 @@
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
 				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - savedSettings.originalSidePaddingTotal);
+				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
@@ -417,7 +414,7 @@
 				}
 				// reflow content
 				if (isScrollableH) {
-					pane.width((container.outerWidth() - settings.originalSidePaddingTotal) + 'px');
+					pane.width((container.outerWidth() - originalPaddingTotalWidth) + 'px');
 				}
 				contentHeight = pane.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
