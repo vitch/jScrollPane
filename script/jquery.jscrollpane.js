@@ -143,7 +143,7 @@
 						return;
 					}
 
-					container.find('.jspVerticalBar,.jspHorizontalBar').remove().end();
+					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
 				// Unfortunately it isn't that easy to find out the width of the element as it will always report the
