@@ -41,20 +41,20 @@
 						.jScrollPane()
 						.bind(
 							'jsp-scroll-y',
-							function(event, scrollPosition, isAtBottom, isAtTop)
+							function(event, scrollPositionY, isAtBottom, isAtTop)
 							{
 								console.log('Handle jsp-scroll-y', this,
-											'scrollPosition=', scrollPosition,
+											'scrollPositionY=', scrollPositionY,
 											'isAtBottom=', isAtBottom,
 											'isAtTop=', isAtTop);
 							}
 						)
 						.bind(
 							'jsp-scroll-x',
-							function(event, scrollPosition, isAtLeft, isAtRight)
+							function(event, scrollPositionX, isAtLeft, isAtRight)
 							{
 								console.log('Handle jsp-scroll-x', this,
-											'scrollPosition=', scrollPosition,
+											'scrollPositionX=', scrollPositionX,
 											'isAtLeft=', isAtLeft,
 											'isAtRight=', isAtRight);
 							}
