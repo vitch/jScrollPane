@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta1 - 2010-08-17
+ * jScrollPane - v2.0.0beta2 - 2010-08-18
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta1, Last updated: 2010-08-17*
+// *Version: 2.0.0beta2, Last updated: 2010-08-18*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.0beta2 - (2010-08-18) Bug fixes
 // 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
 //							 elements and dynamically sized elements.
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
@@ -59,14 +60,13 @@
 				reinitialiseInterval;
 
 			savedSettings = {
-				/*
 				'originalPadding' : elem.css('paddingTop') + ' ' +
 									elem.css('paddingRight') + ' ' +
 									elem.css('paddingBottom') + ' ' +
 									elem.css('paddingLeft'),
 				'originalSidePaddingTotal' : (parseInt(elem.css('paddingLeft')) || 0) +
 												(parseInt(elem.css('paddingRight')) || 0)
-				*/
+												
 			};
 
 			initialise(s);
@@ -81,7 +81,13 @@
 
 				if (pane == undefined) {
 
-					elem.css('overflow', 'hidden'); // So we are measuring it without scrollbars
+					elem.css(
+						{
+							'overflow': 'hidden',
+							'padding': 0,
+							'width': elem.innerWidth() + 'px'
+						}
+					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
 					// come back to it later and check once it is unhidden...
 					paneWidth = elem.innerWidth();
@@ -100,6 +106,7 @@
 					// disconnected orphan elements...
 					container = elem.find('>.jspContainer');
 					pane = container.find('>.jspPane');
+					pane.css('padding', savedSettings.originalPadding);
 
 					/*
 					// Move any margins from the first and last children up to the container so they can still
@@ -291,7 +298,7 @@
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
 				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth);
+				pane.width(paneWidth - scrollbarWidth - savedSettings.originalSidePaddingTotal);
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
@@ -410,7 +417,7 @@
 				}
 				// reflow content
 				if (isScrollableH) {
-					pane.width(container.outerWidth() + 'px');
+					pane.width((container.outerWidth() - settings.originalSidePaddingTotal) + 'px');
 				}
 				contentHeight = pane.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
