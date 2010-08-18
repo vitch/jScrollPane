@@ -550,6 +550,7 @@
 				var percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
 				pane.css('top', destTop);
+				elem.trigger('jsp-scroll-y', [-destTop, percentScrolled==0, percentScrolled==1]);
 			}
 
 			function positionDragX(destX, animate)
@@ -587,6 +588,7 @@
 				var percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
 				pane.css('left', destLeft);
+				elem.trigger('jsp-scroll-x', [-destLeft, percentScrolled==0, percentScrolled==1]);
 			}
 
 			function updateVerticalArrows()
