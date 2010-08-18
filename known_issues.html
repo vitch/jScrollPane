@@ -3,7 +3,7 @@
 <html>
 	<head>
 
-		<title>jScrollPane - temporary index page</title>
+		<title>jScrollPane - known issues</title>
 
 		<!-- styles specific to demo site -->
 		<link type="text/css" href="style/demo.css" rel="stylesheet" media="all" />
@@ -32,11 +32,19 @@
 			<p>
 				This page discusses known issues with jScrollPane and provides suggested workarounds for these issues.
 			</p>
-			<h2>In Opera the main window scrollbar appears when a jScrollPane contains lots of content</h2>
+			<h2 id="opera-scrollbar">In Opera the main window scrollbar appears when a jScrollPane contains lots of content</h2>
 			<p>
 				As far as I can tell this is due to a bug in Opera. The workaround is to include something absolutely
 				positioned as a parent of your jScrollPane. See <a href="http://code.google.com/p/jscrollpane/issues/detail?id=19">
 				this bug report</a> (from the previous version of jScrollPane) for discussion of this problem.
+			</p>
+			<h2 id="webkit-css-first">In Webkit browsers CSS must be included before Javascript</h2>
+			<p>
+				For jScrollPane to work correctly in Webkit based browsers (e.g. Safari, Chrome, iOS and Android) then
+				the CSS must be included above your javascript includes. Otherwise jScrollPane can't correctly measure
+				the size of the item you are applying jScrollPane to. See all of the <a href="index.html#examples">
+				example</a> or <a href="index.html#themes">theme</a> pages for a reference as to the correct ordering
+				of items in your &lt;head&gt;.
 			</p>
 		</div>
 	</body>
