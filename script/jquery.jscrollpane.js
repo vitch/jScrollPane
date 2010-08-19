@@ -88,7 +88,7 @@
 					// come back to it later and check once it is unhidden...
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					paneHeight = elem.innerHeight();
-					elem.css('width', 'auto');
+					
 					pane = $('<div class="jspPane" />').wrap(
 						$('<div class="jspContainer" />')
 							.css({
