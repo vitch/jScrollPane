@@ -89,11 +89,6 @@
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					paneHeight = elem.innerHeight();
 
-					// Removed in 274aaca214ad3c5f26b136ae1458a3b78e316ff9 for fixed width - breaks padding demos...
-					// width: auto works well (combined with removing width at start of reinit below) except on the 80%
-					// wide issues/7 demo...
-					// Setting the width to the correct number works well except with the backgrounds on runeimp2
-					//elem.css('width', 'auto');
 					elem.width((paneWidth + originalPaddingTotalWidth) + 'px');
 					
 					pane = $('<div class="jspPane" />').wrap(
@@ -130,10 +125,10 @@
 
 					elem.css('width', null);
 
-					hasContainingSpaceChanged = elem.outerWidth() != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = elem.outerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
 
 					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth();
+						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 						paneHeight = elem.innerHeight();
 						container.css({
 							'width': paneWidth + 'px',
@@ -147,12 +142,14 @@
 						// Nothing has changed since we last initialised
 						if (isScrollableH || isScrollableV) { // If we had already set a width then re-set it
 							pane.css('width', previousPaneWidth + 'px');
+							elem.css('width', (previousPaneWidth + originalPaddingTotalWidth) + 'px');
 						}
 						// Then abort...
 						return;
 					}
 					
 					pane.css('width', null);
+					elem.css('width', (paneWidth + originalPaddingTotalWidth) + 'px');
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
