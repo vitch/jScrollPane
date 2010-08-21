@@ -219,6 +219,8 @@
 				} else if (!settings.autoReinitialise && reinitialiseInterval) {
 					clearInterval(reinitialiseInterval)
 				}
+
+				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 			}
 
 			function initialiseVerticalScroll()

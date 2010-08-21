@@ -38,7 +38,14 @@
 			$(function()
 			{
 				$('.scroll-pane')
-						.jScrollPane()
+						.bind(
+							'jsp-initialised',
+							function(event, isScrollable)
+							{
+								console.log('Handle jsp-initialised', this,
+											'isScrollable=', isScrollable);
+							}
+						)
 						.bind(
 							'jsp-scroll-y',
 							function(event, scrollPositionY, isAtBottom, isAtTop)
@@ -58,7 +65,8 @@
 											'isAtLeft=', isAtLeft,
 											'isAtRight=', isAtRight);
 							}
-						).bind(
+						)
+						.bind(
 							'jsp-arrow-change',
 							function(event, isAtTop, isAtBottom, isAtLeft, isAtRight)
 							{
@@ -68,7 +76,8 @@
 											'isAtLeft=', isAtLeft,
 											'isAtRight=', isAtRight);
 							}
-						);
+						)
+						.jScrollPane();
 			});
 		</script>
 	</head>
@@ -97,6 +106,9 @@
 				The available events are:
 			</p>
 			<ul class="link-list">
+				<li>
+					<strong>jsp-initialised [event, isScrollable]</strong> - Fires when an element is (re)initialised.
+				</li>
 				<li>
 					<strong>jsp-scroll-y [event, scrollPositionY, isAtBottom, isAtTop]</strong> - Fires continuously
 					whilst vertical scrolling is occuring
