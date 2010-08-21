@@ -57,7 +57,8 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousPaneWidth;
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousPaneWidth,
+				wasAtTop = wasAtLeft = true, wasAtBottom = wasAtRight = false;
 
 			originalPadding = elem.css('paddingTop') + ' ' +
 								elem.css('paddingRight') + ' ' +
@@ -562,6 +563,12 @@
 					isAtBottom = verticalDragPosition == dragMaxY,
 					percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
+
+				if (wasAtTop != isAtTop || wasAtBottom != isAtBottom) {
+					wasAtTop = isAtTop;
+					wasAtBottom = isAtBottom;
+					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
+				}
 				
 				updateVerticalArrows(isAtTop, isAtBottom);
 				pane.css('top', destTop);
@@ -603,6 +610,12 @@
 					isAtRight = horizontalDragPosition == dragMaxY,
 					percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
+
+				if (wasAtLeft != isAtLeft || wasAtRight != isAtRight) {
+					wasAtLeft = isAtLeft;
+					wasAtRight = isAtRight;
+					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
+				}
 				
 				updateHorizontalArrows(isAtLeft, isAtRight);
 				pane.css('left', destLeft);

@@ -58,6 +58,16 @@
 											'isAtLeft=', isAtLeft,
 											'isAtRight=', isAtRight);
 							}
+						).bind(
+							'jsp-arrow-change',
+							function(event, isAtTop, isAtBottom, isAtLeft, isAtRight)
+							{
+								console.log('Handle jsp-arrow-change', this,
+											'isAtTop=', isAtTop,
+											'isAtBottom=', isAtBottom,
+											'isAtLeft=', isAtLeft,
+											'isAtRight=', isAtRight);
+							}
 						);
 			});
 		</script>
@@ -83,6 +93,25 @@
 				the relevant data from each event is logged to the console (this page requires a browser that supports
 				<em>console.log</em>).
 			</p>
+			<p>
+				The available events are:
+			</p>
+			<ul class="link-list">
+				<li>
+					<strong>jsp-scroll-y [event, scrollPositionY, isAtBottom, isAtTop]</strong> - Fires continuously
+					whilst vertical scrolling is occuring
+				</li>
+				<li>
+					<strong>jsp-scroll-x [event, scrollPositionY, isAtBottom, isAtTop]</strong> - Fires continuously
+					whilst horizontal scrolling is occuring
+				</li>
+				<li>
+					<strong>jsp-arrow-change [event, isAtTop, isAtBottom, isAtLeft, isAtRight]</strong> - Fires
+					whenever the state of the arrow buttons changes (i.e. when the scroll reaches or leaves any end of
+					the viewport). Note that this function isn't dependant on having <a href="settings.html#showArrows">
+					showArrows</a> set to true, indeed it is most useful when implementing your own arrow keys.
+				</li>
+			</ul>
 
 			<h2>Vertical only</h2>
 			<div class="scroll-pane">
