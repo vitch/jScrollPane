@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta2 - 2010-08-19
+ * jScrollPane - v2.0.0beta2 - 2010-08-21
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta2, Last updated: 2010-08-19*
+// *Version: 2.0.0beta2, Last updated: 2010-08-21*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta2 - (2010-08-19) Bug fixes
+// 2.0.0beta2 - (2010-08-21) Bug fixes
 // 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
 //							 elements and dynamically sized elements.
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
@@ -167,7 +167,10 @@
 
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
-					pane.css('top', 0);
+					pane.css({
+						'top': 0,
+						'width': container.width() + 'px'
+					});
 					removeMousewheel();
 					removeFocusHandler();
 					unhijackInternalLinks();
