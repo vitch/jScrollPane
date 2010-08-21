@@ -88,6 +88,13 @@
 					// come back to it later and check once it is unhidden...
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					paneHeight = elem.innerHeight();
+
+					// Removed in 274aaca214ad3c5f26b136ae1458a3b78e316ff9 for fixed width - breaks padding demos...
+					// width: auto works well (combined with removing width at start of reinit below) except on the 80%
+					// wide issues/7 demo...
+					// Setting the width to the correct number works well except with the backgrounds on runeimp2
+					//elem.css('width', 'auto');
+					elem.width((paneWidth + originalPaddingTotalWidth) + 'px');
 					
 					pane = $('<div class="jspPane" />').wrap(
 						$('<div class="jspContainer" />')
@@ -120,6 +127,9 @@
 					lastChild.css('margin-bottom', 0);
 					*/
 				} else {
+
+					elem.css('width', null);
+
 					hasContainingSpaceChanged = elem.outerWidth() != paneWidth || elem.outerHeight() != paneHeight;
 
 					if (hasContainingSpaceChanged) {
@@ -132,7 +142,6 @@
 					}
 
 					previousPaneWidth = pane.innerWidth();
-					pane.css('width', null);
 
 					if (!hasContainingSpaceChanged && pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
 						// Nothing has changed since we last initialised
@@ -142,6 +151,8 @@
 						// Then abort...
 						return;
 					}
+					
+					pane.css('width', null);
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
