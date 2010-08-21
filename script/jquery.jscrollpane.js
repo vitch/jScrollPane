@@ -89,7 +89,7 @@
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					paneHeight = elem.innerHeight();
 
-					elem.width((paneWidth + originalPaddingTotalWidth) + 'px');
+					elem.width(paneWidth);
 					
 					pane = $('<div class="jspPane" />').wrap(
 						$('<div class="jspContainer" />')
