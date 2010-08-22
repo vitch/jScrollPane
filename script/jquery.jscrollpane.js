@@ -246,10 +246,10 @@
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
 					if (settings.showArrows) {
-						arrowUp = $('<a href="#" class="jspArrow jspArrowUp">Scroll up</a>').bind(
+						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
 						).bind('click.jsp', nil);
-						arrowDown = $('<a href="#" class="jspArrow jspArrowDown">Scroll down</a>').bind(
+						arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						).bind('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -342,10 +342,10 @@
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a href="#" class="jspArrow jspArrowLeft">Scroll left</a>').bind(
+						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
 						).bind('click.jsp', nil);
-						arrowRight = $('<a href="#" class="jspArrow jspArrowRight">Scroll right</a>').bind(
+						arrowRight = $('<a class="jspArrow jspArrowRight" />').bind(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).bind('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
