@@ -728,11 +728,11 @@
 
 			function initFocusHandler()
 			{
-				pane.find(':input,a').bind(
-					'focus.jsp',
-					function()
+				pane.unbind('focusin.jsp').bind(
+					'focusin.jsp',
+					function(e)
 					{
-						scrollToElement(this, false);
+						scrollToElement(e.target, false);
 					}
 				);
 			}
@@ -740,7 +740,7 @@
 			function removeFocusHandler()
 			{
 
-				pane.find(':input,a').unbind('focus.jsp')
+				pane.unbind('focusin.jsp');
 			}
 
 			function observeHash()
