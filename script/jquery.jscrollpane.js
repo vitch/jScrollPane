@@ -202,6 +202,7 @@
 					}
 
 					initFocusHandler();
+					initMousewheel();
 					observeHash();
 					if (settings.hijackInternalLinks) {
 						hijackInternalLinks();
@@ -300,10 +301,6 @@
 					);
 					sizeVerticalScrollbar();
 					updateVerticalArrows();
-					initMousewheel();
-				} else {
-					// no vertical scroll
-					removeMousewheel();
 				}
 			}
 
@@ -707,11 +704,12 @@
 			{
 				container.unbind('mousewheel.jsp').bind(
 					'mousewheel.jsp',
-					function (event, delta) {
-						var d = verticalDragPosition;
-						positionDragY(verticalDragPosition - delta * settings.mouseWheelSpeed, false);
+					function (event, delta, deltaX, deltaY) {
+						var dX = horizontalDragPosition, dY = verticalDragPosition;
+						positionDragX(horizontalDragPosition + deltaX * settings.mouseWheelSpeed, false)
+						positionDragY(verticalDragPosition - deltaY * settings.mouseWheelSpeed, false);
 						// return true if there was no movement so rest of screen can scroll
-						return d == verticalDragPosition;
+						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
 				);
 			}
