@@ -58,7 +58,7 @@
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousPaneWidth,
-				wasAtTop = wasAtLeft = true, wasAtBottom = wasAtRight = false,
+				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
