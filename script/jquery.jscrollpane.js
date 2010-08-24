@@ -58,7 +58,8 @@
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousPaneWidth,
-				wasAtTop = wasAtLeft = true, wasAtBottom = wasAtRight = false;
+				wasAtTop = wasAtLeft = true, wasAtBottom = wasAtRight = false,
+				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
 								elem.css('paddingRight') + ' ' +
@@ -702,8 +703,8 @@
 
 			function initMousewheel()
 			{
-				container.unbind('mousewheel.jsp').bind(
-					'mousewheel.jsp',
+				container.unbind(mwEvent).bind(
+					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
 						positionDragX(horizontalDragPosition + deltaX * settings.mouseWheelSpeed, false)
@@ -716,7 +717,7 @@
 
 			function removeMousewheel()
 			{
-				container.unbind('mousewheel.jsp');
+				container.unbind(mwEvent);
 			}
 
 			function nil()
