@@ -751,6 +751,7 @@
 				var pressed, pressedTimer;
 				elem
 					.attr('tabindex', 0)
+					.unbind('keydown.jsp')
 					.bind('keydown.jsp', function(e){
 						if(e.target !== elem[0]){return;}
 						var dX = horizontalDragPosition, dY = verticalDragPosition, step = (pressed) ? 2 : 16;
@@ -781,9 +782,10 @@
 								positionDragX(horizontalDragPosition - step, false);
 								break;
 						}
-						clearTimeout(pressedTimer);
+						
 						if( !(dX == horizontalDragPosition && dY == verticalDragPosition) ){
 							pressed = true;
+							clearTimeout(pressedTimer);
 							pressedTimer = setTimeout(function(){
 								pressed = false;
 							}, 260);
