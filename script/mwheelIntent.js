@@ -1,6 +1,6 @@
 /**
  * @author trixta
- * @version 1.1
+ * @version 1.2
  */
 (function($){
 
@@ -54,7 +54,7 @@ $.event.special.mwheelIntent = {
 				minDif = 3;
 			}, 1500);
 			e = $.extend({}, e, {type: 'mwheelIntent'});
-            return $.event.handle.call(this, e, d);
+            return $.event.handle.apply(this, arguments);
 		}
     }
 };
@@ -70,12 +70,7 @@ $.fn.extend({
 
 $(function(){
 	body = doc.body;
-	if(!$.fn.mousewheel){
-		setTimeout(function(){
-			throw('Please include the mousewheel plugin before the mwheelIntent-plugin');
-		}, 0);
-	}
-	//document is always scrollable
-	$(doc).bind('mwheelIntent.mwheelIntentDefault', function(){});
+	//assume that document is always scrollable, doesn't hurt if not
+	$(doc).bind('mwheelIntent.mwheelIntentDefault', $.noop);
 });
 })(jQuery);
