@@ -183,6 +183,7 @@
 					});
 					removeMousewheel();
 					removeFocusHandler();
+					removeKeyboardNav();
 					unhijackInternalLinks();
 				} else {
 					elem.addClass('jspScrollable');
@@ -204,6 +205,8 @@
 
 					initFocusHandler();
 					initMousewheel();
+					initKeyboardNav();
+					
 					observeHash();
 					if (settings.hijackInternalLinks) {
 						hijackInternalLinks();
@@ -731,6 +734,7 @@
 					'focusin.jsp',
 					function(e)
 					{
+						if(e.target === pane[0]){return;}
 						scrollToElement(e.target, false);
 					}
 				);
@@ -740,6 +744,73 @@
 			{
 
 				pane.unbind('focusin.jsp');
+			}
+			
+			function initKeyboardNav()
+			{
+				var pressed, pressedTimer;
+				elem
+					.attr('tabindex', 0)
+					.bind('keydown.jsp', function(e){
+						if(e.target !== elem[0]){return;}
+						var dX = horizontalDragPosition, dY = verticalDragPosition, step = (pressed) ? 2 : 16;
+						switch(e.keyCode) {
+							case 40:
+								positionDragY(verticalDragPosition + step, false);
+								break;
+							case 38:
+								positionDragY(verticalDragPosition - step, false);
+								break;
+							case 34:
+								scrollToY(contentPositionY() + Math.max(32, paneHeight) - 16);
+								break;
+							case 33:
+								scrollToY(contentPositionY() - paneHeight + 16);
+								break;
+							case 35:
+								scrollToY(contentHeight - paneHeight);
+								break;
+							case 36:
+								scrollToY(0);
+								break;
+								
+							case 39:
+								positionDragX(horizontalDragPosition + step, false);
+								break;	
+							case 37:
+								positionDragX(horizontalDragPosition - step, false);
+								break;
+						}
+						clearTimeout(pressedTimer);
+						if( !(dX == horizontalDragPosition && dY == verticalDragPosition) ){
+							pressed = true;
+							pressedTimer = setTimeout(function(){
+								pressed = false;
+							}, 260);
+							return false;
+						}
+					})
+				;
+				if( settings.hideFocus ){
+					elem.css({outline: 'none'});
+					if('hideFocus' in container[0]){
+						elem.attr('hideFocus', true);
+					}
+				} else {
+					elem.css({outline: ''});
+					if('hideFocus' in container[0]){
+						elem.attr('hideFocus', false);
+					}
+				}
+			}
+			
+			function removeKeyboardNav()
+			{
+				elem
+					.attr('tabindex', '-1')
+					.removeAttribute('tabindex')
+					.unbind('keydown.jsp')
+				;
 			}
 
 			function observeHash()
@@ -975,7 +1046,8 @@
 		'arrowRepeatFreq'			: 100,
 		'arrowScrollOnHover'		: false,
 		'verticalArrowPositions'	: 'split',
-		'horizontalArrowPositions'	: 'split'
+		'horizontalArrowPositions'	: 'split',
+		'hideFocus'					: false
 	};
 
 })(jQuery,this);
