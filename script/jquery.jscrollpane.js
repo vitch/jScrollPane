@@ -749,57 +749,60 @@
 			function initKeyboardNav()
 			{
 				var pressed, pressedTimer;
-				elem
-					.attr('tabindex', 0)
+				elem.attr('tabindex', 0)
 					.unbind('keydown.jsp')
-					.bind('keydown.jsp', function(e){
-						if(e.target !== elem[0]){return;}
-						var dX = horizontalDragPosition, dY = verticalDragPosition, step = (pressed) ? 2 : 16;
-						switch(e.keyCode) {
-							case 40:
-								positionDragY(verticalDragPosition + step, false);
-								break;
-							case 38:
-								positionDragY(verticalDragPosition - step, false);
-								break;
-							case 34:
-								scrollToY(contentPositionY() + Math.max(32, paneHeight) - 16);
-								break;
-							case 33:
-								scrollToY(contentPositionY() - paneHeight + 16);
-								break;
-							case 35:
-								scrollToY(contentHeight - paneHeight);
-								break;
-							case 36:
-								scrollToY(0);
-								break;
-								
-							case 39:
-								positionDragX(horizontalDragPosition + step, false);
-								break;	
-							case 37:
-								positionDragX(horizontalDragPosition - step, false);
-								break;
+					.bind(
+						'keydown.jsp',
+						function(e)
+						{
+							if(e.target !== elem[0]){
+								return;
+							}
+							var dX = horizontalDragPosition, dY = verticalDragPosition, step = pressed ? 2 : 16;
+							switch(e.keyCode) {
+								case 40: // down
+									positionDragY(verticalDragPosition + step, false);
+									break;
+								case 38: // up
+									positionDragY(verticalDragPosition - step, false);
+									break;
+								case 34: // page down
+									scrollToY(contentPositionY() + Math.max(32, paneHeight) - 16);
+									break;
+								case 33: // page up
+									scrollToY(contentPositionY() - paneHeight + 16);
+									break;
+								case 35: // end
+									scrollToY(contentHeight - paneHeight);
+									break;
+								case 36: // home
+									scrollToY(0);
+									break;
+								case 39: // right
+									positionDragX(horizontalDragPosition + step, false);
+									break;
+								case 37: // left
+									positionDragX(horizontalDragPosition - step, false);
+									break;
+							}
+
+							if( !(dX == horizontalDragPosition && dY == verticalDragPosition) ){
+								pressed = true;
+								clearTimeout(pressedTimer);
+								pressedTimer = setTimeout(function(){
+									pressed = false;
+								}, 260);
+								return false;
+							}
 						}
-						
-						if( !(dX == horizontalDragPosition && dY == verticalDragPosition) ){
-							pressed = true;
-							clearTimeout(pressedTimer);
-							pressedTimer = setTimeout(function(){
-								pressed = false;
-							}, 260);
-							return false;
-						}
-					})
-				;
-				if( settings.hideFocus ){
-					elem.css({outline: 'none'});
+					);
+				if(settings.hideFocus) {
+					elem.css('outline', 'none');
 					if('hideFocus' in container[0]){
 						elem.attr('hideFocus', true);
 					}
 				} else {
-					elem.css({outline: ''});
+					elem.css('outline', '');
 					if('hideFocus' in container[0]){
 						elem.attr('hideFocus', false);
 					}
@@ -808,11 +811,9 @@
 			
 			function removeKeyboardNav()
 			{
-				elem
-					.attr('tabindex', '-1')
-					.removeAttribute('tabindex')
-					.unbind('keydown.jsp')
-				;
+				elem.attr('tabindex', '-1')
+					.removeAttr('tabindex')
+					.unbind('keydown.jsp');
 			}
 
 			function observeHash()
