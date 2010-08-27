@@ -206,7 +206,9 @@
 
 					initFocusHandler();
 					initMousewheel();
-					initKeyboardNav();
+					if (settings.enableKeyboardNavigation) {
+						initKeyboardNav();
+					}
 					
 					observeHash();
 					if (settings.hijackInternalLinks) {
@@ -1051,6 +1053,7 @@
 		'arrowScrollOnHover'		: false,
 		'verticalArrowPositions'	: 'split',
 		'horizontalArrowPositions'	: 'split',
+		'enableKeyboardNavigation'	: true,
 		'hideFocus'					: false
 	};
 
