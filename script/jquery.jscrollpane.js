@@ -770,6 +770,7 @@
 									positionDragY(verticalDragPosition - step, false);
 									break;
 								case 34: // page down
+								case 32: // space
 									scrollToY(contentPositionY() + Math.max(32, paneHeight) - 16);
 									break;
 								case 33: // page up
