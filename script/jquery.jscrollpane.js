@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta2 - 2010-08-21
+ * jScrollPane - v2.0.0beta3 - 2010-08-27
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta2, Last updated: 2010-08-21*
+// *Version: 2.0.0beta3, Last updated: 2010-08-27*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
 // 2.0.0beta2 - (2010-08-21) Bug fixes
 // 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
 //							 elements and dynamically sized elements.
