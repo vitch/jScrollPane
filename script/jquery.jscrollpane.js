@@ -185,6 +185,7 @@
 					removeMousewheel();
 					removeFocusHandler();
 					removeKeyboardNav();
+					removeClickOnTrack();
 					unhijackInternalLinks();
 				} else {
 					elem.addClass('jspScrollable');
@@ -208,6 +209,9 @@
 					initMousewheel();
 					if (settings.enableKeyboardNavigation) {
 						initKeyboardNav();
+					}
+					if (settings.clickOnTrack) {
+						initClickOnTrack();
 					}
 					
 					observeHash();
@@ -522,6 +526,59 @@
 						ele.unbind(eve);
 					}
 				);
+			}
+
+			function initClickOnTrack()
+			{
+				removeClickOnTrack();
+				if (isScrollableV) {
+					verticalTrack.bind(
+						'mousedown.jsp',
+						function(e)
+						{
+							if (e.originalTarget == e.currentTarget) {
+								var clickedTrack = $(this),
+									scrollInt = setInterval(
+										function()
+										{
+											var offset = clickedTrack.offset(), pos = e.pageY - offset.top;
+											if (verticalDragPosition + verticalDragHeight < pos) {
+												positionDragY(verticalDragPosition + settings.trackClickSpeed);
+											} else if (pos < verticalDragPosition) {
+												positionDragY(verticalDragPosition - settings.trackClickSpeed);
+											} else {
+												cancelClick();
+											}
+										},
+										settings.trackClickRepeatFreq
+									),
+									cancelClick = function()
+									{
+										scrollInt && clearInterval(scrollInt);
+										scrollInt = null;
+										$(document).unbind('mouseup.jsp', cancelClick);
+									};
+								$(document).bind('mouseup.jsp', cancelClick);
+								return false;
+							}
+						}
+					);
+				}
+				if (isScrollableH) {
+					horizontalTrack.bind(
+						'mousedown.jsp',
+						function(e)
+						{
+							// TODO
+						}
+					);
+				}
+			}
+
+			function removeClickOnTrack()
+			{
+				horizontalTrack && horizontalTrack.unbind('mousedown.jsp');
+				verticalTrack && verticalTrack.unbind('mousedown.jsp');
 			}
 
 			function cancelDrag()
@@ -1036,6 +1093,7 @@
 	$.fn.jScrollPane.defaults = {
 		'showArrows'				: false,
 		'maintainPosition'			: true,
+		'clickOnTrack'				: true,
 		'autoReinitialise'			: false,
 		'autoReinitialiseDelay'		: 500,
 		'verticalDragMinHeight'		: 0,
@@ -1052,6 +1110,8 @@
 		'arrowButtonSpeed'			: 10,
 		'arrowRepeatFreq'			: 100,
 		'arrowScrollOnHover'		: false,
+		'trackClickSpeed'			: 30,
+		'trackClickRepeatFreq'		: 100,
 		'verticalArrowPositions'	: 'split',
 		'horizontalArrowPositions'	: 'split',
 		'enableKeyboardNavigation'	: true,

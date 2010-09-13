@@ -157,6 +157,23 @@
 				Whether the focus outline should be hidden in all browsers. For best accessibility you should not change
 				this option. You can style the outline with the CSS property outline and outline-offset.
 			</p>
+			<h2 id="clickOnTrack">
+				clickOnTrack <span class="setting-type">- boolean (default true)</span>
+			</h2>
+			<p>
+				Whether clicking on the track (e.g. the area behind the drag) should scroll towards the point clicked on.
+				Defaults to true as this is the native behaviour in these situations.
+			</p>
+			<h2 id="trackClickSpeed">trackClickSpeed <span class="setting-type">- int (default 30)</span></h2>
+			<p>
+				A multiplier which is used to control the amount that the scrollpane scrolls each trackClickRepeatFreq
+				while the mouse button is held down over the track.
+			</p>
+			<h2 id="trackClickRepeatFreq">trackClickRepeatFreq <span class="setting-type">- int (default 100)</span></h2>
+			<p>
+				The number of milliseconds between each repeated scroll event when the mouse is held down over the
+				track.
+			</p>
 
 		</div>
 	</body>
