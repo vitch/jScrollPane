@@ -153,7 +153,7 @@
 					}
 					
 					pane.css('width', null);
-					elem.css('width', (paneWidth + originalPaddingTotalWidth) + 'px');
+					elem.css('width', (paneWidth ) + 'px');
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
