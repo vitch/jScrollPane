@@ -570,7 +570,31 @@
 						'mousedown.jsp',
 						function(e)
 						{
-							// TODO
+							if (e.originalTarget == e.currentTarget) {
+								var clickedTrack = $(this),
+									scrollInt = setInterval(
+										function()
+										{
+											var offset = clickedTrack.offset(), pos = e.pageX - offset.left;
+											if (horizontalDragPosition + horizontalDragWidth < pos) {
+												positionDragX(horizontalDragPosition + settings.trackClickSpeed);
+											} else if (pos < horizontalDragPosition) {
+												positionDragX(horizontalDragPosition - settings.trackClickSpeed);
+											} else {
+												cancelClick();
+											}
+										},
+										settings.trackClickRepeatFreq
+									),
+									cancelClick = function()
+									{
+										scrollInt && clearInterval(scrollInt);
+										scrollInt = null;
+										$(document).unbind('mouseup.jsp', cancelClick);
+									};
+								$(document).bind('mouseup.jsp', cancelClick);
+								return false;
+							}
 						}
 					);
 				}
