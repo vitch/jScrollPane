@@ -695,7 +695,7 @@
 				horizontalDragPosition = destX;
 
 				var isAtLeft = horizontalDragPosition == 0,
-					isAtRight = horizontalDragPosition == dragMaxY,
+					isAtRight = horizontalDragPosition == dragMaxX,
 					percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
 
