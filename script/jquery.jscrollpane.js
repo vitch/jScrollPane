@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta4 - (2010-09-13) clickOnTrack support.
+// 2.0.0beta4 - (2010-09-13) clickOnTrack support, bug fixes
 // 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
 // 2.0.0beta2 - (2010-08-21) Bug fixes
 // 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
@@ -181,7 +181,7 @@
 					elem.removeClass('jspScrollable');
 					pane.css({
 						'top': 0,
-						'width': container.width() + 'px'
+						'width': null
 					});
 					removeMousewheel();
 					removeFocusHandler();
