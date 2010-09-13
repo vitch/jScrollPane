@@ -312,7 +312,7 @@
 						}
 					);
 					sizeVerticalScrollbar();
-					updateVerticalArrows();
+					_positionDragY(verticalDragPosition); // To update the state for the arrow buttons
 				}
 			}
 
@@ -399,7 +399,7 @@
 					);
 					horizontalTrackWidth = container.innerWidth();
 					sizeHorizontalScrollbar();
-					updateHorizontalArrows();
+					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
 				} else {
 					// no horizontal scroll
 				}
