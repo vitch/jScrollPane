@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta4 - 2010-09-13
+ * jScrollPane - v2.0.0beta4 - 2010-09-14
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta4, Last updated: 2010-09-13*
+// *Version: 2.0.0beta4, Last updated: 2010-09-14*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta4 - (2010-09-13) clickOnTrack support, bug fixes
+// 2.0.0beta4 - (2010-09-14) clickOnTrack support, bug fixes
 // 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
 // 2.0.0beta2 - (2010-08-21) Bug fixes
 // 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
@@ -312,7 +312,6 @@
 						}
 					);
 					sizeVerticalScrollbar();
-					_positionDragY(verticalDragPosition); // To update the state for the arrow buttons
 				}
 			}
 
@@ -399,7 +398,6 @@
 					);
 					horizontalTrackWidth = container.innerWidth();
 					sizeHorizontalScrollbar();
-					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
 				} else {
 					// no horizontal scroll
 				}
@@ -456,6 +454,7 @@
 					}
 					horizontalDrag.width(horizontalDragWidth + 'px');
 					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
+					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
 				}
 				if (isScrollableV) {
 					verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
@@ -466,6 +465,7 @@
 					}
 					verticalDrag.height(verticalDragHeight + 'px');
 					dragMaxY = verticalTrackHeight - verticalDragHeight;
+					_positionDragY(verticalDragPosition); // To update the state for the arrow buttons
 				}
 			}
 
