@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta4 - 2010-09-14
+ * jScrollPane - v2.0.0beta4 - 2010-09-17
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta4, Last updated: 2010-09-14*
+// *Version: 2.0.0beta4, Last updated: 2010-09-17*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta4 - (2010-09-14) clickOnTrack support, bug fixes
+// 2.0.0beta4 - (2010-09-17) clickOnTrack support, bug fixes
 // 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
 // 2.0.0beta2 - (2010-08-21) Bug fixes
 // 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
@@ -537,7 +537,7 @@
 						'mousedown.jsp',
 						function(e)
 						{
-							if (e.originalTarget == e.currentTarget) {
+							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
 									scrollInt = setInterval(
 										function()
@@ -570,7 +570,7 @@
 						'mousedown.jsp',
 						function(e)
 						{
-							if (e.originalTarget == e.currentTarget) {
+							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
 									scrollInt = setInterval(
 										function()
