@@ -46,6 +46,17 @@
 				example</a> or <a href="index.html#themes">theme</a> pages for a reference as to the correct ordering
 				of items in your &lt;head&gt;.
 			</p>
+			<h2 id="specified-width">Width specified directly on an element you apply jScrollPane to will be overwritten</h2>
+			<p>
+				If you apply a width to an element (e.g. via jQuery's width method or via a style attribute) then this
+				width will be overwritten when you reinitialise the scrollpane. Unforunately I can't find a way to avoid
+				this and still support percentage based widths for elements/
+			</p>
+			<p>
+				As a workaround you can specify the width via a CSS class refering to a stylesheet rule. If you can't do
+				this (e.g. you calculate the width dynamically) you will have to wrap your element in an additional div
+				and apply the width to that element while setting the width of your element to 100% via the stylesheet.
+			</p>
 		</div>
 	</body>
 </html>
