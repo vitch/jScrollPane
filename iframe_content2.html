@@ -3,7 +3,7 @@
 <html>
 	<head>
 
-		<title>jScrollPane iframe content</title>
+		<title>jScrollPane iframe content 2</title>
 
 		<!-- styles specific to demo site -->
 		<link type="text/css" href="style/demo.css" rel="stylesheet" media="all" />
@@ -16,11 +16,6 @@
 			{
 				background: #fff;
 				height: 100%;
-			}
-			.scroll-pane
-			{
-				height: 200px;
-				overflow: auto;
 			}
 			.scroll-pane p
 			{
@@ -40,12 +35,56 @@
 		<script type="text/javascript" id="sourcecode">
 			$(function()
 			{
-				$('.scroll-pane').jScrollPane({showArrows: true});
+				var win = $(window);
+				// Full body scroll
+				var isResizing = false;
+				win.bind(
+					'resize',
+					function()
+					{
+						if (!isResizing) {
+							isResizing = true;
+							var container = $('#content');
+							// Temporarily make the container tiny so it doesn't influence the
+							// calculation of the size of the document
+							container.css(
+								{
+									'width': 1,
+									'height': 1
+								}
+							);
+							// Now make it the size of the window...
+							container.css(
+								{
+									'width': win.width(),
+									'height': win.height()
+								}
+							);
+							isResizing = false;
+							container.jScrollPane(
+								{
+									'showArrows': true
+								}
+							);
+						}
+					}
+				).trigger('resize');
+
+				// Workaround for known Opera issue which breaks demo (see
+				// http://jscrollpane.kelvinluck.com/known_issues.html#opera-scrollbar )
+				$('body').css('overflow', 'hidden');
+
+				// IE calculates the width incorrectly first time round (it
+				// doesn't count the space used by the native scrollbar) so
+				// we re-trigger if necessary.
+				if ($('#full-page-container').width() != win.width()) {
+					win.trigger('resize');
+				}
 			});
 		</script>
 	</head>
 	<body>
-		<div class="scroll-pane">
+		<div id="content">
 			<p style="width: 900px">
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in ligula id sem tristique ultrices
 				eget id neque. Duis enim turpis, tempus at accumsan vitae, lobortis id sapien. Pellentesque nec orci

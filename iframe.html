@@ -29,6 +29,7 @@
 		<script type="text/javascript" src="script/demo.js"></script>
 
 		<script type="text/javascript" id="sourcecode">
+			// No page specific javascript - see the sourcecode of the loaded content instead
 		</script>
 	</head>
 	<body>
@@ -48,7 +49,17 @@
 		<div id="container">
 			<h1>jScrollPane - example with iframes</h1>
 			<p>
-				...
+				This demonstration shows how you can apply jScrollPane to content in an iframe. Note that in this
+				demo nothing is done in the hosting page (this one), all of the necessary javascript happens inside
+				the loaded pages (e.g. <a href="iframe_content1.html">iframe_content1.html</a> and
+				<a href="iframe_content2.html">iframe_content2.html</a>). Those pages basically use the same technique
+				as in the <a href="fullpage_scroll.html">full page scroll</a> example.
+			</p>
+			<p>
+				To implement this technique you don't need to add any code to the hosting page but you do need to have
+				control over the pages which you load into the iframes. And each of those pages will need to include the
+				relevant script files (e.g. jQuery, jScrollPane etc etc) as well as the document ready script as I show
+				in my examples.
 			</p>
 
 			<h2>Vertical only</h2>
