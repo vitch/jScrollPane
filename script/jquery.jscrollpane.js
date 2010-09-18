@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta4 - 2010-09-17
+ * jScrollPane - v2.0.0beta5 - 2010-09-18
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta4, Last updated: 2010-09-17*
+// *Version: 2.0.0beta5, Last updated: 2010-09-18*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.0beta5 - (in progess)
 // 2.0.0beta4 - (2010-09-17) clickOnTrack support, bug fixes
 // 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
 // 2.0.0beta2 - (2010-08-21) Bug fixes
@@ -181,7 +182,7 @@
 					elem.removeClass('jspScrollable');
 					pane.css({
 						'top': 0,
-						'width': null
+						'width': container.width() - originalPaddingTotalWidth
 					});
 					removeMousewheel();
 					removeFocusHandler();
