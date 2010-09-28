@@ -37,6 +37,16 @@
 				In Webkit based browsers (e.g. Safari, Chrome, iOS and Android) there is a known issue where you must
 				include your CSS before your JS. <a href="known_issues.html#webkit-css-first">More info</a>.
 			</p>
+			<h2 id="ajax-disappearing-scrollbar">Why does my scrollbar disappear when I reinitialise my jScrollPane after updating the content with ajax?</h2>
+			<p>
+				jScrollPane version 2 places the scrollbar and associated controls <strong>inside</strong> the element you apply jScrollPane to. This means that
+				any positional styling on the containing element continues to work correctly and also allows us to calculate size changes correctly when the
+				parent element's size changes.
+			</p>
+			<p>
+				Because of this you can't simply replace the contents of jScrollPane. Instead you need to use the <a href="api.html#getContentPane">
+				getContentPane</a> API method as shown in the <a href="ajax.html">ajax</a> and <a href="dynamic_content.html">dynamic content</a> examples.
+			</p>
 		</div>
 	</body>
 </html>
