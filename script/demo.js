@@ -29,15 +29,19 @@ $(function()
 	}
 });
 
-
-
-// Google analytics tracking code for demo site 
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-17828883-1']);
-_gaq.push(['_trackPageview']);
-
-(function() {
-	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+// It seems some people copy this file and put it on their sites despite the message at the top
+// So let's make sure they don't end up in my stats...
+if (window.location.hostname == 'jscrollpane.kelvinluck.com') { 
+	// Google analytics tracking code for demo site 
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-17828883-1']);
+	_gaq.push(['_trackPageview']);
+	
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+} else {
+	alert('Do not include demo.js on your site!');
+}
