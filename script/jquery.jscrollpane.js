@@ -127,8 +127,7 @@
 					lastChild.css('margin-bottom', 0);
 					*/
 				} else {
-
-					elem.css('width', null);
+					elem.css('width', '');
 
 					hasContainingSpaceChanged = elem.outerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
 
@@ -153,7 +152,7 @@
 						return;
 					}
 					
-					pane.css('width', null);
+					pane.css('width', '');
 					elem.css('width', (paneWidth ) + 'px');
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
