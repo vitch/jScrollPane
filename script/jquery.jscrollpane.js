@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta5 - 2010-10-18
+ * jScrollPane - v2.0.0beta6 - 2010-10-28
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta5, Last updated: 2010-10-18*
+// *Version: 2.0.0beta6, Last updated: 2010-10-28*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.0beta6 - (in progress) scrollToElement horizontal support
 // 2.0.0beta5 - (2010-10-18) jQuery 1.4.3 support, various bug fixes
 // 2.0.0beta4 - (2010-09-17) clickOnTrack support, bug fixes
 // 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
@@ -740,7 +741,7 @@
 
 			function scrollToElement(ele, stickToTop, animate)
 			{
-				var e, eleHeight, eleTop = 0, viewportTop, maxVisibleEleTop, destY;
+				var e, eleHeight, eleWidth, eleTop = 0, eleLeft = 0, viewportTop, maxVisibleEleTop, maxVisibleEleLeft, destY, destX;
 
 				// Legal hash values aren't necessarily legal jQuery selectors so we need to catch any
 				// errors from the lookup...
@@ -750,21 +751,23 @@
 					return;
 				}
 				eleHeight = e.outerHeight();
+				eleWidth= e.outerWidth();
 
 				container.scrollTop(0);
+				container.scrollLeft(0);
 				
 				// loop through parents adding the offset top of any elements that are relatively positioned between
 				// the focused element and the jspPane so we can get the true distance from the top
 				// of the focused element to the top of the scrollpane...
 				while (!e.is('.jspPane')) {
 					eleTop += e.position().top;
+					eleLeft += e.position().left;
 					e = e.offsetParent();
 					if (/^body|html$/i.test(e[0].nodeName)) {
 						// we ended up too high in the document structure. Quit!
 						return;
 					}
 				}
-
 
 				viewportTop = contentPositionY();
 				maxVisibleEleTop = viewportTop + paneHeight;
@@ -776,7 +779,18 @@
 				if (destY) {
 					scrollToY(destY, animate);
 				}
-				// TODO: Implement automatic horizontal scrolling?
+				
+				viewportLeft = contentPositionX();
+	            maxVisibleEleLeft = viewportLeft + paneWidth;
+	            if (eleLeft < viewportLeft || stickToTop) { // element is to the left of viewport
+	                destX = eleLeft - settings.horizontalGutter;
+	            } else if (eleLeft + eleWidth > maxVisibleEleLeft) { // element is to the right viewport
+	                destX = eleLeft - paneWidth + eleWidth + settings.horizontalGutter;
+	            }
+	            if (destX) {
+	                scrollToX(destX, animate);
+	            }
+
 			}
 
 			function contentPositionX()
