@@ -809,8 +809,8 @@
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
-						positionDragX(horizontalDragPosition + deltaX * settings.mouseWheelSpeed, false)
-						positionDragY(verticalDragPosition - deltaY * settings.mouseWheelSpeed, false);
+						positionDragX(horizontalDragPosition + deltaX * settings.mouseWheelSpeed * paneWidth / (contentWidth - paneWidth), false)
+						positionDragY(verticalDragPosition - deltaY * settings.mouseWheelSpeed * paneHeight / (contentHeight - paneHeight), false);
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -1145,8 +1145,8 @@
 		'hijackInternalLinks'		: false,
 		'verticalGutter'			: 4,
 		'horizontalGutter'			: 4,
-		'mouseWheelSpeed'			: 10,
-		'arrowButtonSpeed'			: 10,
+		'mouseWheelSpeed'			: 30,
+		'arrowButtonSpeed'			: 30,
 		'arrowRepeatFreq'			: 100,
 		'arrowScrollOnHover'		: false,
 		'trackClickSpeed'			: 30,
