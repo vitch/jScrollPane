@@ -61,7 +61,7 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousPaneWidth,
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
@@ -141,20 +141,19 @@
 						});
 					}
 
-					previousPaneWidth = pane.innerWidth();
+					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
 
-					if (!hasContainingSpaceChanged && pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
 						// Nothing has changed since we last initialised
 						if (isScrollableH || isScrollableV) { // If we had already set a width then re-set it
-							pane.css('width', previousPaneWidth + 'px');
-							elem.css('width', (previousPaneWidth + originalPaddingTotalWidth) + 'px');
+							elem.css('width', (paneWidth + originalPaddingTotalWidth) + 'px');
 						}
 						// Then abort...
 						return;
 					}
+					previousContentWidth = contentWidth;
 					
 					pane.css('width', '');
-					elem.css('width', (paneWidth ) + 'px');
+					elem.css('width', paneWidth + 'px');
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
