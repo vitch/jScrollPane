@@ -86,8 +86,8 @@
 
 					elem.css(
 						{
-							'overflow': 'hidden',
-							'padding': 0
+							overflow: 'hidden',
+							padding: 0
 						}
 					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
@@ -100,8 +100,8 @@
 					pane = $('<div class="jspPane" />').wrap(
 						$('<div class="jspContainer" />')
 							.css({
-								'width': paneWidth + 'px',
-								'height': paneHeight + 'px'
+								width: paneWidth + 'px',
+								height: paneHeight + 'px'
 							}
 						)
 					);
@@ -136,13 +136,12 @@
 						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 						paneHeight = elem.innerHeight();
 						container.css({
-							'width': paneWidth + 'px',
-							'height': paneHeight + 'px'
+							width: paneWidth + 'px',
+							height: paneHeight + 'px'
 						});
 					}
 
 					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
-
 						// Nothing has changed since we last initialised
 						if (isScrollableH || isScrollableV) { // If we had already set a width then re-set it
 							elem.css('width', (paneWidth + originalPaddingTotalWidth) + 'px');
@@ -180,8 +179,8 @@
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
-						'top': 0,
-						'width': container.width() - originalPaddingTotalWidth
+						top: 0,
+						width: container.width() - originalPaddingTotalWidth
 					});
 					removeMousewheel();
 					removeFocusHandler();
@@ -1129,31 +1128,31 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		'showArrows'				: false,
-		'maintainPosition'			: true,
-		'clickOnTrack'				: true,
-		'autoReinitialise'			: false,
-		'autoReinitialiseDelay'		: 500,
-		'verticalDragMinHeight'		: 0,
-		'verticalDragMaxHeight'		: 99999,
-		'horizontalDragMinWidth'	: 0,
-		'horizontalDragMaxWidth'	: 99999,
-		'animateScroll'				: false,
-		'animateDuration'			: 300,
-		'animateEase'				: 'linear',
-		'hijackInternalLinks'		: false,
-		'verticalGutter'			: 4,
-		'horizontalGutter'			: 4,
-		'mouseWheelSpeed'			: 30,
-		'arrowButtonSpeed'			: 30,
-		'arrowRepeatFreq'			: 100,
-		'arrowScrollOnHover'		: false,
-		'trackClickSpeed'			: 30,
-		'trackClickRepeatFreq'		: 100,
-		'verticalArrowPositions'	: 'split',
-		'horizontalArrowPositions'	: 'split',
-		'enableKeyboardNavigation'	: true,
-		'hideFocus'					: false
+		showArrows					: false,
+		maintainPosition			: true,
+		clickOnTrack				: true,
+		autoReinitialise			: false,
+		autoReinitialiseDelay		: 500,
+		verticalDragMinHeight		: 0,
+		verticalDragMaxHeight		: 99999,
+		horizontalDragMinWidth		: 0,
+		horizontalDragMaxWidth		: 99999,
+		animateScroll				: false,
+		animateDuration				: 300,
+		animateEase					: 'linear',
+		hijackInternalLinks			: false,
+		verticalGutter				: 4,
+		horizontalGutter			: 4,
+		mouseWheelSpeed				: 30,
+		arrowButtonSpeed			: 30,
+		arrowRepeatFreq				: 100,
+		arrowScrollOnHover			: false,
+		trackClickSpeed				: 30,
+		trackClickRepeatFreq		: 100,
+		verticalArrowPositions		: 'split',
+		horizontalArrowPositions	: 'split',
+		enableKeyboardNavigation	: true,
+		hideFocus					: false
 	};
 
 })(jQuery,this);
