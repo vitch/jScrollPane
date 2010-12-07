@@ -505,10 +505,10 @@
 				var eve, doScroll = function()
 					{
 						if (dirX != 0) {
-							positionDragX(horizontalDragPosition + dirX * settings.arrowButtonSpeed, false);
+							jsp.scrollByX(dirX * settings.arrowButtonSpeed);
 						}
 						if (dirY != 0) {
-							positionDragY(verticalDragPosition + dirY * settings.arrowButtonSpeed, false);
+							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
 						}
 					},
 					scrollInt = setInterval(doScroll, settings.arrowRepeatFreq);
@@ -538,26 +538,43 @@
 						{
 							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
-									scrollInt = setInterval(
-										function()
-										{
-											var offset = clickedTrack.offset(), pos = e.pageY - offset.top;
-											if (verticalDragPosition + verticalDragHeight < pos) {
-												positionDragY(verticalDragPosition + settings.trackClickSpeed);
-											} else if (pos < verticalDragPosition) {
-												positionDragY(verticalDragPosition - settings.trackClickSpeed);
+									offset = clickedTrack.offset(),
+									direction = e.pageY - offset.top - verticalDragPosition,
+									scrollTO,
+									initial = true,
+									doScroll = function()
+									{
+										var offset = clickedTrack.offset(),
+											pos = e.pageY - offset.top - verticalDragHeight / 2,
+											contentDragY = paneHeight * settings.scrollPagePercent,
+											dragY = dragMaxY * contentDragY / (contentHeight - paneHeight);
+										if (direction < 0) {
+											if (verticalDragPosition - dragY > pos) {
+												jsp.scrollByY(-contentDragY);
 											} else {
-												cancelClick();
+												positionDragY(pos);
 											}
-										},
-										settings.trackClickRepeatFreq
-									),
+										} else if(direction > 0) {
+											if (verticalDragPosition + dragY < pos) {
+												jsp.scrollByY(contentDragY);
+											} else {
+												positionDragY(pos);
+											}
+										} else {
+											cancelClick();
+											return;
+										}
+										scrollTO = setTimeout(doScroll, settings.trackClickRepeatFreq * (initial ? 3 : 1));
+										initial = false;
+									},
 									cancelClick = function()
 									{
-										scrollInt && clearInterval(scrollInt);
-										scrollInt = null;
+										scrollTO && clearTimeout(scrollTO);
+										scrollTO = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
+										elem.focus();
 									};
+								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
 								return false;
 							}
@@ -571,26 +588,43 @@
 						{
 							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
-									scrollInt = setInterval(
-										function()
-										{
-											var offset = clickedTrack.offset(), pos = e.pageX - offset.left;
-											if (horizontalDragPosition + horizontalDragWidth < pos) {
-												positionDragX(horizontalDragPosition + settings.trackClickSpeed);
-											} else if (pos < horizontalDragPosition) {
-												positionDragX(horizontalDragPosition - settings.trackClickSpeed);
+									offset = clickedTrack.offset(),
+									direction = e.pageX - offset.left - horizontalDragPosition,
+									scrollTO,
+									initial = true,
+									doScroll = function()
+									{
+										var offset = clickedTrack.offset(),
+											pos = e.pageX - offset.left - horizontalDragHeight / 2,
+											contentDragX = paneWidth * settings.scrollPagePercent,
+											dragX = dragMaxX * contentDragX / (contentWidth - paneWidth);
+										if (direction < 0) {
+											if (horizontalDragPosition - dragX > pos) {
+												jsp.scrollByX(-contentDragX);
 											} else {
-												cancelClick();
+												positionDragX(pos);
 											}
-										},
-										settings.trackClickRepeatFreq
-									),
+										} else if(direction > 0) {
+											if (horizontalDragPosition + dragX < pos) {
+												jsp.scrollByX(contentDragX);
+											} else {
+												positionDragX(pos);
+											}
+										} else {
+											cancelClick();
+											return;
+										}
+										scrollTO = setTimeout(doScroll, settings.trackClickRepeatFreq * (initial ? 3 : 1));
+										initial = false;
+									},
 									cancelClick = function()
 									{
-										scrollInt && clearInterval(scrollInt);
-										scrollInt = null;
+										scrollTO && clearTimeout(scrollTO);
+										scrollTO = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
+										elem.focus();
 									};
+								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
 								return false;
 							}
@@ -807,8 +841,7 @@
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
-						positionDragX(horizontalDragPosition + deltaX * settings.mouseWheelSpeed * paneWidth / (contentWidth - paneWidth), false)
-						positionDragY(verticalDragPosition - deltaY * settings.mouseWheelSpeed * paneHeight / (contentHeight - paneHeight), false);
+						jsp.scrollBy(-deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed);
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -857,17 +890,17 @@
 							var dX = horizontalDragPosition, dY = verticalDragPosition;
 							switch(e.keyCode) {
 								case 40: // down
-									jsp.scrollByY(settings.speed);
+									jsp.scrollByY(settings.keyboardSpeed);
 									break;
 								case 38: // up
-									jsp.scrollByY(-settings.speed);
+									jsp.scrollByY(-settings.keyboardSpeed);
 									break;
 								case 34: // page down
 								case 32: // space
-									jsp.scrollByY(paneHeight * .8);
+									jsp.scrollByY(paneHeight * settings.scrollPagePercent);
 									break;
 								case 33: // page up
-									jsp.scrollByY(-paneHeight * .8);
+									jsp.scrollByY(-paneHeight * settings.scrollPagePercent);
 									break;
 								case 35: // end
 									scrollToY(contentHeight - paneHeight);
@@ -876,10 +909,10 @@
 									scrollToY(0);
 									break;
 								case 39: // right
-									jsp.scrollByX(settings.speed);
+									jsp.scrollByX(settings.keyboardSpeed);
 									break;
 								case 37: // left
-									jsp.scrollByX(-settings.speed);
+									jsp.scrollByX(-settings.keyboardSpeed);
 									break;
 							}
 
@@ -1104,6 +1137,11 @@
 		// Pluginifying code...
 
 		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
+		
+		// Apply default speed
+		$.each(['mouseWheelSpeed', 'arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'], function() {
+			settings[this] = settings[this] || settings.speed;
+		});
 
 		var ret;
 		this.each(
@@ -1138,17 +1176,19 @@
 		hijackInternalLinks			: false,
 		verticalGutter				: 4,
 		horizontalGutter			: 4,
-		mouseWheelSpeed				: 30,
-		arrowButtonSpeed			: 30,
-		arrowRepeatFreq				: 100,
+		mouseWheelSpeed				: 0,
+		arrowButtonSpeed			: 0,
+		arrowRepeatFreq				: 70,
 		arrowScrollOnHover			: false,
-		trackClickSpeed				: 30,
-		trackClickRepeatFreq		: 100,
+		trackClickSpeed				: 0,
+		trackClickRepeatFreq		: 70,
 		verticalArrowPositions		: 'split',
 		horizontalArrowPositions	: 'split',
 		enableKeyboardNavigation	: true,
 		hideFocus					: false,
-		speed						: 30
+		keyboardSpeed				: 0,
+		speed						: 30,		// Default speed twhen others not set or 0
+		scrollPagePercent			: 0.8		// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
 })(jQuery,this);
