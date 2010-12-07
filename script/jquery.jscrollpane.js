@@ -845,9 +845,8 @@
 			
 			function initKeyboardNav()
 			{
-				var pressed, pressedTimer;
 				elem.attr('tabindex', 0)
-					.unbind('keydown.jsp')
+					.unbind('keydown.jsp keyup.jsp')
 					.bind(
 						'keydown.jsp',
 						function(e)
@@ -855,20 +854,20 @@
 							if(e.target !== elem[0]){
 								return;
 							}
-							var dX = horizontalDragPosition, dY = verticalDragPosition, step = pressed ? 2 : 16;
+							var dX = horizontalDragPosition, dY = verticalDragPosition;
 							switch(e.keyCode) {
 								case 40: // down
-									positionDragY(verticalDragPosition + step, false);
+									jsp.scrollByY(settings.speed);
 									break;
 								case 38: // up
-									positionDragY(verticalDragPosition - step, false);
+									jsp.scrollByY(-settings.speed);
 									break;
 								case 34: // page down
 								case 32: // space
-									scrollToY(contentPositionY() + Math.max(32, paneHeight) - 16);
+									jsp.scrollByY(paneHeight * 0.8);
 									break;
 								case 33: // page up
-									scrollToY(contentPositionY() - paneHeight + 16);
+									jsp.scrollByY(-paneHeight + 16);
 									break;
 								case 35: // end
 									scrollToY(contentHeight - paneHeight);
@@ -877,19 +876,14 @@
 									scrollToY(0);
 									break;
 								case 39: // right
-									positionDragX(horizontalDragPosition + step, false);
+									jsp.scrollByX(settings.speed);
 									break;
 								case 37: // left
-									positionDragX(horizontalDragPosition - step, false);
+									jsp.scrollByX(-settings.speed);
 									break;
 							}
 
-							if( !(dX == horizontalDragPosition && dY == verticalDragPosition) ){
-								pressed = true;
-								clearTimeout(pressedTimer);
-								pressedTimer = setTimeout(function(){
-									pressed = false;
-								}, 260);
+							if(dX != horizontalDragPosition || dY != verticalDragPosition){
 								return false;
 							}
 						}
@@ -911,7 +905,8 @@
 			{
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
-					.unbind('keydown.jsp');
+					.unbind('keydown.jsp')
+					.unbind('keyup.jsp');
 			}
 
 			function observeHash()
@@ -1152,7 +1147,8 @@
 		verticalArrowPositions		: 'split',
 		horizontalArrowPositions	: 'split',
 		enableKeyboardNavigation	: true,
-		hideFocus					: false
+		hideFocus					: false,
+		speed						: 30
 	};
 
 })(jQuery,this);
