@@ -502,7 +502,10 @@
 			{
 				arrow = $(arrow).addClass('jspActive');
 
-				var eve, doScroll = function()
+				var eve,
+					scrollTO,
+					initial = true,
+					doScroll = function()
 					{
 						if (dirX != 0) {
 							jsp.scrollByX(dirX * settings.arrowButtonSpeed);
@@ -510,8 +513,9 @@
 						if (dirY != 0) {
 							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
 						}
-					},
-					scrollInt = setInterval(doScroll, settings.arrowRepeatFreq);
+						scrollTO = setTimeout(doScroll, settings.arrowRepeatFreq * (initial ? 3 : 1));
+						initial = false;
+					};
 
 				doScroll();
 
@@ -522,7 +526,8 @@
 					function()
 					{
 						arrow.removeClass('jspActive');
-						clearInterval(scrollInt);
+						scrollTO && clearTimeout(scrollTO);
+						scrollTO = null;
 						ele.unbind(eve);
 					}
 				);
@@ -1178,7 +1183,7 @@
 		horizontalGutter			: 4,
 		mouseWheelSpeed				: 0,
 		arrowButtonSpeed			: 0,
-		arrowRepeatFreq				: 70,
+		arrowRepeatFreq				: 50,
 		arrowScrollOnHover			: false,
 		trackClickSpeed				: 0,
 		trackClickRepeatFreq		: 70,
