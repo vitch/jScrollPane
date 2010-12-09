@@ -61,18 +61,17 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousPaneWidth,
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
+				keyDown, keyDownTO,
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
 								elem.css('paddingRight') + ' ' +
 								elem.css('paddingBottom') + ' ' +
 								elem.css('paddingLeft');
-			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft')) || 0) +
-										(parseInt(elem.css('paddingRight')) || 0);
-
-			initialise(s);
+			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
+										(parseInt(elem.css('paddingRight'), 10) || 0);
 
 			function initialise(s)
 			{
@@ -82,7 +81,7 @@
 
 				settings = s;
 
-				if (pane == undefined) {
+				if (pane === undefined) {
 
 					elem.css(
 						{
@@ -141,20 +140,18 @@
 						});
 					}
 
-					previousPaneWidth = pane.innerWidth();
-
-					if (!hasContainingSpaceChanged && pane.outerWidth() == contentWidth && pane.outerHeight() == contentHeight) {
+					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
 						// Nothing has changed since we last initialised
 						if (isScrollableH || isScrollableV) { // If we had already set a width then re-set it
-							pane.css('width', previousPaneWidth + 'px');
-							elem.css('width', (previousPaneWidth + originalPaddingTotalWidth) + 'px');
+							elem.css('width', (paneWidth + originalPaddingTotalWidth) + 'px');
 						}
 						// Then abort...
 						return;
 					}
+					previousContentWidth = contentWidth;
 					
 					pane.css('width', '');
-					elem.css('width', (paneWidth ) + 'px');
+					elem.css('width', paneWidth + 'px');
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
@@ -231,7 +228,7 @@
 						settings.autoReinitialiseDelay
 					);
 				} else if (!settings.autoReinitialise && reinitialiseInterval) {
-					clearInterval(reinitialiseInterval)
+					clearInterval(reinitialiseInterval);
 				}
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
@@ -296,7 +293,7 @@
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
+							$('html').bind('dragstart.jsp selectstart.jsp', nil);
 
 							verticalDrag.addClass('jspActive');
 
@@ -327,7 +324,7 @@
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
-				if (verticalBar.position().left == 0) {
+				if (verticalBar.position().left === 0) {
 					pane.css('margin-left', scrollbarWidth + 'px');
 				}
 			}
@@ -381,7 +378,7 @@
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', function() { return false; });
+							$('html').bind('dragstart.jsp selectstart.jsp', nil);
 
 							horizontalDrag.addClass('jspActive');
 
@@ -399,14 +396,11 @@
 					);
 					horizontalTrackWidth = container.innerWidth();
 					sizeHorizontalScrollbar();
-				} else {
-					// no horizontal scroll
 				}
 			}
 
 			function sizeHorizontalScrollbar()
 			{
-
 				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 					function()
 					{
@@ -491,13 +485,14 @@
 				ele[p1](a1)[p2](a2);
 			}
 
-			function getArrowScroll(dirX, dirY, ele) {
+			function getArrowScroll(dirX, dirY, ele)
+			{
 				return function()
 				{
 					arrowScroll(dirX, dirY, this, ele);
 					this.blur();
 					return false;
-				}
+				};
 			}
 
 			function arrowScroll(dirX, dirY, arrow, ele)
@@ -506,26 +501,32 @@
 
 				var eve, doScroll = function()
 					{
-						if (dirX != 0) {
-							positionDragX(horizontalDragPosition + dirX * settings.arrowButtonSpeed, false);
+						if (dirX !== 0) {
+							jsp.scrollByX(dirX * settings.arrowButtonSpeed);
 						}
-						if (dirY != 0) {
-							positionDragY(verticalDragPosition + dirY * settings.arrowButtonSpeed, false);
+						if (dirY !== 0) {
+							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
 						}
+						scrollTO = setTimeout(doScroll, initial ? settings.initialDelay : settings.arrowRepeatFreq);
+						initial = false;
 					},
-					scrollInt = setInterval(doScroll, settings.arrowRepeatFreq);
+					initial = true, scrollTO;
 
 				doScroll();
 
-				eve = ele == undefined ? 'mouseup.jsp' : 'mouseout.jsp';
+				eve = ele ? 'mouseout.jsp' : 'mouseup.jsp';
 				ele = ele || $('html');
 				ele.bind(
 					eve,
 					function()
 					{
 						arrow.removeClass('jspActive');
-						clearInterval(scrollInt);
+						if (scrollTO) {
+							clearTimeout(scrollTO);
+							scrollTO = null;
+						}
 						ele.unbind(eve);
+						focusElem();
 					}
 				);
 			}
@@ -538,61 +539,96 @@
 						'mousedown.jsp',
 						function(e)
 						{
-							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
+							if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
-									scrollInt = setInterval(
-										function()
-										{
-											var offset = clickedTrack.offset(), pos = e.pageY - offset.top;
-											if (verticalDragPosition + verticalDragHeight < pos) {
-												positionDragY(verticalDragPosition + settings.trackClickSpeed);
-											} else if (pos < verticalDragPosition) {
-												positionDragY(verticalDragPosition - settings.trackClickSpeed);
+									offset = clickedTrack.offset(),
+									direction = e.pageY - offset.top - verticalDragPosition,
+									scrollTO,
+									initial = true,
+									doScroll = function() {
+										scrollTO = setTimeout(doScroll, initial ? settings.initialDelay : settings.trackClickRepeatFreq);
+										initial = false;
+										var offset = clickedTrack.offset(),
+											pos = e.pageY - offset.top - verticalDragHeight / 2,
+											contentDragY = paneHeight * settings.scrollPagePercent,
+											dragY = dragMaxY * contentDragY / (contentHeight - paneHeight);
+										if (direction < 0) {
+											if (verticalDragPosition - dragY > pos) {
+												jsp.scrollByY(-contentDragY);
 											} else {
-												cancelClick();
+												positionDragY(pos);
 											}
-										},
-										settings.trackClickRepeatFreq
-									),
-									cancelClick = function()
-									{
-										scrollInt && clearInterval(scrollInt);
-										scrollInt = null;
+										} else if (direction > 0) {
+											if (verticalDragPosition + dragY < pos) {
+												jsp.scrollByY(contentDragY);
+											} else {
+												positionDragY(pos);
+											}
+										} else {
+											cancelClick();
+											return;
+										}
+									},
+									cancelClick = function() {
+										if (scrollTO) {	
+											clearTimeout(scrollTO);
+											scrollTO = null;
+										}
 										$(document).unbind('mouseup.jsp', cancelClick);
+										focusElem();
 									};
+								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
 								return false;
 							}
 						}
 					);
 				}
+				
 				if (isScrollableH) {
 					horizontalTrack.bind(
 						'mousedown.jsp',
 						function(e)
 						{
-							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
+							if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
-									scrollInt = setInterval(
-										function()
-										{
-											var offset = clickedTrack.offset(), pos = e.pageX - offset.left;
-											if (horizontalDragPosition + horizontalDragWidth < pos) {
-												positionDragX(horizontalDragPosition + settings.trackClickSpeed);
-											} else if (pos < horizontalDragPosition) {
-												positionDragX(horizontalDragPosition - settings.trackClickSpeed);
+									offset = clickedTrack.offset(),
+									direction = e.pageX - offset.left - horizontalDragPosition,
+									scrollTO,
+									initial = true,
+									doScroll = function() {
+										scrollTO = setTimeout(doScroll, initial ? settings.initialDelay : settings.trackClickRepeatFreq);
+										initial = false;
+										var offset = clickedTrack.offset(),
+											pos = e.pageX - offset.left - horizontalDragWidth / 2,
+											contentDragX = paneWidth * settings.scrollPagePercent,
+											dragX = dragMaxX * contentDragX / (contentWidth - paneWidth);
+										if (direction < 0) {
+											if (horizontalDragPosition - dragX > pos) {
+												jsp.scrollByX(-contentDragX);
 											} else {
-												cancelClick();
+												positionDragX(pos);
 											}
-										},
-										settings.trackClickRepeatFreq
-									),
-									cancelClick = function()
-									{
-										scrollInt && clearInterval(scrollInt);
-										scrollInt = null;
+										} else if (direction > 0) {
+											if (horizontalDragPosition + dragX < pos) {
+												jsp.scrollByX(contentDragX);
+											} else {
+												positionDragX(pos);
+											}
+										} else {
+											cancelClick();
+											return;
+										}
+									},
+									cancelClick = function() {
+										if (scrollTO) {
+											clearTimeout(scrollTO);
+											scrollTO = null;
+										}
 										$(document).unbind('mouseup.jsp', cancelClick);
+										focusElem();
 									};
+								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
 								return false;
 							}
@@ -603,16 +639,25 @@
 
 			function removeClickOnTrack()
 			{
-				horizontalTrack && horizontalTrack.unbind('mousedown.jsp');
-				verticalTrack && verticalTrack.unbind('mousedown.jsp');
+				if (horizontalTrack) {
+					horizontalTrack.unbind('mousedown.jsp');
+				}
+				if (verticalTrack) {
+					verticalTrack.unbind('mousedown.jsp');
+				}
 			}
 
 			function cancelDrag()
 			{
 				$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
 
-				verticalDrag && verticalDrag.removeClass('jspActive');
-				horizontalDrag && horizontalDrag.removeClass('jspActive');
+				if (verticalDrag) {
+					verticalDrag.removeClass('jspActive');
+				}
+				if (horizontalDrag) {
+					horizontalDrag.removeClass('jspActive');
+				}
+				focusElem();
 			}
 
 			function positionDragY(destY, animate)
@@ -627,7 +672,7 @@
 				}
 
 				// can't just check if(animate) because false is a valid value that could be passed in...
-				if (animate == undefined) {
+				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
@@ -641,14 +686,14 @@
 
 			function _positionDragY(destY)
 			{
-				if (destY == undefined) {
+				if (destY === undefined) {
 					destY = verticalDrag.position().top;
 				}
 
 				container.scrollTop(0);
 				verticalDragPosition = destY;
 
-				var isAtTop = verticalDragPosition == 0,
+				var isAtTop = verticalDragPosition === 0,
 					isAtBottom = verticalDragPosition == dragMaxY,
 					percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
@@ -675,7 +720,7 @@
 					destX = dragMaxX;
 				}
 
-				if (animate == undefined) {
+				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
@@ -688,14 +733,14 @@
 
 			function _positionDragX(destX)
 			{
-				if (destX == undefined) {
+				if (destX === undefined) {
 					destX = horizontalDrag.position().left;
 				}
 
 				container.scrollTop(0);
 				horizontalDragPosition = destX;
 
-				var isAtLeft = horizontalDragPosition == 0,
+				var isAtLeft = horizontalDragPosition === 0,
 					isAtRight = horizontalDragPosition == dragMaxX,
 					percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
@@ -809,8 +854,7 @@
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
-						positionDragX(horizontalDragPosition + deltaX * settings.mouseWheelSpeed * paneWidth / (contentWidth - paneWidth), false)
-						positionDragY(verticalDragPosition - deltaY * settings.mouseWheelSpeed * paneHeight / (contentHeight - paneHeight), false);
+						jsp.scrollBy(-deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed);
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -833,7 +877,9 @@
 					'focus.jsp',
 					function(e)
 					{
-						if(e.target === pane[0]){return;}
+						if (e.target === this) {
+							return;
+						}
 						scrollToElement(e.target, false);
 					}
 				);
@@ -841,69 +887,123 @@
 
 			function removeFocusHandler()
 			{
-
 				pane.unbind('focus.jsp');
+			}
+			
+			function keyDownHandler()
+			{
+				var dX = horizontalDragPosition, dY = verticalDragPosition;
+				switch(keyDown) {
+					case 40: // down
+						jsp.scrollByY(settings.keyboardSpeed);
+						break;
+					case 38: // up
+						jsp.scrollByY(-settings.keyboardSpeed);
+						break;
+					case 34: // page down
+					case 32: // space
+						jsp.scrollByY(paneHeight * settings.scrollPagePercent);
+						break;
+					case 33: // page up
+						jsp.scrollByY(-paneHeight * settings.scrollPagePercent);
+						break;
+					case 39: // right
+						jsp.scrollByX(settings.keyboardSpeed);
+						break;
+					case 37: // left
+						jsp.scrollByX(-settings.keyboardSpeed);
+						break;
+				}
+				
+				return dX != horizontalDragPosition || dY != verticalDragPosition;
+			}
+			
+			function holdKeyDown(initial)
+			{
+				keyDownTO = setTimeout(
+					function()
+					{
+						holdKeyDown();
+					},
+					initial ? settings.initialDelay : settings.keyboardRepeatFreq
+				);
+				if (!keyDownHandler()) {
+					stopKeyDown();
+				}
+			}
+			
+			function stopKeyDown()
+			{
+				keyDown = null;
+				if (keyDownTO) {
+					clearTimeout(keyDownTO);
+					keyDownTO = null;
+				}
 			}
 			
 			function initKeyboardNav()
 			{
-				var pressed, pressedTimer;
+				// IE also focuses elements that don't have tabindex set.
+				pane.focus(
+					function()
+					{
+						elem.focus();
+					}
+				);
+				
 				elem.attr('tabindex', 0)
-					.unbind('keydown.jsp')
+					.unbind('keydown.jsp keyup.jsp')
 					.bind(
 						'keydown.jsp',
 						function(e)
 						{
-							if(e.target !== elem[0]){
+							if (e.target !== this){
 								return;
 							}
-							var dX = horizontalDragPosition, dY = verticalDragPosition, step = pressed ? 2 : 16;
+							var dX = horizontalDragPosition, dY = verticalDragPosition;
 							switch(e.keyCode) {
 								case 40: // down
-									positionDragY(verticalDragPosition + step, false);
-									break;
 								case 38: // up
-									positionDragY(verticalDragPosition - step, false);
-									break;
 								case 34: // page down
 								case 32: // space
-									scrollToY(contentPositionY() + Math.max(32, paneHeight) - 16);
-									break;
 								case 33: // page up
-									scrollToY(contentPositionY() - paneHeight + 16);
+								case 39: // right
+								case 37: // left
+									if (keyDown != e.keyCode) {
+										stopKeyDown();
+										keyDown = e.keyCode;
+										holdKeyDown(true);
+									}
 									break;
 								case 35: // end
 									scrollToY(contentHeight - paneHeight);
+									keyDown = null;
 									break;
 								case 36: // home
 									scrollToY(0);
-									break;
-								case 39: // right
-									positionDragX(horizontalDragPosition + step, false);
-									break;
-								case 37: // left
-									positionDragX(horizontalDragPosition - step, false);
+									keyDown = null;
 									break;
 							}
 
-							if( !(dX == horizontalDragPosition && dY == verticalDragPosition) ){
-								pressed = true;
-								clearTimeout(pressedTimer);
-								pressedTimer = setTimeout(function(){
-									pressed = false;
-								}, 260);
+							if (keyDown == e.keyCode || dX != horizontalDragPosition || dY != verticalDragPosition) {
 								return false;
 							}
 						}
+					).bind(
+						'keyup.jsp',
+						function(e)
+						{
+							stopKeyDown();
+						}
 					);
-				if(settings.hideFocus) {
+				if (settings.hideFocus) {
 					elem.css('outline', 'none');
-					if('hideFocus' in container[0]){
+					if ('hideFocus' in container[0]){
 						elem.attr('hideFocus', true);
 					}
 				} else {
 					elem.css('outline', '');
-					if('hideFocus' in container[0]){
+					if ('hideFocus' in container[0]){
 						elem.attr('hideFocus', false);
 					}
 				}
@@ -913,7 +1013,7 @@
 			{
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
-					.unbind('keydown.jsp');
+					.unbind('keydown.jsp keyup.jsp');
 			}
 
 			function observeHash()
@@ -929,7 +1029,7 @@
 					if (e.length && pane.find(e)) {
 						// nasty workaround but it appears to take a little while before the hash has done its thing
 						// to the rendered page so we just wait until the container's scrollTop has been messed up.
-						if (container.scrollTop() == 0) {
+						if (container.scrollTop() === 0) {
 							retryInt = setInterval(
 								function()
 								{
@@ -940,7 +1040,7 @@
 									}
 								},
 								50
-							)
+							);
 						} else {
 							scrollToElement(location.hash, true);
 							$(document).scrollTop(container.position().top);
@@ -972,7 +1072,15 @@
 							}
 						}
 					}
-				)
+				);
+			}
+			
+			// If no element has focus, focus elem to support keyboard navigation
+			function focusElem()
+			{
+				if (!$(':focus').length) {
+					elem.focus();
+				}
 			}
 
 			// Public API
@@ -1106,11 +1214,22 @@
 					}
 				}
 			);
+			
+			initialise(s);
 		}
 
 		// Pluginifying code...
-
 		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
+		
+		// Apply default speed
+		$.each(
+			['mouseWheelSpeed', 'arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'],
+			function()
+			{
+				settings[this] = settings[this] || settings.speed;
+			}
+		);
+		
 
 		var ret;
 		this.each(
@@ -1125,7 +1244,7 @@
 				}
 				ret = ret ? ret.add(elem) : elem;
 			}
-		)
+		);
 		return ret;
 	};
 
@@ -1145,16 +1264,21 @@
 		'hijackInternalLinks'		: false,
 		'verticalGutter'			: 4,
 		'horizontalGutter'			: 4,
-		'mouseWheelSpeed'			: 30,
-		'arrowButtonSpeed'			: 30,
-		'arrowRepeatFreq'			: 100,
+		'mouseWheelSpeed'			: 0,
+		'arrowButtonSpeed'			: 0,
+		'arrowRepeatFreq'			: 50,
 		'arrowScrollOnHover'		: false,
-		'trackClickSpeed'			: 30,
-		'trackClickRepeatFreq'		: 100,
+		'trackClickSpeed'			: 0,
+		'trackClickRepeatFreq'		: 70,
 		'verticalArrowPositions'	: 'split',
 		'horizontalArrowPositions'	: 'split',
 		'enableKeyboardNavigation'	: true,
-		'hideFocus'					: false
+		'hideFocus'					: false,
+		'keyboardSpeed'				: 0,
+		'keyboardRepeatFreq'		: 50,
+		'initialDelay'				: 300,		// Delay before starting repeating
+		'speed'						: 30,		// Default speed when others not set or 0
+		'scrollPagePercent'			: 0.8		// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
 })(jQuery,this);
