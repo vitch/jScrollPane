@@ -864,10 +864,10 @@
 									break;
 								case 34: // page down
 								case 32: // space
-									jsp.scrollByY(paneHeight * 0.8);
+									jsp.scrollByY(paneHeight * .8);
 									break;
 								case 33: // page up
-									jsp.scrollByY(-paneHeight + 16);
+									jsp.scrollByY(-paneHeight * .8);
 									break;
 								case 35: // end
 									scrollToY(contentHeight - paneHeight);
