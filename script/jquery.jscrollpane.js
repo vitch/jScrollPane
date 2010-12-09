@@ -829,8 +829,8 @@
 
 			function initFocusHandler()
 			{
-				pane.unbind('focusin.jsp').bind(
-					'focusin.jsp',
+				pane.unbind('focus.jsp').bind(
+					'focus.jsp',
 					function(e)
 					{
 						if(e.target === pane[0]){return;}
@@ -842,7 +842,7 @@
 			function removeFocusHandler()
 			{
 
-				pane.unbind('focusin.jsp');
+				pane.unbind('focus.jsp');
 			}
 			
 			function initKeyboardNav()
