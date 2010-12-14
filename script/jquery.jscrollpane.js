@@ -96,21 +96,13 @@
 
 					elem.width(paneWidth);
 					
-					pane = $('<div class="jspPane" />').wrap(
-						$('<div class="jspContainer" />')
-							.css({
-								'width': paneWidth + 'px',
-								'height': paneHeight + 'px'
-							}
-						)
-					);
-
-					elem.wrapInner(pane.parent());
-					// Need to get the vars after being added to the document, otherwise they reference weird
-					// disconnected orphan elements...
-					container = elem.find('>.jspContainer');
-					pane = container.find('>.jspPane');
-					pane.css('padding', originalPadding);
+					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
+					container = $('<div class="jspContainer" />')
+						.css({
+							'width': paneWidth + 'px',
+							'height': paneHeight + 'px'
+						}
+					).append(pane).appendTo(elem);
 
 					/*
 					// Move any margins from the first and last children up to the container so they can still
@@ -129,7 +121,7 @@
 				} else {
 					elem.css('width', '');
 
-					hasContainingSpaceChanged = elem.outerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
 
 					if (hasContainingSpaceChanged) {
 						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
@@ -140,18 +132,15 @@
 						});
 					}
 
+					// If nothing changed since last check...
 					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
-						// Nothing has changed since we last initialised
-						if (isScrollableH || isScrollableV) { // If we had already set a width then re-set it
-							elem.css('width', (paneWidth + originalPaddingTotalWidth) + 'px');
-						}
-						// Then abort...
+						elem.width(paneWidth);
 						return;
 					}
 					previousContentWidth = contentWidth;
 					
 					pane.css('width', '');
-					elem.css('width', paneWidth + 'px');
+					elem.width(paneWidth);
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
