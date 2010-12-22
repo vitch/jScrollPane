@@ -1099,8 +1099,9 @@
 						var touchPos = ev.originalEvent.touches[0],
 							dX = horizontalDragPosition, dY = verticalDragPosition;
 						
-						positionDragX(touchStartX - touchPos.pageX);
-						positionDragY(touchStartY - touchPos.pageY);
+						jsp.scrollBy(touchStartX - touchPos.pageX, touchStartY - touchPos.pageY);
+						touchStartX = touchPos.pageX;
+						touchStartY = touchPos.pageY;
 						
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
@@ -1307,3 +1308,4 @@
 	};
 
 })(jQuery,this);
+
