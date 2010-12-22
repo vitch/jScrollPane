@@ -1081,30 +1081,60 @@
 					return;
 				}
 				
-				var touchStartX,
-					touchStartY;
+				var startX,
+					startY,
+					touchStartX,
+					touchStartY,
+					moved,
+					moving = false;
   
-				container.bind(
-					'touchstart',
+				container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').bind(
+					'touchstart.jsp',
 					function(e)
 					{
 						var touch = e.originalEvent.touches[0];
-						touchStartX = touch.pageY;
-						touchStartY = touch.pageX;
+						startX = contentPositionX();
+						startY = contentPositionY();
+						touchStartX = touch.pageX;
+						touchStartY = touch.pageY;
+						moved = false;
+						moving = true;
 					}
 				).bind(
-					'touchmove',
+					'touchmove.jsp',
 					function(ev)
 					{
+						if(!moving) {
+							return;
+						}
+						
 						var touchPos = ev.originalEvent.touches[0],
 							dX = horizontalDragPosition, dY = verticalDragPosition;
 						
-						jsp.scrollBy(touchStartX - touchPos.pageX, touchStartY - touchPos.pageY);
-						touchStartX = touchPos.pageX;
-						touchStartY = touchPos.pageY;
+						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
+						
+						moved = moved || Math.abs(touchStartX - touchPos.pageX) > 5 || Math.abs(touchStartY - touchPos.pageY) > 5;
 						
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
+					}
+				).bind(
+					'touchend.jsp',
+					function(e)
+					{
+						moving = false;
+						if(moved) {
+							//return false;
+						}
+					}
+				).bind(
+					'click.jsp-touchclick',
+					function(e)
+					{
+						if(moved) {
+							moved = false;
+							return false;
+						}
 					}
 				);
 			}
@@ -1298,7 +1328,7 @@
 		'trackClickRepeatFreq'		: 70,
 		'verticalArrowPositions'	: 'split',
 		'horizontalArrowPositions'	: 'split',
-		'enableKeyboardNavigation'	: true,
+		'enableKeyboardNavigation'	: !navigator.userAgent.match(/iPhone|iPod|iPad|Android/i)	,
 		'hideFocus'					: false,
 		'keyboardSpeed'				: 0,
 		'keyboardRepeatFreq'		: 50,
