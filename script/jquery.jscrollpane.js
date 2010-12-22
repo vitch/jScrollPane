@@ -195,6 +195,8 @@
 
 					initFocusHandler();
 					initMousewheel();
+					initTouch();
+					
 					if (settings.enableKeyboardNavigation) {
 						initKeyboardNav();
 					}
@@ -1070,6 +1072,40 @@
 				if (!$(':focus').length) {
 					elem.focus();
 				}
+			}
+			
+			// Init touch on iPad, iPhone, iPod, Android
+			function initTouch()
+			{
+				if(!navigator.userAgent.match(/iPhone|iPod|iPad|Android/i)) {
+					return;
+				}
+				
+				var touchStartX,
+					touchStartY;
+  
+				container.bind(
+					'touchstart',
+					function(e)
+					{
+						var touch = e.originalEvent.touches[0];
+						touchStartX = touch.pageY;
+						touchStartY = touch.pageX;
+					}
+				).bind(
+					'touchmove',
+					function(ev)
+					{
+						var touchPos = ev.originalEvent.touches[0],
+							dX = horizontalDragPosition, dY = verticalDragPosition;
+						
+						positionDragX(touchStartX - touchPos.pageX);
+						positionDragY(touchStartY - touchPos.pageY);
+						
+						// return true if there was no movement so rest of screen can scroll
+						return dX == horizontalDragPosition && dY == verticalDragPosition;
+					}
+				);
 			}
 
 			// Public API
