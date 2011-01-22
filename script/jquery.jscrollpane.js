@@ -503,8 +503,8 @@
 				arrow = $(arrow).addClass('jspActive');
 
 				var eve,
-					scrollTO,
-					initial = true,
+					scrollTimeout,
+					isFirst = true,
 					doScroll = function()
 					{
 						if (dirX != 0) {
@@ -513,8 +513,8 @@
 						if (dirY != 0) {
 							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
 						}
-						scrollTO = setTimeout(doScroll, settings.arrowRepeatFreq * (initial ? 3 : 1));
-						initial = false;
+						scrollTimeout = setTimeout(doScroll, settings.arrowRepeatFreq * (isFirst ? 3 : 1));
+						isFirst = false;
 					};
 
 				doScroll();
@@ -526,8 +526,8 @@
 					function()
 					{
 						arrow.removeClass('jspActive');
-						scrollTO && clearTimeout(scrollTO);
-						scrollTO = null;
+						scrollTimeout && clearTimeout(scrollTimeout);
+						scrollTimeout = null;
 						ele.unbind(eve);
 					}
 				);
