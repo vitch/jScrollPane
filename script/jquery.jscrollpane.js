@@ -577,7 +577,6 @@
 										scrollTimeout && clearTimeout(scrollTimeout);
 										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
-										elem.focus();
 									};
 								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
