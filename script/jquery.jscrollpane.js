@@ -545,8 +545,8 @@
 								var clickedTrack = $(this),
 									offset = clickedTrack.offset(),
 									direction = e.pageY - offset.top - verticalDragPosition,
-									scrollTO,
-									initial = true,
+									scrollTimeout,
+									isFirst = true,
 									doScroll = function()
 									{
 										var offset = clickedTrack.offset(),
@@ -569,13 +569,13 @@
 											cancelClick();
 											return;
 										}
-										scrollTO = setTimeout(doScroll, settings.trackClickRepeatFreq * (initial ? 3 : 1));
-										initial = false;
+										scrollTimeout = setTimeout(doScroll, settings.trackClickRepeatFreq * (isFirst ? 3 : 1));
+										isFirst = false;
 									},
 									cancelClick = function()
 									{
-										scrollTO && clearTimeout(scrollTO);
-										scrollTO = null;
+										scrollTimeout && clearTimeout(scrollTimeout);
+										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
 										elem.focus();
 									};
