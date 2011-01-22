@@ -82,7 +82,7 @@
 
 				settings = s;
 
-				if (pane == undefined) {
+				if (pane === undefined) {
 
 					elem.css(
 						{
@@ -229,7 +229,7 @@
 						settings.autoReinitialiseDelay
 					);
 				} else if (!settings.autoReinitialise && reinitialiseInterval) {
-					clearInterval(reinitialiseInterval)
+					clearInterval(reinitialiseInterval);
 				}
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
@@ -325,7 +325,7 @@
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
-				if (verticalBar.position().left == 0) {
+				if (verticalBar.position().left === 0) {
 					pane.css('margin-left', scrollbarWidth + 'px');
 				}
 			}
@@ -495,7 +495,7 @@
 					arrowScroll(dirX, dirY, this, ele);
 					this.blur();
 					return false;
-				}
+				};
 			}
 
 			function arrowScroll(dirX, dirY, arrow, ele)
@@ -507,10 +507,10 @@
 					isFirst = true,
 					doScroll = function()
 					{
-						if (dirX != 0) {
+						if (dirX !== 0) {
 							jsp.scrollByX(dirX * settings.arrowButtonSpeed);
 						}
-						if (dirY != 0) {
+						if (dirY !== 0) {
 							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
 						}
 						scrollTimeout = setTimeout(doScroll, settings.arrowRepeatFreq * (isFirst ? 3 : 1));
@@ -519,7 +519,7 @@
 
 				doScroll();
 
-				eve = ele == undefined ? 'mouseup.jsp' : 'mouseout.jsp';
+				eve = ele ? 'mouseout.jsp' : 'mouseup.jsp';
 				ele = ele || $('html');
 				ele.bind(
 					eve,
@@ -541,7 +541,7 @@
 						'mousedown.jsp',
 						function(e)
 						{
-							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
+							if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
 									offset = clickedTrack.offset(),
 									direction = e.pageY - offset.top - verticalDragPosition,
@@ -559,7 +559,7 @@
 											} else {
 												positionDragY(pos);
 											}
-										} else if(direction > 0) {
+										} else if (direction > 0) {
 											if (verticalDragPosition + dragY < pos) {
 												jsp.scrollByY(contentDragY);
 											} else {
@@ -591,7 +591,7 @@
 						'mousedown.jsp',
 						function(e)
 						{
-							if (e.originalTarget == undefined || e.originalTarget == e.currentTarget) {
+							if (e.originalTarget === undefined || e.originalTarget == e.currentTarget) {
 								var clickedTrack = $(this),
 									offset = clickedTrack.offset(),
 									direction = e.pageX - offset.left - horizontalDragPosition,
@@ -609,7 +609,7 @@
 											} else {
 												positionDragX(pos);
 											}
-										} else if(direction > 0) {
+										} else if (direction > 0) {
 											if (horizontalDragPosition + dragX < pos) {
 												jsp.scrollByX(contentDragX);
 											} else {
@@ -664,7 +664,7 @@
 				}
 
 				// can't just check if(animate) because false is a valid value that could be passed in...
-				if (animate == undefined) {
+				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
@@ -678,14 +678,14 @@
 
 			function _positionDragY(destY)
 			{
-				if (destY == undefined) {
+				if (destY === undefined) {
 					destY = verticalDrag.position().top;
 				}
 
 				container.scrollTop(0);
 				verticalDragPosition = destY;
 
-				var isAtTop = verticalDragPosition == 0,
+				var isAtTop = verticalDragPosition === 0,
 					isAtBottom = verticalDragPosition == dragMaxY,
 					percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
@@ -712,7 +712,7 @@
 					destX = dragMaxX;
 				}
 
-				if (animate == undefined) {
+				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
@@ -725,14 +725,14 @@
 
 			function _positionDragX(destX)
 			{
-				if (destX == undefined) {
+				if (destX === undefined) {
 					destX = horizontalDrag.position().left;
 				}
 
 				container.scrollTop(0);
 				horizontalDragPosition = destX;
 
-				var isAtLeft = horizontalDragPosition == 0,
+				var isAtLeft = horizontalDragPosition === 0,
 					isAtRight = horizontalDragPosition == dragMaxX,
 					percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
@@ -921,19 +921,19 @@
 									break;
 							}
 
-							if(dX != horizontalDragPosition || dY != verticalDragPosition){
+							if (dX != horizontalDragPosition || dY != verticalDragPosition){
 								return false;
 							}
 						}
 					);
-				if(settings.hideFocus) {
+				if (settings.hideFocus) {
 					elem.css('outline', 'none');
-					if('hideFocus' in container[0]){
+					if ('hideFocus' in container[0]){
 						elem.attr('hideFocus', true);
 					}
 				} else {
 					elem.css('outline', '');
-					if('hideFocus' in container[0]){
+					if ('hideFocus' in container[0]){
 						elem.attr('hideFocus', false);
 					}
 				}
@@ -960,7 +960,7 @@
 					if (e.length && pane.find(e)) {
 						// nasty workaround but it appears to take a little while before the hash has done its thing
 						// to the rendered page so we just wait until the container's scrollTop has been messed up.
-						if (container.scrollTop() == 0) {
+						if (container.scrollTop() === 0) {
 							retryInt = setInterval(
 								function()
 								{
@@ -971,7 +971,7 @@
 									}
 								},
 								50
-							)
+							);
 						} else {
 							scrollToElement(location.hash, true);
 							$(document).scrollTop(container.position().top);
@@ -1003,7 +1003,7 @@
 							}
 						}
 					}
-				)
+				);
 			}
 
 			// Public API
@@ -1161,7 +1161,7 @@
 				}
 				ret = ret ? ret.add(elem) : elem;
 			}
-		)
+		);
 		return ret;
 	};
 
