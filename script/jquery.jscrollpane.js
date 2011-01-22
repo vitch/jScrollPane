@@ -1187,8 +1187,8 @@
 		enableKeyboardNavigation	: true,
 		hideFocus					: false,
 		keyboardSpeed				: 0,
-		speed						: 30,		// Default speed twhen others not set or 0
-		scrollPagePercent			: 0.8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		speed						: 30,		// Default speed when others falsey
+		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
 })(jQuery,this);
