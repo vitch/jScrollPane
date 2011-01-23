@@ -956,7 +956,7 @@
 						return;
 					}
 
-					if (e.length && pane.find(e)) {
+					if (e.length && pane.find(location.hash)) {
 						// nasty workaround but it appears to take a little while before the hash has done its thing
 						// to the rendered page so we just wait until the container's scrollTop has been messed up.
 						if (container.scrollTop() === 0) {
