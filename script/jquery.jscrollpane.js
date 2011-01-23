@@ -569,7 +569,7 @@
 											cancelClick();
 											return;
 										}
-										scrollTimeout = setTimeout(doScroll, settings.trackClickRepeatFreq * (isFirst ? 3 : 1));
+										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
 										isFirst = false;
 									},
 									cancelClick = function()
@@ -594,8 +594,8 @@
 								var clickedTrack = $(this),
 									offset = clickedTrack.offset(),
 									direction = e.pageX - offset.left - horizontalDragPosition,
-									scrollTO,
-									initial = true,
+									scrollTimeout,
+									isFirst = true,
 									doScroll = function()
 									{
 										var offset = clickedTrack.offset(),
@@ -618,13 +618,13 @@
 											cancelClick();
 											return;
 										}
-										scrollTO = setTimeout(doScroll, settings.trackClickRepeatFreq * (initial ? 3 : 1));
-										initial = false;
+										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
+										isFirst = false;
 									},
 									cancelClick = function()
 									{
-										scrollTO && clearTimeout(scrollTO);
-										scrollTO = null;
+										scrollTimeout && clearTimeout(scrollTimeout);
+										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
 										elem.focus();
 									};
@@ -1191,6 +1191,7 @@
 		enableKeyboardNavigation	: true,
 		hideFocus					: false,
 		keyboardSpeed				: 0,
+		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
 		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
