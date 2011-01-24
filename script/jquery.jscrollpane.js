@@ -1015,7 +1015,7 @@
 					// initialisation will be used.
 					reinitialise: function(s)
 					{
-						s = $.extend({}, s, settings);
+						s = $.extend({}, settings, s);
 						initialise(s);
 					},
 					// Scrolls the specified element (a jQuery object, DOM node or jQuery selector string) into view so
