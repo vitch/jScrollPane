@@ -57,7 +57,6 @@
 		// JScrollPane "class" - public methods are available through $('selector').data('jsp')
 		function JScrollPane(elem, s)
 		{
-
 			var settings, jsp = this, pane, paneWidth, paneHeight, container, contentWidth, contentHeight,
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
@@ -865,7 +864,7 @@
 
 			function initFocusHandler()
 			{
-				pane.unbind('focus.jsp').bind(
+				pane.find(':input,a').unbind('focus.jsp').bind(
 					'focus.jsp',
 					function(e)
 					{
@@ -878,7 +877,7 @@
 			function removeFocusHandler()
 			{
 
-				pane.unbind('focus.jsp');
+				pane.find(':input,a').unbind('focus.jsp');
 			}
 			
 			function initKeyboardNav()
