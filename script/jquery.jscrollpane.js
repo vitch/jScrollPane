@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta6 - 2010-12-06
+ * jScrollPane - v2.0.0beta8 - 2011-01-24
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta6, Last updated: 2010-12-06*
+// *Version: 2.0.0beta8, Last updated: 2011-01-24*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,7 +39,9 @@
 //
 // About: Release History
 //
-// 2.0.0beta6 - (in progress) scrollToElement horizontal support
+// 2.0.0beta8 - (in progress)
+// 2.0.0beta7 - (2011-01-23) scroll speed consistent (thanks Aivo Paas)
+// 2.0.0beta6 - (2010-12-07) scrollToElement horizontal support
 // 2.0.0beta5 - (2010-10-18) jQuery 1.4.3 support, various bug fixes
 // 2.0.0beta4 - (2010-09-17) clickOnTrack support, bug fixes
 // 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
@@ -55,7 +57,6 @@
 		// JScrollPane "class" - public methods are available through $('selector').data('jsp')
 		function JScrollPane(elem, s)
 		{
-
 			var settings, jsp = this, pane, paneWidth, paneHeight, container, contentWidth, contentHeight,
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
@@ -85,8 +86,8 @@
 
 					elem.css(
 						{
-							'overflow': 'hidden',
-							'padding': 0
+							overflow: 'hidden',
+							padding: 0
 						}
 					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
@@ -127,8 +128,8 @@
 						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 						paneHeight = elem.innerHeight();
 						container.css({
-							'width': paneWidth + 'px',
-							'height': paneHeight + 'px'
+							width: paneWidth + 'px',
+							height: paneHeight + 'px'
 						});
 					}
 
@@ -167,8 +168,8 @@
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
-						'top': 0,
-						'width': container.width() - originalPaddingTotalWidth
+						top: 0,
+						width: container.width() - originalPaddingTotalWidth
 					});
 					removeMousewheel();
 					removeFocusHandler();
@@ -490,7 +491,10 @@
 			{
 				arrow = $(arrow).addClass('jspActive');
 
-				var eve, doScroll = function()
+				var eve,
+					scrollTimeout,
+					isFirst = true,
+					doScroll = function()
 					{
 						if (dirX !== 0) {
 							jsp.scrollByX(dirX * settings.arrowButtonSpeed);
@@ -498,10 +502,9 @@
 						if (dirY !== 0) {
 							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
 						}
-						scrollTO = setTimeout(doScroll, initial ? settings.initialDelay : settings.arrowRepeatFreq);
-						initial = false;
-					},
-					initial = true, scrollTO;
+						scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.arrowRepeatFreq);
+						isFirst = false;
+					};
 
 				doScroll();
 
@@ -512,9 +515,9 @@
 					function()
 					{
 						arrow.removeClass('jspActive');
-						if (scrollTO) {
-							clearTimeout(scrollTO);
-							scrollTO = null;
+						if (scrollTimeout) {
+							clearTimeout(scrollTimeout);
+							scrollTimeout = null;
 						}
 						ele.unbind(eve);
 						focusElem();
@@ -534,11 +537,10 @@
 								var clickedTrack = $(this),
 									offset = clickedTrack.offset(),
 									direction = e.pageY - offset.top - verticalDragPosition,
-									scrollTO,
-									initial = true,
-									doScroll = function() {
-										scrollTO = setTimeout(doScroll, initial ? settings.initialDelay : settings.trackClickRepeatFreq);
-										initial = false;
+									scrollTimeout,
+									isFirst = true,
+									doScroll = function()
+									{
 										var offset = clickedTrack.offset(),
 											pos = e.pageY - offset.top - verticalDragHeight / 2,
 											contentDragY = paneHeight * settings.scrollPagePercent,
@@ -559,12 +561,13 @@
 											cancelClick();
 											return;
 										}
+										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
+										isFirst = false;
 									},
-									cancelClick = function() {
-										if (scrollTO) {	
-											clearTimeout(scrollTO);
-											scrollTO = null;
-										}
+									cancelClick = function()
+									{
+										scrollTimeout && clearTimeout(scrollTimeout);
+										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
 										focusElem();
 									};
@@ -585,11 +588,10 @@
 								var clickedTrack = $(this),
 									offset = clickedTrack.offset(),
 									direction = e.pageX - offset.left - horizontalDragPosition,
-									scrollTO,
-									initial = true,
-									doScroll = function() {
-										scrollTO = setTimeout(doScroll, initial ? settings.initialDelay : settings.trackClickRepeatFreq);
-										initial = false;
+									scrollTimeout,
+									isFirst = true,
+									doScroll = function()
+									{
 										var offset = clickedTrack.offset(),
 											pos = e.pageX - offset.left - horizontalDragWidth / 2,
 											contentDragX = paneWidth * settings.scrollPagePercent,
@@ -610,12 +612,13 @@
 											cancelClick();
 											return;
 										}
+										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
+										isFirst = false;
 									},
-									cancelClick = function() {
-										if (scrollTO) {
-											clearTimeout(scrollTO);
-											scrollTO = null;
-										}
+									cancelClick = function()
+									{
+										scrollTimeout && clearTimeout(scrollTimeout);
+										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
 										focusElem();
 									};
@@ -864,7 +867,7 @@
 
 			function initFocusHandler()
 			{
-				pane.unbind('focus.jsp').bind(
+				pane.find(':input,a').unbind('focus.jsp').bind(
 					'focus.jsp',
 					function(e)
 					{
@@ -878,7 +881,7 @@
 
 			function removeFocusHandler()
 			{
-				pane.unbind('focus.jsp');
+				pane.find(':input,a').unbind('focus.jsp');
 			}
 			
 			function keyDownHandler()
@@ -1017,7 +1020,7 @@
 						return;
 					}
 
-					if (e.length && pane.find(e)) {
+					if (e.length && pane.find(location.hash)) {
 						// nasty workaround but it appears to take a little while before the hash has done its thing
 						// to the rendered page so we just wait until the container's scrollTop has been messed up.
 						if (container.scrollTop() === 0) {
@@ -1077,10 +1080,6 @@
 			// Init touch on iPad, iPhone, iPod, Android
 			function initTouch()
 			{
-				if(!navigator.userAgent.match(/iPhone|iPod|iPad|Android/i)) {
-					return;
-				}
-				
 				var startX,
 					startY,
 					touchStartX,
@@ -1123,9 +1122,9 @@
 					function(e)
 					{
 						moving = false;
-						if(moved) {
-							//return false;
-						}
+						/*if(moved) {
+							return false;
+						}*/
 					}
 				).bind(
 					'click.jsp-touchclick',
@@ -1149,7 +1148,7 @@
 					// initialisation will be used.
 					reinitialise: function(s)
 					{
-						s = $.extend({}, s, settings);
+						s = $.extend({}, settings, s);
 						initialise(s);
 					},
 					// Scrolls the specified element (a jQuery object, DOM node or jQuery selector string) into view so
@@ -1278,14 +1277,9 @@
 		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
 		
 		// Apply default speed
-		$.each(
-			['mouseWheelSpeed', 'arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'],
-			function()
-			{
-				settings[this] = settings[this] || settings.speed;
-			}
-		);
-		
+		$.each(['mouseWheelSpeed', 'arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'], function() {
+			settings[this] = settings[this] || settings.speed;
+		});
 
 		var ret;
 		this.each(
@@ -1305,36 +1299,36 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		'showArrows'				: false,
-		'maintainPosition'			: true,
-		'clickOnTrack'				: true,
-		'autoReinitialise'			: false,
-		'autoReinitialiseDelay'		: 500,
-		'verticalDragMinHeight'		: 0,
-		'verticalDragMaxHeight'		: 99999,
-		'horizontalDragMinWidth'	: 0,
-		'horizontalDragMaxWidth'	: 99999,
-		'animateScroll'				: false,
-		'animateDuration'			: 300,
-		'animateEase'				: 'linear',
-		'hijackInternalLinks'		: false,
-		'verticalGutter'			: 4,
-		'horizontalGutter'			: 4,
-		'mouseWheelSpeed'			: 0,
-		'arrowButtonSpeed'			: 0,
-		'arrowRepeatFreq'			: 50,
-		'arrowScrollOnHover'		: false,
-		'trackClickSpeed'			: 0,
-		'trackClickRepeatFreq'		: 70,
-		'verticalArrowPositions'	: 'split',
-		'horizontalArrowPositions'	: 'split',
-		'enableKeyboardNavigation'	: !navigator.userAgent.match(/iPhone|iPod|iPad|Android/i)	,
-		'hideFocus'					: false,
-		'keyboardSpeed'				: 0,
-		'keyboardRepeatFreq'		: 50,
-		'initialDelay'				: 300,		// Delay before starting repeating
-		'speed'						: 30,		// Default speed when others not set or 0
-		'scrollPagePercent'			: 0.8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		showArrows					: false,
+		maintainPosition			: true,
+		clickOnTrack				: true,
+		autoReinitialise			: false,
+		autoReinitialiseDelay		: 500,
+		verticalDragMinHeight		: 0,
+		verticalDragMaxHeight		: 99999,
+		horizontalDragMinWidth		: 0,
+		horizontalDragMaxWidth		: 99999,
+		animateScroll				: false,
+		animateDuration				: 300,
+		animateEase					: 'linear',
+		hijackInternalLinks			: false,
+		verticalGutter				: 4,
+		horizontalGutter			: 4,
+		mouseWheelSpeed				: 0,
+		arrowButtonSpeed			: 0,
+		arrowRepeatFreq				: 50,
+		arrowScrollOnHover			: false,
+		trackClickSpeed				: 0,
+		trackClickRepeatFreq		: 70,
+		verticalArrowPositions		: 'split',
+		horizontalArrowPositions	: 'split',
+		enableKeyboardNavigation	: true,
+		hideFocus					: false,
+		keyboardSpeed				: 0,
+		keyboardRepeatFreq			: 50,
+		initialDelay                : 300,        // Delay before starting repeating
+		speed						: 30,		// Default speed when others falsey
+		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
 })(jQuery,this);
