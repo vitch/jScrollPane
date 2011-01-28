@@ -848,7 +848,7 @@
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
-						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed);
+						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, false);
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -871,9 +871,6 @@
 					'focus.jsp',
 					function(e)
 					{
-						if (e.target === this) {
-							return;
-						}
 						scrollToElement(e.target, false);
 					}
 				);
@@ -889,23 +886,23 @@
 				var dX = horizontalDragPosition, dY = verticalDragPosition;
 				switch(keyDown) {
 					case 40: // down
-						jsp.scrollByY(settings.keyboardSpeed);
+						jsp.scrollByY(settings.keyboardSpeed, false);
 						break;
 					case 38: // up
-						jsp.scrollByY(-settings.keyboardSpeed);
+						jsp.scrollByY(-settings.keyboardSpeed, false);
 						break;
 					case 34: // page down
 					case 32: // space
-						jsp.scrollByY(paneHeight * settings.scrollPagePercent);
+						jsp.scrollByY(paneHeight * settings.scrollPagePercent, false);
 						break;
 					case 33: // page up
-						jsp.scrollByY(-paneHeight * settings.scrollPagePercent);
+						jsp.scrollByY(-paneHeight * settings.scrollPagePercent, false);
 						break;
 					case 39: // right
-						jsp.scrollByX(settings.keyboardSpeed);
+						jsp.scrollByX(settings.keyboardSpeed, false);
 						break;
 					case 37: // left
-						jsp.scrollByX(-settings.keyboardSpeed);
+						jsp.scrollByX(-settings.keyboardSpeed, false);
 						break;
 				}
 				
