@@ -42,6 +42,8 @@ if (window.location.hostname == 'jscrollpane.kelvinluck.com') {
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
+} else if(window.location.protocol == 'file:') {
+	// Allow local testing without annoying alerts
 } else {
 	alert('Do not include demo.js on your site!');
 }
