@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta8 - (in progress)
+// 2.0.0beta8 - (2011-01-29) touchscreen support, improved keyboard support
 // 2.0.0beta7 - (2011-01-23) scroll speed consistent (thanks Aivo Paas)
 // 2.0.0beta6 - (2010-12-07) scrollToElement horizontal support
 // 2.0.0beta5 - (2010-10-18) jQuery 1.4.3 support, various bug fixes
