@@ -515,10 +515,8 @@
 					function()
 					{
 						arrow.removeClass('jspActive');
-						if (scrollTimeout) {
-							clearTimeout(scrollTimeout);
-							scrollTimeout = null;
-						}
+						scrollTimeout && clearTimeout(scrollTimeout);
+						scrollTimeout = null;
 						ele.unbind(eve);
 						focusElem();
 					}
