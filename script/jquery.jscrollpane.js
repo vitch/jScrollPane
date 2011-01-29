@@ -1130,6 +1130,15 @@
 					}
 				);
 			}
+			
+			function destroy(){
+				if(isScrollableH) horizontalBar.remove();
+				if(isScrollableV) verticalBar.remove();
+
+				pane.children().unwrap().unwrap();
+				elem.removeClass("jspScrollable").removeAttr("style").removeAttr("tabindex").removeData("jsp");
+				elem.unbind('.jsp');
+			}
 
 			// Public API
 			$.extend(
@@ -1259,6 +1268,11 @@
 					hijackInternalLinks: function()
 					{
 						hijackInternalLinks();
+					},
+					// It simple distroy a the jscrollpane for that element.
+					destroy: function()
+					{
+							destroy();
 					}
 				}
 			);
