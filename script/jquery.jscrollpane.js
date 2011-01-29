@@ -1267,6 +1267,16 @@
 					{
 						return contentHeight();
 					},
+					// Returns the horizontal position of the viewport within the pane content.
+					getPercentScrolledX: function()
+					{
+						return contentPositionX() / (contentWidth - paneWidth);
+					},
+					// Returns the vertical position of the viewport within the pane content.
+					getPercentScrolledY: function()
+					{
+						return contentPositionY() / (contentHeight - paneHeight);
+					},
 					// Returns whether or not this scrollpane has a horizontal scrollbar.
 					getIsScrollableH: function()
 					{
