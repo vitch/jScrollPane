@@ -1257,6 +1257,16 @@
 					{
 						return contentPositionY();
 					},
+					// Returns the width of the content within the scroll pane.
+					getContentWidth: function()
+					{
+						return contentWidth();
+					},
+					// Returns the height of the content within the scroll pane.
+					getContentHeight: function()
+					{
+						return contentHeight();
+					},
 					// Returns whether or not this scrollpane has a horizontal scrollbar.
 					getIsScrollableH: function()
 					{
