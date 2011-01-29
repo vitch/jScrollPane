@@ -65,7 +65,7 @@
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				keyDown, keyDownTimeout,
+				keyDown, keyDownTimeout, originalElement = elem.clone().empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
@@ -1133,12 +1133,8 @@
 			}
 			
 			function destroy(){
-				if(isScrollableH) horizontalBar.remove();
-				if(isScrollableV) verticalBar.remove();
-
-				pane.children().unwrap().unwrap();
-				elem.removeClass("jspScrollable").removeAttr("style").removeAttr("tabindex").removeData("jsp");
-				elem.unbind('.jsp');
+				elem.removeClass('jspScrollable').unbind('.jsp');
+				elem.replaceWith(originalElement.append(pane.children()));
 			}
 
 			// Public API
