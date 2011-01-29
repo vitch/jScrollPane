@@ -703,7 +703,7 @@
 				
 				updateVerticalArrows(isAtTop, isAtBottom);
 				pane.css('top', destTop);
-				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]);
+				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]).trigger('scroll');
 			}
 
 			function positionDragX(destX, animate)
@@ -750,7 +750,7 @@
 				
 				updateHorizontalArrows(isAtLeft, isAtRight);
 				pane.css('left', destLeft);
-				elem.trigger('jsp-scroll-x', [-destLeft, isAtLeft, isAtRight]);
+				elem.trigger('jsp-scroll-x', [-destLeft, isAtLeft, isAtRight]).trigger('scroll');
 			}
 
 			function updateVerticalArrows(isAtTop, isAtBottom)
