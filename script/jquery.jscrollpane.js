@@ -1274,7 +1274,8 @@
 					{
 						hijackInternalLinks();
 					},
-					// It simple distroy a the jscrollpane for that element.
+					// Removes the jScrollPane and returns the page to the state it was in before jScrollPane was
+					// initialised.
 					destroy: function()
 					{
 							destroy();
