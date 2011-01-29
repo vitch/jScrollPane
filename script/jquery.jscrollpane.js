@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta8 - 2011-01-24
+ * jScrollPane - v2.0.0beta8 - 2011-01-29
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta8, Last updated: 2011-01-24*
+// *Version: 2.0.0beta8, Last updated: 2011-01-29*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
