@@ -79,12 +79,13 @@
 			{
 
 				var clonedElem, tempWrapper, /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
-						hasContainingSpaceChanged;
+						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft;
 
 				settings = s;
 
 				if (pane === undefined) {
-
+					originalScrollTop = elem.scrollTop();
+					originalScrollLeft = elem.scrollLeft();
 					elem.css(
 						{
 							overflow: 'hidden',
@@ -223,6 +224,9 @@
 				} else if (!settings.autoReinitialise && reinitialiseInterval) {
 					clearInterval(reinitialiseInterval);
 				}
+
+				originalScrollTop && elem.scrollTop(0) && scrollToY(originalScrollTop, false);
+				originalScrollLeft && elem.scrollLeft(0) && scrollToX(originalScrollLeft, false);
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 			}
