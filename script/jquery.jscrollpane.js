@@ -1137,8 +1137,12 @@
 			}
 			
 			function destroy(){
+				var currentY = contentPositionY(),
+					currentX = contentPositionX();
 				elem.removeClass('jspScrollable').unbind('.jsp');
 				elem.replaceWith(originalElement.append(pane.children()));
+				originalElement.scrollTop(currentY);
+				originalElement.scrollLeft(currentX);
 			}
 
 			// Public API
