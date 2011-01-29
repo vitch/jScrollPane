@@ -64,7 +64,7 @@
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				keyDown, keyDownTO,
+				keyDown, keyDownTimeout,
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
@@ -909,7 +909,7 @@
 			
 			function holdKeyDown(initial)
 			{
-				keyDownTO = setTimeout(
+				keyDownTimeout = setTimeout(
 					function()
 					{
 						holdKeyDown();
@@ -924,10 +924,8 @@
 			function stopKeyDown()
 			{
 				keyDown = null;
-				if (keyDownTO) {
-					clearTimeout(keyDownTO);
-					keyDownTO = null;
-				}
+				keyDownTimeout && clearTimeout(keyDownTimeout);
+				keyDownTimeout = null;
 			}
 			
 			function initKeyboardNav()
