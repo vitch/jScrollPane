@@ -438,7 +438,7 @@
 				percentInViewV = contentHeight / paneHeight;
 
 				if (isScrollableH) {
-					horizontalDragWidth = 1 / percentInViewH * horizontalTrackWidth;
+					horizontalDragWidth = Math.ceil(1 / percentInViewH * horizontalTrackWidth);
 					if (horizontalDragWidth > settings.horizontalDragMaxWidth) {
 						horizontalDragWidth = settings.horizontalDragMaxWidth;
 					} else if (horizontalDragWidth < settings.horizontalDragMinWidth) {
@@ -449,7 +449,7 @@
 					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
 				}
 				if (isScrollableV) {
-					verticalDragHeight = 1 / percentInViewV * verticalTrackHeight;
+					verticalDragHeight = Math.ceil(1 / percentInViewV * verticalTrackHeight);
 					if (verticalDragHeight > settings.verticalDragMaxHeight) {
 						verticalDragHeight = settings.verticalDragMaxHeight;
 					} else if (verticalDragHeight < settings.verticalDragMinHeight) {
