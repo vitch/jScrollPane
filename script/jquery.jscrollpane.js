@@ -1189,6 +1189,20 @@
 					{
 						scrollToY(destY, animate);
 					},
+					// Scrolls the pane to the specified percentage of its maximum horizontal scroll position. animate
+					// is optional and if not passed then the value of animateScroll from the settings object this
+					// jScrollPane was initialised with is used.
+					scrollToPercentX: function(destPercentX, animate)
+					{
+						scrollToX(destPercentX * (contentWidth - paneWidth), animate);
+					},
+					// Scrolls the pane to the specified percentage of its maximum vertical scroll position. animate
+					// is optional and if not passed then the value of animateScroll from the settings object this
+					// jScrollPane was initialised with is used.
+					scrollToPercentY: function(destPercentY, animate)
+					{
+						scrollToY(destPercentY * (contentHeight - paneHeight), animate);
+					},
 					// Scrolls the pane by the specified amount of pixels. animate is optional and if not passed then
 					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
 					scrollBy: function(deltaX, deltaY, animate)
