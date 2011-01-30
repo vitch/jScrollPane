@@ -884,55 +884,6 @@
 				pane.find(':input,a').unbind('focus.jsp');
 			}
 			
-			function keyDownHandler()
-			{
-				var dX = horizontalDragPosition, dY = verticalDragPosition;
-				switch(keyDown) {
-					case 40: // down
-						jsp.scrollByY(settings.keyboardSpeed, false);
-						break;
-					case 38: // up
-						jsp.scrollByY(-settings.keyboardSpeed, false);
-						break;
-					case 34: // page down
-					case 32: // space
-						jsp.scrollByY(paneHeight * settings.scrollPagePercent, false);
-						break;
-					case 33: // page up
-						jsp.scrollByY(-paneHeight * settings.scrollPagePercent, false);
-						break;
-					case 39: // right
-						jsp.scrollByX(settings.keyboardSpeed, false);
-						break;
-					case 37: // left
-						jsp.scrollByX(-settings.keyboardSpeed, false);
-						break;
-				}
-				
-				return dX != horizontalDragPosition || dY != verticalDragPosition;
-			}
-			
-			function holdKeyDown(initial)
-			{
-				keyDownTimeout = setTimeout(
-					function()
-					{
-						holdKeyDown();
-					},
-					initial ? settings.initialDelay : settings.keyboardRepeatFreq
-				);
-				if (!keyDownHandler()) {
-					stopKeyDown();
-				}
-			}
-			
-			function stopKeyDown()
-			{
-				keyDown = null;
-				keyDownTimeout && clearTimeout(keyDownTimeout);
-				keyDownTimeout = null;
-			}
-			
 			function initKeyboardNav()
 			{
 				// IE also focuses elements that don't have tabindex set.
@@ -998,6 +949,55 @@
 					if ('hideFocus' in container[0]){
 						elem.attr('hideFocus', false);
 					}
+				}
+				
+				function keyDownHandler()
+				{
+					var dX = horizontalDragPosition, dY = verticalDragPosition;
+					switch(keyDown) {
+						case 40: // down
+							jsp.scrollByY(settings.keyboardSpeed, false);
+							break;
+						case 38: // up
+							jsp.scrollByY(-settings.keyboardSpeed, false);
+							break;
+						case 34: // page down
+						case 32: // space
+							jsp.scrollByY(paneHeight * settings.scrollPagePercent, false);
+							break;
+						case 33: // page up
+							jsp.scrollByY(-paneHeight * settings.scrollPagePercent, false);
+							break;
+						case 39: // right
+							jsp.scrollByX(settings.keyboardSpeed, false);
+							break;
+						case 37: // left
+							jsp.scrollByX(-settings.keyboardSpeed, false);
+							break;
+					}
+
+					return dX != horizontalDragPosition || dY != verticalDragPosition;
+				}
+
+				function holdKeyDown(initial)
+				{
+					keyDownTimeout = setTimeout(
+						function()
+						{
+							holdKeyDown();
+						},
+						initial ? settings.initialDelay : settings.keyboardRepeatFreq
+					);
+					if (!keyDownHandler()) {
+						stopKeyDown();
+					}
+				}
+
+				function stopKeyDown()
+				{
+					keyDown = null;
+					keyDownTimeout && clearTimeout(keyDownTimeout);
+					keyDownTimeout = null;
 				}
 			}
 			
