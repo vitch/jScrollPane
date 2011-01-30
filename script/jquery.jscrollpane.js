@@ -192,8 +192,8 @@
 					resizeScrollbars();
 
 					if (isMaintainingPositon) {
-						scrollToX(lastContentX);
-						scrollToY(lastContentY);
+						scrollToX(lastContentX, false);
+						scrollToY(lastContentY, false);
 					}
 
 					initFocusHandler();
