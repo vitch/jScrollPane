@@ -896,7 +896,7 @@
 				);
 				
 				elem.attr('tabindex', 0)
-					.unbind('keydown.jsp keyup.jsp keypress.jsp')
+					.unbind('keydown.jsp keypress.jsp')
 					.bind(
 						'keydown.jsp',
 						function(e)
@@ -930,13 +930,7 @@
 							return !elementHasScrolled;
 						}
 					).bind(
-						'keyup.jsp',
-						function(e)
-						{
-							stopKeyDown();
-						}
-					).bind(
-						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses...
+						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses if the JSP scrolls...
 						function(e)
 						{
 							if (e.keyCode == keyDown) {
@@ -986,19 +980,13 @@
 					elementHasScrolled = dX != horizontalDragPosition || dY != verticalDragPosition;
 					return elementHasScrolled;
 				}
-
-				function stopKeyDown()
-				{
-					elementHasScrolled = false;
-					keyDown = null;
-				}
 			}
 			
 			function removeKeyboardNav()
 			{
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
-					.unbind('keydown.jsp keyup.jsp keypress.jsp');
+					.unbind('keydown.jsp keypress.jsp');
 			}
 
 			function observeHash()
