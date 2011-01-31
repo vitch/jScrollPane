@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta9 - (in progress)
+// 2.0.0beta9 - (2011-01-31) new API methods, bug fixes and correct keyboard support for FF/OSX
 // 2.0.0beta8 - (2011-01-29) touchscreen support, improved keyboard support
 // 2.0.0beta7 - (2011-01-23) scroll speed consistent (thanks Aivo Paas)
 // 2.0.0beta6 - (2010-12-07) scrollToElement horizontal support
