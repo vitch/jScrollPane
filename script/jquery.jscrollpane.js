@@ -886,6 +886,7 @@
 			
 			function initKeyboardNav()
 			{
+				var elementHasScrolled;
 				// IE also focuses elements that don't have tabindex set.
 				pane.focus(
 					function()
@@ -895,7 +896,7 @@
 				);
 				
 				elem.attr('tabindex', 0)
-					.unbind('keydown.jsp keyup.jsp')
+					.unbind('keydown.jsp keyup.jsp keypress.jsp')
 					.bind(
 						'keydown.jsp',
 						function(e)
@@ -912,11 +913,15 @@
 								case 33: // page up
 								case 39: // right
 								case 37: // left
+									/*
 									if (keyDown != e.keyCode) {
 										stopKeyDown();
 										keyDown = e.keyCode;
 										holdKeyDown(true);
 									}
+									*/
+									keyDown = e.keyCode;
+									keyDownHandler();
 									break;
 								case 35: // end
 									scrollToY(contentHeight - paneHeight);
@@ -928,9 +933,9 @@
 									break;
 							}
 
-							if (keyDown == e.keyCode || dX != horizontalDragPosition || dY != verticalDragPosition) {
-								return false;
-							}
+							elementHasScrolled = e.keyCode == keyDown && dX != horizontalDragPosition || dY != verticalDragPosition;
+//console.log('keydown', elementHasScrolled);
+							return !elementHasScrolled;
 						}
 					).bind(
 						'keyup.jsp',
@@ -938,7 +943,19 @@
 						{
 							stopKeyDown();
 						}
+					).bind(
+						'keypress.jsp',
+						function(e)
+						{
+							if (e.keyCode == keyDown) {
+								keyDownHandler();
+							}
+							// Only event that can be cancelled on FF/ OSX to prevent default scroll if necessary
+//							console.log('keypress', elementHasScrolled)
+							return !elementHasScrolled;
+						}
 					);
+				
 				if (settings.hideFocus) {
 					elem.css('outline', 'none');
 					if ('hideFocus' in container[0]){
@@ -976,11 +993,14 @@
 							break;
 					}
 
-					return dX != horizontalDragPosition || dY != verticalDragPosition;
+					elementHasScrolled = dX != horizontalDragPosition || dY != verticalDragPosition;
+					//console.log('keyDownHandler ', elementHasScrolled);
+					return elementHasScrolled;
 				}
 
 				function holdKeyDown(initial)
 				{
+					//console.log('holdKeyDown', initial);
 					keyDownTimeout = setTimeout(
 						function()
 						{
@@ -988,13 +1008,18 @@
 						},
 						initial ? settings.initialDelay : settings.keyboardRepeatFreq
 					);
+					//keyDownHandler();
+					//*
 					if (!keyDownHandler()) {
 						stopKeyDown();
 					}
+					//*/
 				}
 
 				function stopKeyDown()
 				{
+					//console.log('stopKeyDown');
+					elementHasScrolled = false;
 					keyDown = null;
 					keyDownTimeout && clearTimeout(keyDownTimeout);
 					keyDownTimeout = null;
@@ -1005,7 +1030,7 @@
 			{
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
-					.unbind('keydown.jsp keyup.jsp');
+					.unbind('keydown.jsp keyup.jsp keypress.jsp');
 			}
 
 			function observeHash()
