@@ -65,7 +65,7 @@
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				keyDown, keyDownTimeout, originalElement = elem.clone().empty(),
+				originalElement = elem.clone().empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
@@ -886,7 +886,7 @@
 			
 			function initKeyboardNav()
 			{
-				var elementHasScrolled;
+				var keyDown, elementHasScrolled;
 				// IE also focuses elements that don't have tabindex set.
 				pane.focus(
 					function()
@@ -913,13 +913,6 @@
 								case 33: // page up
 								case 39: // right
 								case 37: // left
-									/*
-									if (keyDown != e.keyCode) {
-										stopKeyDown();
-										keyDown = e.keyCode;
-										holdKeyDown(true);
-									}
-									*/
 									keyDown = e.keyCode;
 									keyDownHandler();
 									break;
@@ -934,7 +927,6 @@
 							}
 
 							elementHasScrolled = e.keyCode == keyDown && dX != horizontalDragPosition || dY != verticalDragPosition;
-//console.log('keydown', elementHasScrolled);
 							return !elementHasScrolled;
 						}
 					).bind(
@@ -944,14 +936,12 @@
 							stopKeyDown();
 						}
 					).bind(
-						'keypress.jsp',
+						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses...
 						function(e)
 						{
 							if (e.keyCode == keyDown) {
 								keyDownHandler();
 							}
-							// Only event that can be cancelled on FF/ OSX to prevent default scroll if necessary
-//							console.log('keypress', elementHasScrolled)
 							return !elementHasScrolled;
 						}
 					);
@@ -994,35 +984,13 @@
 					}
 
 					elementHasScrolled = dX != horizontalDragPosition || dY != verticalDragPosition;
-					//console.log('keyDownHandler ', elementHasScrolled);
 					return elementHasScrolled;
-				}
-
-				function holdKeyDown(initial)
-				{
-					//console.log('holdKeyDown', initial);
-					keyDownTimeout = setTimeout(
-						function()
-						{
-							holdKeyDown();
-						},
-						initial ? settings.initialDelay : settings.keyboardRepeatFreq
-					);
-					//keyDownHandler();
-					//*
-					if (!keyDownHandler()) {
-						stopKeyDown();
-					}
-					//*/
 				}
 
 				function stopKeyDown()
 				{
-					//console.log('stopKeyDown');
 					elementHasScrolled = false;
 					keyDown = null;
-					keyDownTimeout && clearTimeout(keyDownTimeout);
-					keyDownTimeout = null;
 				}
 			}
 			
@@ -1411,7 +1379,6 @@
 		enableKeyboardNavigation	: true,
 		hideFocus					: false,
 		keyboardSpeed				: 0,
-		keyboardRepeatFreq			: 50,
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
 		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
