@@ -523,7 +523,6 @@
 						scrollTimeout && clearTimeout(scrollTimeout);
 						scrollTimeout = null;
 						ele.unbind(eve);
-						focusElem();
 					}
 				);
 			}
@@ -572,7 +571,6 @@
 										scrollTimeout && clearTimeout(scrollTimeout);
 										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
-										focusElem();
 									};
 								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
@@ -623,7 +621,6 @@
 										scrollTimeout && clearTimeout(scrollTimeout);
 										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
-										focusElem();
 									};
 								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
@@ -654,7 +651,6 @@
 				if (horizontalDrag) {
 					horizontalDrag.removeClass('jspActive');
 				}
-				focusElem();
 			}
 
 			function positionDragY(destY, animate)
@@ -1046,14 +1042,6 @@
 						}
 					}
 				);
-			}
-			
-			// If no element has focus, focus elem to support keyboard navigation
-			function focusElem()
-			{
-				if (!$(':focus').length) {
-					elem.focus();
-				}
 			}
 			
 			// Init touch on iPad, iPhone, iPod, Android
