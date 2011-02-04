@@ -66,7 +66,7 @@
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				originalElement = elem.clone().empty(),
+				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
@@ -153,7 +153,7 @@
 				// width as allowed by its container, regardless of overflow settings.
 				// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
 				// container. Now it will push outwards to its maxium real width...
-				clonedElem = pane.clone().css('position', 'absolute');
+				clonedElem = pane.clone(false, false).css('position', 'absolute');
 				tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
 				$('body').append(tempWrapper);
 				contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
