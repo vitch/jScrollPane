@@ -322,8 +322,11 @@
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
-				if (verticalBar.position().left === 0) {
-					pane.css('margin-left', scrollbarWidth + 'px');
+				try {
+					if (verticalBar.position().left === 0) {
+						pane.css('margin-left', scrollbarWidth + 'px');
+					}
+				} catch (err) {
 				}
 			}
 
