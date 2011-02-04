@@ -886,7 +886,10 @@
 			
 			function initKeyboardNav()
 			{
-				var keyDown, elementHasScrolled;
+				var keyDown, elementHasScrolled, validParents = [];
+				isScrollableH && validParents.push(horizontalBar[0]);
+				isScrollableV && validParents.push(verticalBar[0]);
+				
 				// IE also focuses elements that don't have tabindex set.
 				pane.focus(
 					function()
@@ -901,7 +904,7 @@
 						'keydown.jsp',
 						function(e)
 						{
-							if (e.target !== this){
+							if (e.target !== this && !(validParents.length && $(e.target).closest(validParents).length)){
 								return;
 							}
 							var dX = horizontalDragPosition, dY = verticalDragPosition;
