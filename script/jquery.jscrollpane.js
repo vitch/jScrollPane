@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta9 - 2011-02-04
+ * jScrollPane - v2.0.0beta9 - 2011-01-31
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta10, Last updated: 2011-02-04*
+// *Version: 2.0.0beta9, Last updated: 2011-01-31*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,7 +39,6 @@
 //
 // About: Release History
 //
-// 2.0.0beta10 - (in progress)
 // 2.0.0beta9 - (2011-01-31) new API methods, bug fixes and correct keyboard support for FF/OSX
 // 2.0.0beta8 - (2011-01-29) touchscreen support, improved keyboard support
 // 2.0.0beta7 - (2011-01-23) scroll speed consistent (thanks Aivo Paas)
@@ -61,12 +60,12 @@
 		{
 			var settings, jsp = this, pane, paneWidth, paneHeight, container, contentWidth, contentHeight,
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
-				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
+				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition, scrollerHeight,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				originalElement = elem.clone(false, false).empty(),
+				originalElement = elem.clone().empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			originalPadding = elem.css('paddingTop') + ' ' +
@@ -153,7 +152,7 @@
 				// width as allowed by its container, regardless of overflow settings.
 				// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
 				// container. Now it will push outwards to its maxium real width...
-				clonedElem = pane.clone(false, false).css('position', 'absolute');
+				clonedElem = pane.clone().css('position', 'absolute');
 				tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
 				$('body').append(tempWrapper);
 				contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
@@ -524,6 +523,7 @@
 						scrollTimeout && clearTimeout(scrollTimeout);
 						scrollTimeout = null;
 						ele.unbind(eve);
+						focusElem();
 					}
 				);
 			}
@@ -572,6 +572,7 @@
 										scrollTimeout && clearTimeout(scrollTimeout);
 										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
+										focusElem();
 									};
 								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
@@ -622,6 +623,7 @@
 										scrollTimeout && clearTimeout(scrollTimeout);
 										scrollTimeout = null;
 										$(document).unbind('mouseup.jsp', cancelClick);
+										focusElem();
 									};
 								doScroll();
 								$(document).bind('mouseup.jsp', cancelClick);
@@ -652,6 +654,7 @@
 				if (horizontalDrag) {
 					horizontalDrag.removeClass('jspActive');
 				}
+				focusElem();
 			}
 
 			function positionDragY(destY, animate)
@@ -664,13 +667,15 @@
 				} else if (destY > dragMaxY) {
 					destY = dragMaxY;
 				}
-
+				
 				// can't just check if(animate) because false is a valid value that could be passed in...
 				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(verticalDrag, 'top', destY,	_positionDragY);
+					jsp.animate(verticalDrag, 'top', destY);
+					// dont move to position by animate callback to synchronize move between scrollbar and content.
+					_positionDragY(destY);
 				} else {
 					verticalDrag.css('top', destY);
 					_positionDragY(destY);
@@ -698,8 +703,14 @@
 					elem.trigger('jsp-arrow-change', [wasAtTop, wasAtBottom, wasAtLeft, wasAtRight]);
 				}
 				
+				//ronan: on passe la méthode css en animation
 				updateVerticalArrows(isAtTop, isAtBottom);
-				pane.css('top', destTop);
+				if (settings.animateScroll === true) {
+					jsp.animate(pane, 'top', destTop);
+				}
+				else {
+					pane.css('top', destTop);
+				}
 				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]).trigger('scroll');
 			}
 
@@ -718,7 +729,9 @@
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX);
+					jsp.animate(horizontalDrag, 'left', destX);
+					// dont move to position by animate callback to synchronize move between scrollbar and content.
+					_positionDragX(destX);
 				} else {
 					horizontalDrag.css('left', destX);
 					_positionDragX(destX);
@@ -848,7 +861,7 @@
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
-						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, false);
+						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, settings.animateScroll);
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -1045,6 +1058,14 @@
 				);
 			}
 			
+			// If no element has focus, focus elem to support keyboard navigation
+			function focusElem()
+			{
+				if (!$(':focus').length) {
+					elem.focus();
+				}
+			}
+			
 			// Init touch on iPad, iPhone, iPod, Android
 			function initTouch()
 			{
@@ -1217,19 +1238,15 @@
 					//  * value        - the value it's being animated to
 					//  * stepCallback - a function that you must execute each time you update the value of the property
 					// You can use the default implementation (below) as a starting point for your own implementation.
+					// easing var check if we should specify a "end" specific animation for content and scrollbar.
+					// contentHeight - paneHeight is just calculated here for testing purpose, we should define it in object scope.
 					animate: function(ele, prop, value, stepCallback)
 					{
+						if (! scrollerHeight) scrollerHeight = contentHeight - paneHeight;
+						var easing = (value == 0 || value == dragMaxY || Math.abs(value) == scrollerHeight) ? settings.animateEaseEnd : settings.animateEase;
 						var params = {};
 						params[prop] = value;
-						ele.animate(
-							params,
-							{
-								'duration'	: settings.animateDuration,
-								'ease'		: settings.animateEase,
-								'queue'		: false,
-								'step'		: stepCallback
-							}
-						);
+						ele.stop(false, false).animate(params, settings.animateDuration, easing, stepCallback);
 					},
 					// Returns the current x position of the viewport with regards to the content pane.
 					getContentPositionX: function()
@@ -1330,9 +1347,9 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		showArrows					: false,
+		showArrows						: false,
 		maintainPosition			: true,
-		clickOnTrack				: true,
+		clickOnTrack					: true,
 		autoReinitialise			: false,
 		autoReinitialiseDelay		: 500,
 		verticalDragMinHeight		: 0,
@@ -1342,6 +1359,7 @@
 		animateScroll				: false,
 		animateDuration				: 300,
 		animateEase					: 'linear',
+		animateEaseEnd			: 'easeOutBack', // setting animation when content / scrollbar is on top or on bottom
 		hijackInternalLinks			: false,
 		verticalGutter				: 4,
 		horizontalGutter			: 4,
@@ -1355,11 +1373,12 @@
 		horizontalArrowPositions	: 'split',
 		enableKeyboardNavigation	: true,
 		hideFocus					: false,
-		keyboardSpeed				: 0,
-		initialDelay                : 300,        // Delay before starting repeating
-		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		keyboardSpeed			: 0,
+		initialDelay			: 300,        // Delay before starting repeating
+		speed							: 30,		// Default speed when others falsey
+		scrollPagePercent		: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed,
 	};
 
 })(jQuery,this);
+
 
