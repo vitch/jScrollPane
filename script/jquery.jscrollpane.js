@@ -783,7 +783,7 @@
 
 			function scrollToElement(ele, stickToTop, animate)
 			{
-				var e, eleHeight, eleWidth, eleTop = 0, eleLeft = 0, viewportTop, maxVisibleEleTop, maxVisibleEleLeft, destY, destX;
+				var e, eleHeight, eleWidth, eleTop = 0, eleLeft = 0, viewportTop, viewportLeft, maxVisibleEleTop, maxVisibleEleLeft, destY, destX;
 
 				// Legal hash values aren't necessarily legal jQuery selectors so we need to catch any
 				// errors from the lookup...
