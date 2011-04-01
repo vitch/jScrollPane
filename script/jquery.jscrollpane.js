@@ -80,7 +80,8 @@
 			{
 
 				var clonedElem, tempWrapper, /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
-						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft;
+						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
+						maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
 
@@ -124,6 +125,9 @@
 					*/
 				} else {
 					elem.css('width', '');
+
+					maintainAtBottom = isCloseToBottom();
+					maintainAtRight = isCloseToRight();
 
 					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
 
@@ -193,8 +197,8 @@
 					resizeScrollbars();
 
 					if (isMaintainingPositon) {
-						scrollToX(lastContentX, false);
-						scrollToY(lastContentY, false);
+						scrollToX(maintainAtRight  ? (contentWidth  - paneWidth ) : lastContentX, false);
+						scrollToY(maintainAtBottom ? (contentHeight - paneHeight) : lastContentY, false);
 					}
 
 					initFocusHandler();
@@ -840,6 +844,18 @@
 			function contentPositionY()
 			{
 				return -pane.position().top;
+			}
+
+			function isCloseToBottom()
+			{
+				var scrollableHeight = contentHeight - paneHeight;
+				return (scrollableHeight > 20) && (scrollableHeight - contentPositionY() < 10);
+			}
+
+			function isCloseToRight()
+			{
+				var scrollableWidth = contentWidth - paneWidth;
+				return (scrollableWidth > 20) && (scrollableWidth - contentPositionX() < 10);
 			}
 
 			function initMousewheel()
