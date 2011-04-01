@@ -153,16 +153,20 @@
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
-				// Unfortunately it isn't that easy to find out the width of the element as it will always report the
-				// width as allowed by its container, regardless of overflow settings.
-				// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
-				// container. Now it will push outwards to its maxium real width...
-				clonedElem = pane.clone(false, false).css('position', 'absolute');
-				tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
-				$('body').append(tempWrapper);
-				contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
-				tempWrapper.remove();
-				
+				if (s.contentWidth) {
+					contentWidth = s.contentWidth;
+				} else {
+					// Unfortunately it isn't that easy to find out the width of the element as it will always report the
+					// width as allowed by its container, regardless of overflow settings.
+					// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
+					// container. Now it will push outwards to its maxium real width...
+					clonedElem = pane.clone(false, false).css('position', 'absolute');
+					tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
+					$('body').append(tempWrapper);
+					contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
+					tempWrapper.remove();
+				}
+
 				contentHeight = pane.outerHeight();
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
