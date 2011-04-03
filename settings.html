@@ -90,6 +90,25 @@
 			<p>
 				See <a href="#verticalDragMinHeight">verticalDragMinHeight</a>.
 			</p>
+			<h2 id="paneWidth">paneWidth <span class="setting-type">- int (default undefined)</span></h2>
+			<p>
+				The width that the generated scroll pane should have. The default value of undefined will result in
+				jScrollPane creating a pane which is the size of the element you are applying it to and should be
+				optimal in most circumstances.
+			</p>
+			<h2 id="paneHeight">paneHeight <span class="setting-type">- int (default undefined)</span></h2>
+			<p>
+				The height that the generated scroll pane should have. The default value of undefined will result in
+				jScrollPane creating a pane which is the size of the element you are applying it to and should be
+				optimal in most circumstances.
+			</p>
+			<h2 id="contentWidth">contentWidth <span class="setting-type">- int (default undefined)</span></h2>
+			<p>
+				The width of the content of the scroll pane. The default value of undefined will allow jScrollPane to
+				calculate the width of it's content. However, in some cases you will want to disable this (e.g. to
+				prevent horizontal scrolling or where the calculation of the size of the content doesn't return reliable
+				results)
+			</p>
 			<h2 id="animateScroll">animateScroll <span class="setting-type">- boolean (default false)</span></h2>
 			<p>
 				Whether to use animation when calling <a href="api.html#scrollTo">scrollTo</a> or <a href="api.html#scrollBy">
