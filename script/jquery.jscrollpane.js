@@ -81,9 +81,14 @@
 
 				var clonedElem, tempWrapper, /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
 						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
-						maintainAtBottom = false, maintainAtRight = false;
+						maintainAtBottom = false, maintainAtRight = false, newPaneWidth, newPaneHeight;
 
 				settings = s;
+
+				// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
+				// come back to it later and check once it is unhidden...
+				newPaneWidth = s.paneWidth || (elem.innerWidth() + originalPaddingTotalWidth);
+				newPaneHeight = s.paneHeight || elem.innerHeight();
 
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
@@ -94,10 +99,8 @@
 							padding: 0
 						}
 					);
-					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
-					// come back to it later and check once it is unhidden...
-					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-					paneHeight = elem.innerHeight();
+					paneWidth = newPaneWidth;
+					paneHeight = newPaneHeight;
 
 					elem.width(paneWidth);
 					
@@ -129,11 +132,11 @@
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
-					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = newPaneWidth != paneWidth || newPaneHeight != paneHeight;
 
 					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-						paneHeight = elem.innerHeight();
+						paneWidth = newPaneWidth;
+						paneHeight = newPaneHeight;
 						container.css({
 							width: paneWidth + 'px',
 							height: paneHeight + 'px'
@@ -153,16 +156,20 @@
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
-				// Unfortunately it isn't that easy to find out the width of the element as it will always report the
-				// width as allowed by its container, regardless of overflow settings.
-				// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
-				// container. Now it will push outwards to its maxium real width...
-				clonedElem = pane.clone(false, false).css('position', 'absolute');
-				tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
-				$('body').append(tempWrapper);
-				contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
-				tempWrapper.remove();
-				
+				if (s.contentWidth) {
+					contentWidth = s.contentWidth;
+				} else {
+					// Unfortunately it isn't that easy to find out the width of the element as it will always report the
+					// width as allowed by its container, regardless of overflow settings.
+					// A cunning workaround is to clone the element, set its position to absolute and place it in a narrow
+					// container. Now it will push outwards to its maxium real width...
+					clonedElem = pane.clone(false, false).css('position', 'absolute');
+					tempWrapper = $('<div style="width:1px; position: relative;" />').append(clonedElem);
+					$('body').append(tempWrapper);
+					contentWidth = Math.max(pane.outerWidth(), clonedElem.outerWidth());
+					tempWrapper.remove();
+				}
+
 				contentHeight = pane.outerHeight();
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
