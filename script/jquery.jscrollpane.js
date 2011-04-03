@@ -126,8 +126,8 @@
 				} else {
 					elem.css('width', '');
 
-					maintainAtBottom = settings.maintainBottom && isCloseToBottom();
-					maintainAtRight  = settings.maintainRight  && isCloseToRight();
+					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
+					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
 					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
 
@@ -1354,8 +1354,8 @@
 	$.fn.jScrollPane.defaults = {
 		showArrows					: false,
 		maintainPosition			: true,
-		maintainBottom				: false,
-		maintainRight				: false,
+		stickToBottom				: false,
+		stickToRight				: false,
 		clickOnTrack				: true,
 		autoReinitialise			: false,
 		autoReinitialiseDelay		: 500,

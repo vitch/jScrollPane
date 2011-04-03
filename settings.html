@@ -45,7 +45,20 @@
 			<p>
 				Whether the scrollpane should attempt to maintain it's position whenever it is reinitialised. If true
 				then the viewport of the scrollpane will remain the same when it is reinitialised, if false then the
-				viewport will jump back up to the top when the scrollpane is reinitialised.
+				viewport will jump back up to the top when the scrollpane is reinitialised. See also
+				<a href="#stickToBottom">stickToBottom</a> and <a href="#stickToRight">stickToRight</a>.
+			</p>
+			<h2 id="stickToBottom">stickToBottom<span class="setting-type">- boolean (default false)</span></h2>
+			<p>
+				If <a href="#maintainPosition">maintainPosition</a> is true and the scrollpane is scrolled to the
+				bottom then the scrollpane then the scrollpane will remain scrolled to the bottom even if new content
+				is added to the pane which makes it taller.
+			</p>
+			<h2 id="stickToRight">stickToRight<span class="setting-type">- boolean (default false)</span></h2>
+			<p>
+				If <a href="#maintainPosition">maintainPosition</a> is true and the scrollpane is scrolled to its
+				right edge then the scrollpane then the scrollpane will remain scrolled to the right edge even if new
+				content is added to the pane which makes it wider.
 			</p>
 			<h2 id="autoReinitialise">autoReinitialise <span class="setting-type">- boolean (default false)</span></h2>
 			<p>
