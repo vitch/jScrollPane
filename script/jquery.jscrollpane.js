@@ -81,14 +81,9 @@
 
 				var clonedElem, tempWrapper, /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
 						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
-						maintainAtBottom = false, maintainAtRight = false, newPaneWidth, newPaneHeight;
+						maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
-
-				// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
-				// come back to it later and check once it is unhidden...
-				newPaneWidth = s.paneWidth || (elem.innerWidth() + originalPaddingTotalWidth);
-				newPaneHeight = s.paneHeight || elem.innerHeight();
 
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
@@ -99,8 +94,10 @@
 							padding: 0
 						}
 					);
-					paneWidth = newPaneWidth;
-					paneHeight = newPaneHeight;
+					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
+					// come back to it later and check once it is unhidden...
+					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+					paneHeight = elem.innerHeight();
 
 					elem.width(paneWidth);
 					
@@ -132,11 +129,11 @@
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
-					hasContainingSpaceChanged = newPaneWidth != paneWidth || newPaneHeight != paneHeight;
+					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
 
 					if (hasContainingSpaceChanged) {
-						paneWidth = newPaneWidth;
-						paneHeight = newPaneHeight;
+						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+						paneHeight = elem.innerHeight();
 						container.css({
 							width: paneWidth + 'px',
 							height: paneHeight + 'px'
