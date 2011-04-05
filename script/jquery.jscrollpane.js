@@ -1367,8 +1367,6 @@
 		verticalDragMaxHeight		: 99999,
 		horizontalDragMinWidth		: 0,
 		horizontalDragMaxWidth		: 99999,
-		paneWidth					: undefined,
-		paneHeight					: undefined,
 		contentWidth				: undefined,
 		animateScroll				: false,
 		animateDuration				: 300,
