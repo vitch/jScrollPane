@@ -85,6 +85,11 @@
 
 				settings = s;
 
+				// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
+				// come back to it later and check once it is unhidden...
+				newPaneWidth = s.paneWidth || (elem.innerWidth() + originalPaddingTotalWidth);
+				newPaneHeight = s.paneHeight || elem.innerHeight();
+
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
 					originalScrollLeft = elem.scrollLeft();
@@ -94,11 +99,8 @@
 							padding: 0
 						}
 					);
-
-					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
-					// come back to it later and check once it is unhidden...
-					paneWidth = newPaneWidth = s.paneWidth || (elem.innerWidth() + originalPaddingTotalWidth);
-					paneHeight = newPaneHeight = s.paneHeight || elem.innerHeight();
+					paneWidth = newPaneWidth;
+					paneHeight = newPaneHeight;
 
 					elem.width(paneWidth);
 					
@@ -125,14 +127,7 @@
 					lastChild.css('margin-bottom', 0);
 					*/
 				} else {
-
-					if (!s.paneWidth && !s.paneHeight) {
-						// Need to reset the width so we can recalculate it unless the containing document has changed...
-						elem.css('width', '');
-
-						newPaneWidth = (elem.innerWidth() + originalPaddingTotalWidth);
-						newPaneHeight = elem.innerHeight();
-					}
+					elem.css('width', '');
 
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
