@@ -1234,7 +1234,7 @@
 					// object this jScrollPane was initialised with is used.
 					positionDragY: function(y, animate)
 					{
-						positionDragX(y, animate);
+						positionDragY(y, animate);
 					},
 					// This method is called when jScrollPane is trying to animate to a new position. You can override
 					// it if you want to provide advanced animation functionality. It is passed the following arguments:
