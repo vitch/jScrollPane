@@ -1205,6 +1205,8 @@
 					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
 					scrollByX: function(deltaX, animate)
 					{
+						// Scroll by at least one pixel (useful on sensitive trackpads)
+						deltaX = (deltaX >= 0) ? Math.max(deltaX, 1.0) : Math.min(deltaX, -1.0);
 						var destX = contentPositionX() + deltaX,
 							percentScrolled = destX / (contentWidth - paneWidth);
 						positionDragX(percentScrolled * dragMaxX, animate);
@@ -1213,6 +1215,8 @@
 					// the value of animateScroll from the settings object this jScrollPane was initialised with is used.
 					scrollByY: function(deltaY, animate)
 					{
+						// Scroll by at least one pixel (useful on sensitive trackpads)
+						deltaY = (deltaY >= 0) ? Math.max(deltaY, 1.0) : Math.min(deltaY, -1.0);
 						var destY = contentPositionY() + deltaY,
 							percentScrolled = destY / (contentHeight - paneHeight);
 						positionDragY(percentScrolled * dragMaxY, animate);
