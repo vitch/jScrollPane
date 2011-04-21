@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta10 - 2011-04-17
+ * jScrollPane - v2.0.0beta11 - 2011-04-21
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta10, Last updated: 2011-04-17*
+// *Version: 2.0.0beta11, Last updated: 2011-04-21*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.0beta11 - (in progress) 
 // 2.0.0beta10 - (2011-04-17) cleaner required size calculation, improved keyboard support, stickToBottom/Left, other small fixes
 // 2.0.0beta9 - (2011-01-31) new API methods, bug fixes and correct keyboard support for FF/OSX
 // 2.0.0beta8 - (2011-01-29) touchscreen support, improved keyboard support
