@@ -1338,8 +1338,7 @@
 			settings[this] = settings[this] || settings.speed;
 		});
 
-		var ret;
-		this.each(
+		return this.each(
 			function()
 			{
 				var elem = $(this), jspApi = elem.data('jsp');
@@ -1349,10 +1348,8 @@
 					jspApi = new JScrollPane(elem, settings);
 					elem.data('jsp', jspApi);
 				}
-				ret = ret ? ret.add(elem) : elem;
 			}
 		);
-		return ret;
 	};
 
 	$.fn.jScrollPane.defaults = {
