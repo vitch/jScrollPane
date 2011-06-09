@@ -1011,14 +1011,17 @@
 			function observeHash()
 			{
 				if (location.hash && location.hash.length > 1) {
+					// hash must be escaped to prevent XSS
+					var hash = escape(location.hash);
+					
 					var e, retryInt;
 					try {
-						e = $(location.hash);
+						e = $(hash);
 					} catch (err) {
 						return;
 					}
 
-					if (e.length && pane.find(location.hash)) {
+					if (e.length && pane.find(hash)) {
 						// nasty workaround but it appears to take a little while before the hash has done its thing
 						// to the rendered page so we just wait until the container's scrollTop has been messed up.
 						if (container.scrollTop() === 0) {
@@ -1026,7 +1029,7 @@
 								function()
 								{
 									if (container.scrollTop() > 0) {
-										scrollToElement(location.hash, true);
+										scrollToElement(hash, true);
 										$(document).scrollTop(container.position().top);
 										clearInterval(retryInt);
 									}
@@ -1034,7 +1037,7 @@
 								50
 							);
 						} else {
-							scrollToElement(location.hash, true);
+							scrollToElement(hash, true);
 							$(document).scrollTop(container.position().top);
 						}
 					}
