@@ -1011,10 +1011,10 @@
 			function observeHash()
 			{
 				if (location.hash && location.hash.length > 1) {
-					// hash must be escaped to prevent XSS
-					var hash = escape(location.hash);
-					
-					var e, retryInt;
+					var e,
+						retryInt,
+						hash = escape(location.hash) // hash must be escaped to prevent XSS
+						;
 					try {
 						e = $(hash);
 					} catch (err) {
