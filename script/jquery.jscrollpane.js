@@ -82,7 +82,7 @@
 
 				var /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
 						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
-						maintainAtBottom = false, maintainAtRight = false;
+						newPaneWidth, newPaneHeight, maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
 
@@ -128,19 +128,24 @@
 				} else {
 					elem.css('width', '');
 
+					// To measure the required dimensions accurately, temporarily override the CSS positioning
+					// of the container and pane.
+					container.css({width: 'auto', height: 'auto'});
+					pane.css('position', 'static');
+
+					newPaneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+					newPaneHeight = elem.innerHeight();
+					console.log('newPaneHeight = ' + newPaneHeight);
+					pane.css('position', 'absolute');
+
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
-					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = newPaneWidth !== paneWidth || newPaneHeight !== paneHeight;
 
-					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-						paneHeight = elem.innerHeight();
-						container.css({
-							width: paneWidth + 'px',
-							height: paneHeight + 'px'
-						});
-					}
+					paneWidth = newPaneWidth;
+					paneHeight = newPaneHeight;
+					container.css({width: paneWidth, height: paneHeight});
 
 					// If nothing changed since last check...
 					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
