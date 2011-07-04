@@ -1250,7 +1250,7 @@
 							params,
 							{
 								'duration'	: settings.animateDuration,
-								'ease'		: settings.animateEase,
+								'easing'	: settings.animateEase,
 								'queue'		: false,
 								'step'		: stepCallback
 							}
