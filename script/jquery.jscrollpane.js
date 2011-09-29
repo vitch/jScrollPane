@@ -295,15 +295,12 @@
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							if(!settings.parentElement) settings.parentElement = 'html';
 							$(settings.parentElement).bind('dragstart.jsp selectstart.jsp', nil);
 							
-
 							verticalDrag.addClass('jspActive');
 
 							var startY = e.pageY - verticalDrag.position().top;
 
-							if(!settings.parentElement) settings.parentElement = 'html';
 							$(settings.parentElement).bind(
 								'mousemove.jsp',
 								function(e)
@@ -387,14 +384,14 @@
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							if(!settings.parentElement) settings.parentElement = 'html';
+							
 							$(settings.parentElement).bind('dragstart.jsp selectstart.jsp', nil);
 
 							horizontalDrag.addClass('jspActive');
 
 							var startX = e.pageX - horizontalDrag.position().left;
 
-							if(!settings.parentElement) settings.parentElement = 'html';
+							
 							$(settings.parentElement).bind(
 								'mousemove.jsp',
 								function(e)
@@ -528,7 +525,7 @@
 				doScroll();
 
 				eve = ele ? 'mouseout.jsp' : 'mouseup.jsp';
-				if(!settings.parentElement) settings.parentElement = 'html';
+				
 				ele = ele || $(settings.parentElement);
 				ele.bind(
 					eve,
@@ -658,9 +655,6 @@
 
 			function cancelDrag()
 			{
-				//$('html').unbind('dragstart.jsp').unbind('selectstart.jsp').unbind('mouseup.jsp').unbind('mouseleave.jsp').unbind('mousemove.jsp'); 
-				
-				if(!settings.parentElement) settings.parentElement = 'html';
 				$(settings.parentElement).unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
 
 				if (verticalDrag) {
@@ -1366,7 +1360,7 @@
 		maintainPosition			: true,
 		stickToBottom				: false,
 		stickToRight				: false,
-		clickOnTrack				: false,
+		clickOnTrack				: true,
 		autoReinitialise			: false,
 		autoReinitialiseDelay		: 500,
 		verticalDragMinHeight		: 0,
@@ -1395,8 +1389,8 @@
 		speed						: 30,		// Default speed when others falsey
 		scrollPagePercent			: .8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
 		//CUSTOM SETTINGS
-		parentElement				: false,	//An alternative parent element (html) if conflicts with other scripts
-		repositionPane				: true		//shift the content pane when the scroll bar is needed, make false to keep css the same and just make scroll bars visible
+		parentElement				: 'html',	// An alternative parent element (html) if conflicts with other scripts
+		repositionPane				: true		// Shift the content pane when the scroll bar is needed, make false to keep css the same and just make scroll bars visible
 	};
 
 })(jQuery,this);
