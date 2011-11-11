@@ -1,3 +1,4 @@
+
 /*!
  * jScrollPane - v2.0.0beta11 - 2011-07-04
  * http://jscrollpane.kelvinluck.com/
@@ -89,6 +90,14 @@
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
 					originalScrollLeft = elem.scrollLeft();
+
+					// Deal with when width/ height is 0 as it probably means the element is hidden and we should
+					// come back to it later and check once it is unhidden...
+					if(!elem.innerHeight() || !elem.innerWidth()){
+						setTimeout(function(){
+							initialise(s);
+						}, 50);
+					}
 
 					elem.css(
 						{
@@ -1387,4 +1396,3 @@
 	};
 
 })(jQuery,this);
-
