@@ -822,7 +822,7 @@
 				} else if (eleTop + eleHeight > maxVisibleEleTop) { // element is below viewport
 					destY = eleTop - paneHeight + eleHeight + settings.verticalGutter;
 				}
-				if (destY) {
+				if (typeof destY !== 'undefined') {
 					scrollToY(destY, animate);
 				}
 				
@@ -833,7 +833,7 @@
 	            } else if (eleLeft + eleWidth > maxVisibleEleLeft) { // element is to the right viewport
 	                destX = eleLeft - paneWidth + eleWidth + settings.horizontalGutter;
 	            }
-	            if (destX) {
+	            if (typeof destX !== 'undefined') {
 	                scrollToX(destX, animate);
 	            }
 
