@@ -77,6 +77,15 @@
 			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
 										(parseInt(elem.css('paddingRight'), 10) || 0);
 
+			function probePane() {
+			
+				pane.css('overflow', 'auto');
+			    var w = s.contentWidth || pane[0].scrollWidth, h = pane[0].scrollHeight;
+				pane.css('overflow', '');
+			    
+			    return {width: w, height: h};
+			}
+
 			function initialise(s)
 			{
 
@@ -143,9 +152,9 @@
 					}
 
 					// If nothing changed since last check...
-					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
+					if (!hasContainingSpaceChanged && previousContentWidth == probePane().width && pane.outerHeight() == contentHeight) {
 						elem.width(paneWidth);
-						return;
+						return; 
 					}
 					previousContentWidth = contentWidth;
 					
@@ -155,14 +164,9 @@
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
-				pane.css('overflow', 'auto');
-				if (s.contentWidth) {
-					contentWidth = s.contentWidth;
-				} else {
-					contentWidth = pane[0].scrollWidth;
-				}
-				contentHeight = pane[0].scrollHeight;
-				pane.css('overflow', '');
+				var p = probePane();
+				contentWidth = p.width;
+				contentHeight = p.height;
 
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
