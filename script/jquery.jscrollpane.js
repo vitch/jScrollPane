@@ -1138,6 +1138,11 @@
 				elem.replaceWith(originalElement.append(pane.children()));
 				originalElement.scrollTop(currentY);
 				originalElement.scrollLeft(currentX);
+
+				// clear reinitialize timer if active
+				if (reinitialiseInterval) {
+					clearInterval(reinitialiseInterval);
+				}
 			}
 
 			// Public API
