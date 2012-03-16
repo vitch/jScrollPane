@@ -322,8 +322,11 @@
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
 				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
-
+				if(settings.correctPaneWidth)
+				{
+					pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
+				}
+				
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
 				try {
@@ -1388,7 +1391,8 @@
 		keyboardSpeed				: 0,
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		scrollPagePercent			: .8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		correctPaneWidth			: true		// If we should resize the panewidth. Setting this to false effectively places the scrollbar above the pane
 	};
 
 })(jQuery,this);
