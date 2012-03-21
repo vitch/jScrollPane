@@ -1357,40 +1357,39 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		showArrows					: false,
-		maintainPosition			: true,
-		stickToBottom				: false,
-		stickToRight				: false,
-		clickOnTrack				: true,
-		autoReinitialise			: false,
+		showArrows			: false,
+		maintainPosition		: true,
+		stickToBottom			: false,
+		stickToRight			: false,
+		clickOnTrack			: true,
+		autoReinitialise		: false,
 		autoReinitialiseDelay		: 500,
 		verticalDragMinHeight		: 0,
 		verticalDragMaxHeight		: 99999,
 		horizontalDragMinWidth		: 0,
 		horizontalDragMaxWidth		: 99999,
-		contentWidth				: undefined,
-		animateScroll				: false,
-		animateDuration				: 300,
-		animateEase					: 'linear',
-		hijackInternalLinks			: false,
-		verticalGutter				: 4,
-		horizontalGutter			: 4,
-		mouseWheelSpeed				: 0,
-		documentScrollDisabled	: false,
-		arrowButtonSpeed			: 0,
-		arrowRepeatFreq				: 50,
-		arrowScrollOnHover			: false,
-		trackClickSpeed				: 0,
+		contentWidth			: undefined,
+		animateScroll			: false,
+		animateDuration			: 300,
+		animateEase			: 'linear',
+		hijackInternalLinks		: false,
+		verticalGutter			: 4,
+		horizontalGutter		: 4,
+		mouseWheelSpeed			: 0,
+		documentScrollDisabled		: false,
+		arrowButtonSpeed		: 0,
+		arrowRepeatFreq			: 50,
+		arrowScrollOnHover		: false,
+		trackClickSpeed			: 0,
 		trackClickRepeatFreq		: 70,
 		verticalArrowPositions		: 'split',
 		horizontalArrowPositions	: 'split',
 		enableKeyboardNavigation	: true,
-		hideFocus					: false,
-		keyboardSpeed				: 0,
-		initialDelay                : 300,        // Delay before starting repeating
-		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		hideFocus			: false,
+		keyboardSpeed			: 0,
+		initialDelay			: 300,	// Delay before starting repeating
+		speed				: 30,	// Default speed when others falsey
+		scrollPagePercent		: .8	// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
 })(jQuery,this);
-
