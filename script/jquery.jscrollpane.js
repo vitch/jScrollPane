@@ -868,8 +868,8 @@
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
 						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, false);
-						// return true if there was no movement so rest of screen can scroll
-						return dX == horizontalDragPosition && dY == verticalDragPosition;
+						// return true if there was no movement so rest of screen can scroll (optionally)
+						return (settings.documentScrollDisabled ? false : dX == horizontalDragPosition && dY == verticalDragPosition);
 					}
 				);
 			}
@@ -1376,6 +1376,7 @@
 		verticalGutter				: 4,
 		horizontalGutter			: 4,
 		mouseWheelSpeed				: 0,
+		documentScrollDisabled	: false,
 		arrowButtonSpeed			: 0,
 		arrowRepeatFreq				: 50,
 		arrowScrollOnHover			: false,
