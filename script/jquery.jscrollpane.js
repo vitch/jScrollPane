@@ -345,6 +345,7 @@
 							$('<div class="jspTrack" />').append(
 								$('<div class="jspDrag" />').append(
 									$('<div class="jspDragLeft" />'),
+									$('<div class="jspDragMiddle"></div>'),
 									$('<div class="jspDragRight" />')
 								)
 							),
