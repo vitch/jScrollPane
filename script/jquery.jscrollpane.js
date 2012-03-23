@@ -246,6 +246,7 @@
 							$('<div class="jspTrack" />').append(
 								$('<div class="jspDrag" />').append(
 									$('<div class="jspDragTop" />'),
+									$('<div class="jspDragMiddle"></div>'),
 									$('<div class="jspDragBottom" />')
 								)
 							),
@@ -467,6 +468,16 @@
 					dragMaxY = verticalTrackHeight - verticalDragHeight;
 					_positionDragY(verticalDragPosition); // To update the state for the arrow buttons
 				}
+				
+				
+		                container.find('>.jspVerticalBar>.jspTrack').each(function(){
+                    			var jspDragMiddleHeight = $(this).find('.jspDrag').height() - $(this).find('.jspDragTop').height() - $(this).find('.jspDragBottom').height() - 5;
+                    			$(this).find('.jspDragMiddle').height(jspDragMiddleHeight);
+                		})
+                		container.find('>.jspHorizontalBar>.jspTrack').each(function(){
+                    			var jspDragMiddleWidth = $(this).find('.jspDrag').width() - $(this).find('.jspDragTop').width() - $(this).find('.jspDragBottom').width() - 5;
+                    			$(this).find('.jspDragMiddle').width(jspDragMiddleWidth);
+                		})
 			}
 
 			function appendArrows(ele, p, a1, a2)
