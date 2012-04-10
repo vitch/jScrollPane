@@ -670,7 +670,11 @@
 					destY = 0;
 				} else if (destY > dragMaxY) {
 					destY = dragMaxY;
-				}
+				} else if (settings.verticalStickInterval) {
+          destY = destY - (destY % settings.verticalStickInterval);
+        }
+
+
 
 				// can't just check if(animate) because false is a valid value that could be passed in...
 				if (animate === undefined) {
@@ -719,7 +723,9 @@
 					destX = 0;
 				} else if (destX > dragMaxX) {
 					destX = dragMaxX;
-				}
+				} else if (settings.horizontalStickInterval) {
+          destX = destX - (destX % settings.horizontalStickInterval);
+        }
 
 				if (animate === undefined) {
 					animate = settings.animateScroll;
@@ -1357,6 +1363,8 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
+    horizontalStickInterval: false,
+    verticalStickInterval: false,
 		showArrows					: false,
 		maintainPosition			: true,
 		stickToBottom				: false,
