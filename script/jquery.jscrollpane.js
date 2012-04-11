@@ -182,7 +182,6 @@
 					removeFocusHandler();
 					removeKeyboardNav();
 					removeClickOnTrack();
-					unhijackInternalLinks();
 				} else {
 					elem.addClass('jspScrollable');
 
@@ -1013,10 +1012,10 @@
 				if (location.hash && location.hash.length > 1) {
 					var e,
 						retryInt,
-						hash = escape(location.hash) // hash must be escaped to prevent XSS
+						hash = escape(location.hash.substr(1)) // hash must be escaped to prevent XSS
 						;
 					try {
-						e = $(hash);
+						e = $('#' + hash + ', a[name="' + hash + '"]');
 					} catch (err) {
 						return;
 					}
@@ -1029,7 +1028,7 @@
 								function()
 								{
 									if (container.scrollTop() > 0) {
-										scrollToElement(hash, true);
+										scrollToElement(e, true);
 										$(document).scrollTop(container.position().top);
 										clearInterval(retryInt);
 									}
@@ -1037,37 +1036,70 @@
 								50
 							);
 						} else {
-							scrollToElement(hash, true);
+							scrollToElement(e, true);
 							$(document).scrollTop(container.position().top);
 						}
 					}
 				}
 			}
 
-			function unhijackInternalLinks()
-			{
-				$('a.jspHijack').unbind('click.jsp-hijack').removeClass('jspHijack');
-			}
-
 			function hijackInternalLinks()
 			{
-				unhijackInternalLinks();
-				$('a[href^=#]').addClass('jspHijack').bind(
-					'click.jsp-hijack',
-					function()
-					{
-						var uriParts = this.href.split('#'), hash;
-						if (uriParts.length > 1) {
-							hash = uriParts[1];
-							if (hash.length > 0 && pane.find('#' + hash).length > 0) {
-								scrollToElement('#' + hash, true);
-								// Need to return false otherwise things mess up... Would be nice to maybe also scroll
-								// the window to the top of the scrollpane?
-								return false;
-							}
-						}
+				// only register the link handler once
+				if ($(document.body).data('jspHijack')) {
+					return;
+				}
+
+				// remember that the handler was bound
+				$(document.body).data('jspHijack', true);
+
+				// use live handler to also capture newly created links
+				$(document.body).delegate('a[href*=#]', 'click', function(event) {
+					// does the link point to the same page?
+					// this also takes care of cases with a <base>-Tag or Links not starting with the hash #
+					// e.g. <a href="index.html#test"> when the current url already is index.html
+					var href = this.href.substr(0, this.href.indexOf('#'));
+					var locationHref = location.href;
+					if (location.href.indexOf('#') !== -1) {
+						locationHref = location.href.substr(0, location.href.indexOf('#'));
 					}
-				);
+					if (href !== locationHref) {
+						// the link points to another page
+						return;
+					}
+
+					// check if jScrollPane should handle this click event
+					var hash = escape(this.href.substr(this.href.indexOf('#') + 1));
+
+					// find the element on the page
+					var element;
+					try {
+						element = $('#' + hash + ', a[name="' + hash + '"]');
+					} catch (e) {
+						// hash is not a valid jQuery identifier
+						return;
+					}
+
+					if (!element.length) {
+						// this link does not point to an element on this page
+						return;
+					}
+
+					var container = element.closest('.jspScrollable');
+					var jsp = container.data('jsp');
+
+					// jsp might be another jsp instance than the one, that bound this event
+					// remember: this event is only bound once for all instances.
+					jsp.scrollToElement(element, true);
+
+					if (container[0].scrollIntoView) {
+						// also scroll to the top of the container (if it is not visible)
+						container[0].scrollIntoView();
+					}
+
+					// jsp handled this event, prevent the browser default (scrolling :P)
+					event.preventDefault();
+				});
 			}
 			
 			// Init touch on iPad, iPhone, iPod, Android
@@ -1318,10 +1350,7 @@
 					// Hijacks the links on the page which link to content inside the scrollpane. If you have changed
 					// the content of your page (e.g. via AJAX) and want to make sure any new anchor links to the
 					// contents of your scroll pane will work then call this function.
-					hijackInternalLinks: function()
-					{
-						hijackInternalLinks();
-					},
+					hijackInternalLinks: $.noop,
 					// Removes the jScrollPane and returns the page to the state it was in before jScrollPane was
 					// initialised.
 					destroy: function()
