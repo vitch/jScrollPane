@@ -1058,8 +1058,12 @@
 					// does the link point to the same page?
 					// this also takes care of cases with a <base>-Tag or Links not starting with the hash #
 					// e.g. <a href="index.html#test"> when the current url already is index.html
-					var href = this.href.substr(0, this.href.indexOf('#'));
-					var locationHref = location.href;
+					var href = this.href.substr(0, this.href.indexOf('#')),
+						locationHref = location.href,
+						hash,
+						element,
+						container,
+						jsp;
 					if (location.href.indexOf('#') !== -1) {
 						locationHref = location.href.substr(0, location.href.indexOf('#'));
 					}
@@ -1069,10 +1073,10 @@
 					}
 
 					// check if jScrollPane should handle this click event
-					var hash = escape(this.href.substr(this.href.indexOf('#') + 1));
+					hash = escape(this.href.substr(this.href.indexOf('#') + 1));
 
 					// find the element on the page
-					var element;
+					element;
 					try {
 						element = $('#' + hash + ', a[name="' + hash + '"]');
 					} catch (e) {
@@ -1085,8 +1089,8 @@
 						return;
 					}
 
-					var container = element.closest('.jspScrollable');
-					var jsp = container.data('jsp');
+					container = element.closest('.jspScrollable');
+					jsp = container.data('jsp');
 
 					// jsp might be another jsp instance than the one, that bound this event
 					// remember: this event is only bound once for all instances.
