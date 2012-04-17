@@ -172,7 +172,7 @@
 
 				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
 
-				if (!(isScrollableH || isScrollableV)) {
+				if (!(isScrollableH || isScrollableV || settings.alwaysShowV || settings.alwaysShowH)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
 						top: 0,
@@ -237,7 +237,7 @@
 
 			function initialiseVerticalScroll()
 			{
-				if (isScrollableV) {
+				if (isScrollableV || settings.alwaysShowV) {
 
 					container.append(
 						$('<div class="jspVerticalBar" />').append(
@@ -335,7 +335,7 @@
 
 			function initialiseHorizontalScroll()
 			{
-				if (isScrollableH) {
+				if (isScrollableH || settings.alwaysShowH) {
 
 					container.append(
 						$('<div class="jspHorizontalBar" />').append(
@@ -444,7 +444,7 @@
 				contentHeight = pane.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
 
-				if (isScrollableH) {
+				if (isScrollableH || settings.alwaysShowH) {
 					horizontalDragWidth = Math.ceil(1 / percentInViewH * horizontalTrackWidth);
 					if (horizontalDragWidth > settings.horizontalDragMaxWidth) {
 						horizontalDragWidth = settings.horizontalDragMaxWidth;
@@ -455,7 +455,7 @@
 					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
 					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
 				}
-				if (isScrollableV) {
+				if (isScrollableV || settings.alwaysShowV) {
 					verticalDragHeight = Math.ceil(1 / percentInViewV * verticalTrackHeight);
 					if (verticalDragHeight > settings.verticalDragMaxHeight) {
 						verticalDragHeight = settings.verticalDragMaxHeight;
