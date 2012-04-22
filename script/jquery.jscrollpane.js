@@ -1094,7 +1094,11 @@
 
 					if (container[0].scrollIntoView) {
 						// also scroll to the top of the container (if it is not visible)
-						container[0].scrollIntoView();
+						var scrollTop = $(window).scrollTop();
+						var elementTop = element.offset().top;
+						if (elementTop < scrollTop || elementTop > scrollTop + $(window).height()) {
+							container[0].scrollIntoView();
+						}
 					}
 
 					// jsp handled this event, prevent the browser default (scrolling :P)
