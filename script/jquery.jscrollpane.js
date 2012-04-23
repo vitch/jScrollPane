@@ -65,7 +65,7 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
@@ -152,11 +152,10 @@
 					}
 
 					// If nothing changed since last check...
-					if (!hasContainingSpaceChanged && previousContentWidth == probePane().width && pane.outerHeight() == contentHeight) {
+					if (!hasContainingSpaceChanged && contentWidth == probePane().width && pane.outerHeight() == contentHeight) {
 						elem.width(paneWidth);
 						return; 
 					}
-					previousContentWidth = contentWidth;
 					
 					pane.css('width', '');
 					elem.width(paneWidth);
