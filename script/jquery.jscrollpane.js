@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta11 - 2012-04-11
+ * jScrollPane - v2.0.0beta11 - 2012-04-23
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -1063,7 +1063,9 @@
 						hash,
 						element,
 						container,
-						jsp;
+						jsp,
+						scrollTop,
+						elementTop;
 					if (location.href.indexOf('#') !== -1) {
 						locationHref = location.href.substr(0, location.href.indexOf('#'));
 					}
@@ -1098,8 +1100,8 @@
 
 					if (container[0].scrollIntoView) {
 						// also scroll to the top of the container (if it is not visible)
-						var scrollTop = $(window).scrollTop();
-						var elementTop = element.offset().top;
+						scrollTop = $(window).scrollTop();
+						elementTop = element.offset().top;
 						if (elementTop < scrollTop || elementTop > scrollTop + $(window).height()) {
 							container[0].scrollIntoView();
 						}
