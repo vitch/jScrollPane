@@ -1389,6 +1389,7 @@
 				if (jspApi) {
 					jspApi.reinitialise(settings);
 				} else {
+					$("script",elem).remove();
 					jspApi = new JScrollPane(elem, settings);
 					elem.data('jsp', jspApi);
 				}
