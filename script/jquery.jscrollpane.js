@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.0beta12 - 2012-05-14
+ * jScrollPane - v2.0.0beta12 - 2012-06-21
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta12, Last updated: 2012-05-14*
+// *Version: 2.0.0beta12, Last updated: 2012-06-21*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -1389,6 +1389,7 @@
 				if (jspApi) {
 					jspApi.reinitialise(settings);
 				} else {
+					$("script",elem).filter('[type=text/javascript],not([type])').remove();
 					jspApi = new JScrollPane(elem, settings);
 					elem.data('jsp', jspApi);
 				}
