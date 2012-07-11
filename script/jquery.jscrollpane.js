@@ -66,7 +66,7 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, originalPaddingTotalHeight, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
@@ -77,6 +77,8 @@
 								elem.css('paddingLeft');
 			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
 										(parseInt(elem.css('paddingRight'), 10) || 0);
+			originalPaddingTotalHeight = (parseInt(elem.css('paddingTop'), 10) || 0) +
+                                                                                (parseInt(elem.css('paddingBottom'), 10) || 0);
 
 			function initialise(s)
 			{
@@ -100,7 +102,7 @@
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
 					// come back to it later and check once it is unhidden...
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-					paneHeight = elem.innerHeight();
+					paneHeight = elem.innerHeight() + originalPaddingTotalHeight;
 
 					elem.width(paneWidth);
 					
