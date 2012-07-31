@@ -61,7 +61,7 @@
 		// JScrollPane "class" - public methods are available through $('selector').data('jsp')
 		function JScrollPane(elem, s)
 		{
-			var settings, jsp = this, pane, paneWidth, paneHeight, container, contentWidth, contentHeight,
+			var settings, jsp = this, pane, paneWidth, paneHeight, container, scrollContainer, contentWidth, contentHeight,
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
@@ -112,6 +112,9 @@
 						}
 					).append(pane).appendTo(elem);
 
+                                        
+                                        scrollContainer = settings.isHorizontalScrollOutside ? elem : container;
+                                        
 					/*
 					// Move any margins from the first and last children up to the container so they can still
 					// collapse with neighbouring elements as they would before jScrollPane 
@@ -153,7 +156,7 @@
 					pane.css('width', '');
 					elem.width(paneWidth);
 
-					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
+					scrollContainer.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
 				pane.css('overflow', 'auto');
@@ -279,7 +282,7 @@
                     }
 
                     verticalTrackHeight = paneHeight;
-                    elem.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
+                    scrollContainer.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
                         function()
                         {
                             verticalTrackHeight -= $(this).outerHeight();
@@ -342,12 +345,7 @@
 
 			function initialiseHorizontalScroll()
 			{
-                           var scrollContainer = container;
-                           
-                            if(settings.isHorizontalScrollOutside) {
-                                scrollContainer = elem;
-                            }
-                            
+
 				if (isScrollableH) {
 					scrollContainer.append(
 						$('<div class="jspHorizontalBar" />').append(
@@ -417,7 +415,7 @@
 
 			function sizeHorizontalScrollbar()
 			{
-				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
+				scrollContainer.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 					function()
 					{
 						horizontalTrackWidth -= $(this).outerWidth();
@@ -1409,8 +1407,8 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		isHorizontalScrollOutside		: false,
-		isVerticalScrollOutside                 : false,
+		isHorizontalScrollOutside		: true,
+		isVerticalScrollOutside                 : true,
                 
 		showArrows				: false,
 		maintainPosition			: true,
