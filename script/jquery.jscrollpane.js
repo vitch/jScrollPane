@@ -236,84 +236,90 @@
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 			}
 
-			function initialiseVerticalScroll()
-			{
-				if (isScrollableV) {
+            function initialiseVerticalScroll()
+            {     
+                if (isScrollableV) {
+                    
+                    var scrollContainer = container;
+                           
+                    if(settings.isVerticalScrollOutside) {
+                        scrollContainer = elem;
+                    }
 
-					container.append(
-						$('<div class="jspVerticalBar" />').append(
-							$('<div class="jspCap jspCapTop" />'),
-							$('<div class="jspTrack" />').append(
-								$('<div class="jspDrag" />').append(
-									$('<div class="jspDragTop" />'),
-									$('<div class="jspDragBottom" />')
-								)
-							),
-							$('<div class="jspCap jspCapBottom" />')
-						)
-					);
+                    scrollContainer.append(
+                        $('<div class="jspVerticalBar" />').append(
+                            $('<div class="jspCap jspCapTop" />'),
+                            $('<div class="jspTrack" />').append(
+                                $('<div class="jspDrag" />').append(
+                                    $('<div class="jspDragTop" />'),
+                                    $('<div class="jspDragBottom" />')
+                                    )
+                                ),
+                            $('<div class="jspCap jspCapBottom" />')
+                            )
+                        );
 
-					verticalBar = container.find('>.jspVerticalBar');
-					verticalTrack = verticalBar.find('>.jspTrack');
-					verticalDrag = verticalTrack.find('>.jspDrag');
+                    verticalBar = scrollContainer.find('>.jspVerticalBar');
+                    verticalTrack = verticalBar.find('>.jspTrack');
+                    verticalDrag = verticalTrack.find('>.jspDrag');
 
-					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
-							'mousedown.jsp', getArrowScroll(0, -1)
-						).bind('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
-							'mousedown.jsp', getArrowScroll(0, 1)
-						).bind('click.jsp', nil);
-						if (settings.arrowScrollOnHover) {
-							arrowUp.bind('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
-							arrowDown.bind('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
-						}
+                    if (settings.showArrows) {
+                        arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
+                            'mousedown.jsp', getArrowScroll(0, -1)
+                            ).bind('click.jsp', nil);
+                        arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
+                            'mousedown.jsp', getArrowScroll(0, 1)
+                            ).bind('click.jsp', nil);
+                        if (settings.arrowScrollOnHover) {
+                            arrowUp.bind('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
+                            arrowDown.bind('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
+                        }
 
-						appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
-					}
+                        appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
+                    }
 
-					verticalTrackHeight = paneHeight;
-					container.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
-						function()
-						{
-							verticalTrackHeight -= $(this).outerHeight();
-						}
-					);
+                    verticalTrackHeight = paneHeight;
+                    elem.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
+                        function()
+                        {
+                            verticalTrackHeight -= $(this).outerHeight();
+                        }
+                        );
 
 
-					verticalDrag.hover(
-						function()
-						{
-							verticalDrag.addClass('jspHover');
-						},
-						function()
-						{
-							verticalDrag.removeClass('jspHover');
-						}
-					).bind(
-						'mousedown.jsp',
-						function(e)
-						{
-							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', nil);
+                    verticalDrag.hover(
+                        function()
+                        {
+                            verticalDrag.addClass('jspHover');
+                        },
+                        function()
+                        {
+                            verticalDrag.removeClass('jspHover');
+                        }
+                        ).bind(
+                        'mousedown.jsp',
+                        function(e)
+                        {
+                            // Stop IE from allowing text selection
+                            $('html').bind('dragstart.jsp selectstart.jsp', nil);
 
-							verticalDrag.addClass('jspActive');
+                            verticalDrag.addClass('jspActive');
 
-							var startY = e.pageY - verticalDrag.position().top;
+                            var startY = e.pageY - verticalDrag.position().top;
 
-							$('html').bind(
-								'mousemove.jsp',
-								function(e)
-								{
-									positionDragY(e.pageY - startY, false);
-								}
-							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
-							return false;
-						}
-					);
-					sizeVerticalScrollbar();
-				}
-			}
+                            $('html').bind(
+                                'mousemove.jsp',
+                                function(e)
+                                {
+                                    positionDragY(e.pageY - startY, false);
+                                }
+                                ).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
+                            return false;
+                        }
+                        );
+                    sizeVerticalScrollbar();
+                }
+            }
 
 			function sizeVerticalScrollbar()
 			{
@@ -336,9 +342,14 @@
 
 			function initialiseHorizontalScroll()
 			{
+                           var scrollContainer = container;
+                           
+                            if(settings.isHorizontalScrollOutside) {
+                                scrollContainer = elem;
+                            }
+                            
 				if (isScrollableH) {
-
-					container.append(
+					scrollContainer.append(
 						$('<div class="jspHorizontalBar" />').append(
 							$('<div class="jspCap jspCapLeft" />'),
 							$('<div class="jspTrack" />').append(
@@ -351,7 +362,7 @@
 						)
 					);
 
-					horizontalBar = container.find('>.jspHorizontalBar');
+					horizontalBar = scrollContainer.find('>.jspHorizontalBar');
 					horizontalTrack = horizontalBar.find('>.jspTrack');
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
@@ -1398,7 +1409,10 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		showArrows					: false,
+		isHorizontalScrollOutside		: false,
+		isVerticalScrollOutside                 : false,
+                
+		showArrows				: false,
 		maintainPosition			: true,
 		stickToBottom				: false,
 		stickToRight				: false,
