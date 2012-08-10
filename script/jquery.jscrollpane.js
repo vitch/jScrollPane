@@ -1358,6 +1358,11 @@
 					{
 						positionDragY(dragMaxY, animate);
 					},
+				    // Scrolls this jScrollPane right as far as it can currently scroll. If animate isn't passed then the
+				    // animateScroll value from settings is used instead.
+                    scrollToRight: function (animate) {
+				        positionDragX(dragMaxX, animate);
+				    },
 					// Hijacks the links on the page which link to content inside the scrollpane. If you have changed
 					// the content of your page (e.g. via AJAX) and want to make sure any new anchor links to the
 					// contents of your scroll pane will work then call this function.
