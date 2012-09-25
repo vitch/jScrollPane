@@ -3,7 +3,7 @@
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
- * Dual licensed under the MIT and GPL licenses.
+ * Dual licensed under the MIT or GPL licenses.
  */
 
 // Script: jScrollPane - cross browser customisable scrollbars

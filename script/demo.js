@@ -4,7 +4,7 @@
  * You do not need to include this script or use it on your site.
  *
  * Copyright (c) 2010 Kelvin Luck
- * Dual licensed under the MIT and GPL licenses.
+ * Dual licensed under the MIT or GPL licenses.
  */
 
 $(function()
