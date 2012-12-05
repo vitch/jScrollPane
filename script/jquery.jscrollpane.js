@@ -87,6 +87,11 @@
 
 				settings = s;
 
+				//fixes that would allow it work with existing dom in case used with templating engines.
+				
+				pane = elem.find(".jspPane").length > 0? elem.find(".jspPane"): pane ;
+        			container = elem.find(".jspContainer").length > 0? elem.find(".jspContainer"): container;
+
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
 					originalScrollLeft = elem.scrollLeft();
