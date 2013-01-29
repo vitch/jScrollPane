@@ -1113,66 +1113,66 @@
 				});
 			}
 			
-			// Init touch on iPad, iPhone, iPod, Android
-			function initTouch()
-			{
-				var startX,
-					startY,
-					touchStartX,
-					touchStartY,
-					moved,
-					moving = false;
-  
-				container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').bind(
-					'touchstart.jsp',
-					function(e)
-					{
-						var touch = e.originalEvent.touches[0];
-						startX = contentPositionX();
-						startY = contentPositionY();
-						touchStartX = touch.pageX;
-						touchStartY = touch.pageY;
-						moved = false;
-						moving = true;
-					}
-				).bind(
-					'touchmove.jsp',
-					function(ev)
-					{
-						if(!moving) {
-							return;
-						}
-						
-						var touchPos = ev.originalEvent.touches[0],
-							dX = horizontalDragPosition, dY = verticalDragPosition;
-						
-						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
-						
-						moved = moved || Math.abs(touchStartX - touchPos.pageX) > 5 || Math.abs(touchStartY - touchPos.pageY) > 5;
-						
-						// return true if there was no movement so rest of screen can scroll
-						return dX == horizontalDragPosition && dY == verticalDragPosition;
-					}
-				).bind(
-					'touchend.jsp',
-					function(e)
-					{
-						moving = false;
-						/*if(moved) {
-							return false;
-						}*/
-					}
-				).bind(
-					'click.jsp-touchclick',
-					function(e)
-					{
-						if(moved) {
-							moved = false;
-							return false;
-						}
-					}
-				);
-			}
+            // Init touch on iPad, iPhone, iPod, Android, MsPointerEvents
+            function initTouch()
+            {
+                var startX,
+                    startY,
+                    touchStartX,
+                    touchStartY,
+                    moved,
+                    moving = false;
+
+                container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick MSPointerDown.jsp MSPointerMove.jsp MSPointerUp.jsp').bind(
+                    'touchstart.jsp MSPointerDown.jsp',
+                    function(e)
+                    {
+                        var touch = e.originalEvent.touches[0];
+                        startX = contentPositionX();
+                        startY = contentPositionY();
+                        touchStartX = touch.pageX;
+                        touchStartY = touch.pageY;
+                        moved = false;
+                        moving = true;
+                    }
+                ).bind(
+                    'touchmove.jsp MSPointerMove.jsp',
+                    function(ev)
+                    {
+                        if(!moving) {
+                            return;
+                        }
+
+                        var touchPos = ev.originalEvent.touches[0],
+                            dX = horizontalDragPosition, dY = verticalDragPosition;
+
+                        jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
+
+                        moved = moved || Math.abs(touchStartX - touchPos.pageX) > 5 || Math.abs(touchStartY - touchPos.pageY) > 5;
+
+                        // return true if there was no movement so rest of screen can scroll
+                        return dX == horizontalDragPosition && dY == verticalDragPosition;
+                    }
+                ).bind(
+                    'touchend.jsp MSPointerUp.jsp',
+                    function(e)
+                    {
+                        moving = false;
+                        /*if(moved) {
+                            return false;
+                        }*/
+                    }
+                ).bind(
+                    'click.jsp-touchclick',
+                    function(e)
+                    {
+                        if(moved) {
+                            moved = false;
+                            return false;
+                        }
+                    }
+                );
+            }
 			
 			function destroy(){
 				var currentY = contentPositionY(),
