@@ -9,6 +9,7 @@
 {
 	overflow: hidden;
 	position: relative;
+	-ms-touch-action: pinch-zoom; /* Direct panning (pan-x pan-y) pointer events to JavaScript code. */
 }
 
 .jspPane
