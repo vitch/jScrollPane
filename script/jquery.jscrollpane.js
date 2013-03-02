@@ -156,6 +156,7 @@
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
+                                pane.css('height', '');
 				pane.css('overflow', 'auto');
 				if (s.contentWidth) {
 					contentWidth = s.contentWidth;
@@ -234,6 +235,7 @@
 				originalScrollLeft && elem.scrollLeft(0) && scrollToX(originalScrollLeft, false);
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
+				pane.css('height', '100%');
 			}
 
 			function initialiseVerticalScroll()
