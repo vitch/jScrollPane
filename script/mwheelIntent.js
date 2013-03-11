@@ -54,7 +54,7 @@ $.event.special.mwheelIntent = {
 				minDif = 3;
 			}, 1500);
 			e = $.extend({}, e, {type: 'mwheelIntent'});
-            return $.event.handle.apply(this, arguments);
+            return ($.event.dispatch || $.event.handle).apply(this, arguments);
 		}
     }
 };
