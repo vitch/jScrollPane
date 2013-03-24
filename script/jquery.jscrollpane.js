@@ -138,7 +138,6 @@
 
           				newPaneWidth = elem.innerWidth() + originalPaddingTotalWidth;
           				newPaneHeight = elem.innerHeight();
-          				console.log('newPaneHeight = ' + newPaneHeight);
           				pane.css('position', 'absolute');
 
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
