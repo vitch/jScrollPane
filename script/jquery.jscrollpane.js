@@ -66,7 +66,7 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, originalPaddingTotalHeight, previousContentWidth, 
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
@@ -77,13 +77,15 @@
 								elem.css('paddingLeft');
 			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
 										(parseInt(elem.css('paddingRight'), 10) || 0);
-
+			originalPaddingTotalHeight = (parseInt(elem.css('paddingTop'), 10) || 0) +
+                                                                                (parseInt(elem.css('paddingBottom'), 10) || 0); 
+			
 			function initialise(s)
 			{
 
 				var /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
 						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
-						maintainAtBottom = false, maintainAtRight = false;
+						newPaneWidth, newPaneHeight, maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
 
@@ -100,7 +102,7 @@
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
 					// come back to it later and check once it is unhidden...
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-					paneHeight = elem.innerHeight();
+					paneHeight = elem.innerHeight() + originalPaddingTotalHeight;
 
 					elem.width(paneWidth);
 					
@@ -128,20 +130,24 @@
 					*/
 				} else {
 					elem.css('width', '');
+					
+					// To measure the required dimensions accurately, temporarily override the CSS positioning
+          				// of the container and pane.
+          				container.css({width: 'auto', height: 'auto'});
+          				pane.css('position', 'static');
+
+          				newPaneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+          				newPaneHeight = elem.innerHeight();
+          				pane.css('position', 'absolute');
 
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
-					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = newPaneWidth !== paneWidth || newPaneHeight !== paneHeight;
 
-					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
-						paneHeight = elem.innerHeight();
-						container.css({
-							width: paneWidth + 'px',
-							height: paneHeight + 'px'
-						});
-					}
+					paneWidth = newPaneWidth;
+          				paneHeight = newPaneHeight;
+          				container.css({width: paneWidth, height: paneHeight});
 
 					// If nothing changed since last check...
 					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
@@ -156,6 +162,7 @@
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
+                                pane.css('height', '');
 				pane.css('overflow', 'auto');
 				if (s.contentWidth) {
 					contentWidth = s.contentWidth;
@@ -234,6 +241,7 @@
 				originalScrollLeft && elem.scrollLeft(0) && scrollToX(originalScrollLeft, false);
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
+				pane.css('height', '100%');
 			}
 
 			function initialiseVerticalScroll()
