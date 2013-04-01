@@ -99,7 +99,7 @@
 					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
 					// come back to it later and check once it is unhidden...
-					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+					paneWidth = elem.innerWidth();
 					paneHeight = elem.innerHeight();
 
 					elem.width(paneWidth);
@@ -132,10 +132,10 @@
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
-					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = elem.innerWidth() != paneWidth || elem.outerHeight() != paneHeight;
 
 					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+						paneWidth = elem.innerWidth();
 						paneHeight = elem.innerHeight();
 						container.css({
 							width: paneWidth + 'px',
@@ -177,7 +177,7 @@
 					elem.removeClass('jspScrollable');
 					pane.css({
 						top: 0,
-						width: container.width() - originalPaddingTotalWidth
+						width: container.width()
 					});
 					removeMousewheel();
 					removeFocusHandler();
@@ -322,7 +322,7 @@
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
 				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
+				pane.width(paneWidth - scrollbarWidth);
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
