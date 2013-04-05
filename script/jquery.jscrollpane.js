@@ -66,7 +66,7 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth,
+				reinitialiseInterval, originalPadding,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
@@ -75,16 +75,14 @@
 								elem.css('paddingRight') + ' ' +
 								elem.css('paddingBottom') + ' ' +
 								elem.css('paddingLeft');
-			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
-										(parseInt(elem.css('paddingRight'), 10) || 0);
 
 			function probePane() {
-			
+
 				pane.css('overflow', 'auto');
-			    var w = s.contentWidth || pane[0].scrollWidth, h = pane[0].scrollHeight;
+				var w = s.contentWidth || pane[0].scrollWidth, h = pane[0].scrollHeight;
 				pane.css('overflow', '');
-			    
-			    return {width: w, height: h};
+
+				return {width: w, height: h};
 			}
 
 			function initialise(s)
@@ -112,7 +110,7 @@
 					paneHeight = elem.innerHeight();
 
 					elem.width(paneWidth);
-					
+
 					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
 					container = $('<div class="jspContainer" />')
 						.css({
@@ -137,6 +135,7 @@
 					*/
 				} else {
 					elem.css('width', '');
+					container.css({width: '', height: ''});
 
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
@@ -442,7 +441,7 @@
 				}
 				// reflow content
 				if (isScrollableH) {
-					pane.width((container.outerWidth() - originalPaddingTotalWidth) + 'px');
+					pane.width(container.outerWidth() + 'px');
 				}
 				contentHeight = pane.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
