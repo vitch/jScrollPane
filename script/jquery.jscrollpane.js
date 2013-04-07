@@ -76,7 +76,8 @@
 								elem.css('paddingBottom') + ' ' +
 								elem.css('paddingLeft');
 
-			function probePane() {
+			function probePane()
+			{
 
 				pane.css('overflow', 'auto');
 				var w = s.contentWidth || pane[0].scrollWidth, h = pane[0].scrollHeight;
@@ -135,7 +136,7 @@
 					*/
 				} else {
 					elem.css('width', '');
-					container.css({width: '', height: ''});
+					container.css('width', '');
 
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
