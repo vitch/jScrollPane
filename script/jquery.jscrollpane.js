@@ -155,6 +155,7 @@
 					// If nothing changed since last check...
 					if (!hasContainingSpaceChanged && contentWidth == probePane().width && pane.outerHeight() == contentHeight) {
 						elem.width(paneWidth);
+						elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 						return; 
 					}
 					
