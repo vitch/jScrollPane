@@ -1,14 +1,14 @@
 /*!
- * jScrollPane - v2.0.0beta12 - 2012-07-24
+ * jScrollPane - v2.0.0beta12 - 2012-09-27
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
- * Dual licensed under the MIT and GPL licenses.
+ * Dual licensed under the MIT or GPL licenses.
  */
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.0beta12, Last updated: 2012-07-24*
+// *Version: 2.0.0beta12, Last updated: 2012-09-27*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.0beta12 - (In progress)
+// 2.0.0beta12 - (2012-09-27) fix for jQuery 1.8+
 // 2.0.0beta11 - (2012-05-14)
 // 2.0.0beta10 - (2011-04-17) cleaner required size calculation, improved keyboard support, stickToBottom/Left, other small fixes
 // 2.0.0beta9 - (2011-01-31) new API methods, bug fixes and correct keyboard support for FF/OSX
@@ -1389,7 +1389,7 @@
 				if (jspApi) {
 					jspApi.reinitialise(settings);
 				} else {
-					$("script",elem).filter('[type="text/javascript"],not([type])').remove();
+					$("script",elem).filter('[type="text/javascript"],:not([type])').remove();
 					jspApi = new JScrollPane(elem, settings);
 					elem.data('jsp', jspApi);
 				}
