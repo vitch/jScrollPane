@@ -276,7 +276,7 @@
 					container.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
 						function()
 						{
-							verticalTrackHeight -= $(this).outerHeight();
+							verticalTrackHeight -= $(this).outerHeight(true);
 						}
 					);
 
@@ -409,7 +409,7 @@
 				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 					function()
 					{
-						horizontalTrackWidth -= $(this).outerWidth();
+						horizontalTrackWidth -= $(this).outerWidth(true);
 					}
 				);
 
