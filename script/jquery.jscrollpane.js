@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.13 - 2013-05-01
+ * jScrollPane - v2.0.14 - 2013-05-01
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2010 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.13, Last updated: 2013-05-01*
+// *Version: 2.0.14, Last updated: 2013-05-01*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.14 - (2013-05-01) Updated to most recent mouse wheel plugin (see #106) and related changes for sensible scroll speed
 // 2.0.13 - (2013-05-01) Switched to semver compatible version name
 // 2.0.0beta12 - (2012-09-27) fix for jQuery 1.8+
 // 2.0.0beta11 - (2012-05-14)
@@ -1379,7 +1380,7 @@
 		settings = $.extend({}, $.fn.jScrollPane.defaults, settings);
 		
 		// Apply default speed
-		$.each(['mouseWheelSpeed', 'arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'], function() {
+		$.each(['arrowButtonSpeed', 'trackClickSpeed', 'keyboardSpeed'], function() {
 			settings[this] = settings[this] || settings.speed;
 		});
 
@@ -1417,7 +1418,7 @@
 		hijackInternalLinks			: false,
 		verticalGutter				: 4,
 		horizontalGutter			: 4,
-		mouseWheelSpeed				: 0,
+		mouseWheelSpeed				: 3,
 		arrowButtonSpeed			: 0,
 		arrowRepeatFreq				: 50,
 		arrowScrollOnHover			: false,
