@@ -202,7 +202,7 @@
 					}
 
 					initFocusHandler();
-					initMousewheel();
+					initMousewheel(settings.enableParentScroll);
 					initTouch();
 					
 					if (settings.enableKeyboardNavigation) {
@@ -861,13 +861,17 @@
 				return (scrollableWidth > 20) && (scrollableWidth - contentPositionX() < 10);
 			}
 
-			function initMousewheel()
+			function initMousewheel(parentScroll)
 			{
 				container.unbind(mwEvent).bind(
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
 						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, false);
+						if (!parentScroll) {
+                            				event.stopPropagation();
+                            				event.preventDefault();
+                        			}
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
@@ -1429,7 +1433,8 @@
 		keyboardSpeed				: 0,
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		scrollPagePercent			: .8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		enableParentScroll			: true
 	};
 
 })(jQuery,this);
