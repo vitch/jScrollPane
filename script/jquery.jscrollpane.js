@@ -221,10 +221,14 @@
 				}
 
 				if (settings.autoReinitialise && !reinitialiseInterval) {
+					pane.data('jspPaneHeight', pane.height());
 					reinitialiseInterval = setInterval(
 						function()
 						{
-							initialise(settings);
+							if (pane.height() != pane.data('jspPaneHeight')) {
+								pane.data('jspPaneHeight', pane.height());
+								initialise(settings);
+							}
 						},
 						settings.autoReinitialiseDelay
 					);
