@@ -156,6 +156,62 @@
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
+				// event for dragging list item
+				elem.bind('mousedown.jScrollPane', function(){
+					$(document).bind('mousemove.jScrollPaneDragging', onTextSelectionScrollMouseMove);
+			    $(document).bind('mouseup.jScrollPaneDragging',   onSelectScrollMouseUp);
+				});
+
+				var textDragDistanceAway;
+				var textSelectionInterval;
+
+				elem.scrollBy = function(delta)
+				{
+					var currentPos = -parseInt(pane.css('top')) || 0;
+					jsp.scrollTo(0,currentPos + delta);
+				};
+
+				function onTextSelectionInterval()
+				{
+					direction = textDragDistanceAway < 0 ? -1 : 1;
+					elem.scrollBy(textDragDistanceAway / 2);
+				}
+
+				function clearTextSelectionInterval()
+				{
+					if (textSelectionInterval) {
+						clearInterval(textSelectionInterval);
+						textSelectionInterval = undefined;
+					}
+				}
+
+				var getPos = function (event, c) {
+					var p = c == 'X' ? 'Left' : 'Top';
+					return event['page' + c] || (event['client' + c] + (document.documentElement['scroll' + p] || document.body['scroll' + p])) || 0;
+				};
+
+				function onTextSelectionScrollMouseMove(e){
+					var offset = elem.offset().top;
+					var maxOffset = offset + paneHeight;
+					var mouseOffset = getPos(e, 'Y');
+					textDragDistanceAway = mouseOffset < offset ? mouseOffset - offset : (mouseOffset > maxOffset ? mouseOffset - maxOffset : 0);
+					if (textDragDistanceAway == 0) {
+						clearTextSelectionInterval();
+					} else {
+						if (!textSelectionInterval) {
+							textSelectionInterval  = setInterval(onTextSelectionInterval, 100);
+						}
+					}
+				}
+
+				function onSelectScrollMouseUp(e)
+				{
+				   $(document)
+					  .unbind('mousemove.jScrollPaneDragging')
+					  .unbind('mouseup.jScrollPaneDragging');
+				   clearTextSelectionInterval();
+				}
+
 				pane.css('overflow', 'auto');
 				if (s.contentWidth) {
 					contentWidth = s.contentWidth;
