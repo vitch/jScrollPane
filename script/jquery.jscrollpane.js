@@ -869,7 +869,7 @@
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
-						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, false);
+						jsp.scrollBy( ((deltaX || isScrollableV) ? deltaX : deltaY) * settings.mouseWheelSpeed, - ((deltaY || isScrollableH) ? deltaY : deltaX) * settings.mouseWheelSpeed, false);
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
