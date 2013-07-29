@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.14, Last updated: 2013-05-01*
+// *Version: 2.0.15, Last updated: 2013-07-29*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.15 - (2013-07-29) Fixed issue with scrollToElement where the destX and destY are undefined.
 // 2.0.14 - (2013-05-01) Updated to most recent mouse wheel plugin (see #106) and related changes for sensible scroll speed
 // 2.0.13 - (2013-05-01) Switched to semver compatible version name
 // 2.0.0beta12 - (2012-09-27) fix for jQuery 1.8+
@@ -824,7 +825,7 @@
 				} else if (eleTop + eleHeight > maxVisibleEleTop) { // element is below viewport
 					destY = eleTop - paneHeight + eleHeight + settings.verticalGutter;
 				}
-				if (destY) {
+				if (!isNaN(destY)) {
 					scrollToY(destY, animate);
 				}
 				
@@ -835,7 +836,7 @@
 	            } else if (eleLeft + eleWidth > maxVisibleEleLeft) { // element is to the right viewport
 	                destX = eleLeft - paneWidth + eleWidth + settings.horizontalGutter;
 	            }
-	            if (destX) {
+	            if (!isNaN(destX)) {
 	                scrollToX(destX, animate);
 	            }
 
