@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.16 - 2013-07-30
+ * jScrollPane - v2.0.17 - 2013-08-17
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2013 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.16, Last updated: 2013-07-30*
+// *Version: 2.0.17, Last updated: 2013-08-17*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.17 - (2013-08-17) Working correctly when box-sizing is set to border-box (thanks @pieht)
 // 2.0.16 - (2013-07-30) Resetting left position when scroll is removed. Fixes #189
 // 2.0.15 - (2013-07-29) Fixed issue with scrollToElement where the destX and destY are undefined.
 // 2.0.14 - (2013-05-01) Updated to most recent mouse wheel plugin (see #106) and related changes for sensible scroll speed
