@@ -75,12 +75,17 @@
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
-			originalPadding = elem.css('paddingTop') + ' ' +
-								elem.css('paddingRight') + ' ' +
-								elem.css('paddingBottom') + ' ' +
-								elem.css('paddingLeft');
-			originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
-										(parseInt(elem.css('paddingRight'), 10) || 0);
+			if (elem.css('box-sizing') === 'border-box') {
+				originalPadding = 0;
+				originalPaddingTotalWidth = 0;
+			} else {
+				originalPadding = elem.css('paddingTop') + ' ' +
+									elem.css('paddingRight') + ' ' +
+									elem.css('paddingBottom') + ' ' +
+									elem.css('paddingLeft');	
+				originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
+											(parseInt(elem.css('paddingRight'), 10) || 0);
+			}
 
 			function initialise(s)
 			{
