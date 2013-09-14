@@ -71,7 +71,7 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
+				reinitialiseInterval, originalPadding,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
@@ -86,6 +86,16 @@
 									elem.css('paddingLeft');	
 				originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
 											(parseInt(elem.css('paddingRight'), 10) || 0);
+			}
+
+			function probePane()
+			{
+
+				pane.css('overflow', 'auto');
+				var w = s.contentWidth || pane[0].scrollWidth, h = pane[0].scrollHeight;
+				pane.css('overflow', '');
+
+				return {width: w, height: h};
 			}
 
 			function initialise(s)
@@ -109,11 +119,11 @@
 					);
 					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
 					// come back to it later and check once it is unhidden...
-					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+					paneWidth = elem.innerWidth();
 					paneHeight = elem.innerHeight();
 
 					elem.width(paneWidth);
-					
+
 					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
 					container = $('<div class="jspContainer" />')
 						.css({
@@ -138,14 +148,15 @@
 					*/
 				} else {
 					elem.css('width', '');
+					container.css('width', '');
 
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
-					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+					hasContainingSpaceChanged = elem.innerWidth() != paneWidth || elem.outerHeight() != paneHeight;
 
 					if (hasContainingSpaceChanged) {
-						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
+						paneWidth = elem.innerWidth();
 						paneHeight = elem.innerHeight();
 						container.css({
 							width: paneWidth + 'px',
@@ -154,11 +165,11 @@
 					}
 
 					// If nothing changed since last check...
-					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
+					if (!hasContainingSpaceChanged && contentWidth == probePane().width && pane.outerHeight() == contentHeight) {
 						elem.width(paneWidth);
-						return;
+						elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
+						return; 
 					}
-					previousContentWidth = contentWidth;
 					
 					pane.css('width', '');
 					elem.width(paneWidth);
@@ -166,20 +177,14 @@
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
 
-				pane.css('overflow', 'auto');
-				if (s.contentWidth) {
-					contentWidth = s.contentWidth;
-				} else {
-					contentWidth = pane[0].scrollWidth;
-				}
-				contentHeight = pane[0].scrollHeight;
-				pane.css('overflow', '');
+				var p = probePane();
+				contentWidth = p.width;
+				contentHeight = p.height;
 
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
-				isScrollableV = percentInViewV > 1;
-
-				isScrollableH = percentInViewH > 1;
+				isScrollableV = settings.verticalScrollDisabled ? false : (percentInViewV > 1);
+				isScrollableH = settings.horizontalScrollDisabled ? false : (percentInViewH > 1);
 
 				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
 
@@ -188,7 +193,7 @@
 					pane.css({
             top: 0,
             left: 0,
-						width: container.width() - originalPaddingTotalWidth
+						width: container.width()
 					});
 					removeMousewheel();
 					removeFocusHandler();
@@ -333,7 +338,7 @@
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
 				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
+				pane.width(paneWidth - scrollbarWidth);
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
@@ -451,7 +456,7 @@
 				}
 				// reflow content
 				if (isScrollableH) {
-					pane.width((container.outerWidth() - originalPaddingTotalWidth) + 'px');
+					pane.width(container.outerWidth() + 'px');
 				}
 				contentHeight = pane.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
@@ -879,8 +884,8 @@
 					function (event, delta, deltaX, deltaY) {
 						var dX = horizontalDragPosition, dY = verticalDragPosition;
 						jsp.scrollBy(deltaX * settings.mouseWheelSpeed, -deltaY * settings.mouseWheelSpeed, false);
-						// return true if there was no movement so rest of screen can scroll
-						return dX == horizontalDragPosition && dY == verticalDragPosition;
+						// return true if there was no movement so rest of screen can scroll (optionally)
+						return (settings.documentScrollDisabled ? false : dX == horizontalDragPosition && dY == verticalDragPosition);
 					}
 				);
 			}
@@ -1409,39 +1414,41 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		showArrows					: false,
-		maintainPosition			: true,
-		stickToBottom				: false,
-		stickToRight				: false,
-		clickOnTrack				: true,
-		autoReinitialise			: false,
-		autoReinitialiseDelay		: 500,
-		verticalDragMinHeight		: 0,
-		verticalDragMaxHeight		: 99999,
-		horizontalDragMinWidth		: 0,
-		horizontalDragMaxWidth		: 99999,
-		contentWidth				: undefined,
-		animateScroll				: false,
-		animateDuration				: 300,
-		animateEase					: 'linear',
-		hijackInternalLinks			: false,
-		verticalGutter				: 4,
-		horizontalGutter			: 4,
-		mouseWheelSpeed				: 3,
-		arrowButtonSpeed			: 0,
-		arrowRepeatFreq				: 50,
-		arrowScrollOnHover			: false,
-		trackClickSpeed				: 0,
-		trackClickRepeatFreq		: 70,
-		verticalArrowPositions		: 'split',
-		horizontalArrowPositions	: 'split',
-		enableKeyboardNavigation	: true,
-		hideFocus					: false,
-		keyboardSpeed				: 0,
-		initialDelay                : 300,        // Delay before starting repeating
-		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		showArrows               : false,
+		maintainPosition         : true,
+		stickToBottom            : false,
+		stickToRight             : false,
+		clickOnTrack             : true,
+		autoReinitialise         : false,
+		autoReinitialiseDelay    : 500,
+		verticalDragMinHeight    : 0,
+		verticalDragMaxHeight    : 99999,
+		horizontalDragMinWidth   : 0,
+		horizontalDragMaxWidth   : 99999,
+		contentWidth             : undefined,
+		animateScroll            : false,
+		animateDuration          : 300,
+		animateEase              : 'linear',
+		hijackInternalLinks      : false,
+		verticalGutter           : 4,
+		horizontalGutter         : 4,
+		verticalScrollDisabled   : false,
+		horizontalScrollDisabled : false,
+		mouseWheelSpeed          : 3,
+		documentScrollDisabled   : false,
+		arrowButtonSpeed         : 0,
+		arrowRepeatFreq          : 50,
+		arrowScrollOnHover       : false,
+		trackClickSpeed          : 0,
+		trackClickRepeatFreq     : 70,
+		verticalArrowPositions   : 'split',
+		horizontalArrowPositions : 'split',
+		enableKeyboardNavigation : true,
+		hideFocus                : false,
+		keyboardSpeed            : 0,
+		initialDelay             : 300, // Delay before starting repeating
+		speed                    : 30, // Default speed when others falsey
+		scrollPagePercent        : .8 // Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
 })(jQuery,this);
-
