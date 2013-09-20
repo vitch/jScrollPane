@@ -829,9 +829,9 @@
 				viewportTop = contentPositionY();
 				maxVisibleEleTop = viewportTop + paneHeight;
 				if (eleTop < viewportTop || stickToTop) { // element is above viewport
-					destY = eleTop - settings.verticalGutter;
+					destY = eleTop - settings.horizontalGutter;
 				} else if (eleTop + eleHeight > maxVisibleEleTop) { // element is below viewport
-					destY = eleTop - paneHeight + eleHeight + settings.verticalGutter;
+					destY = eleTop - paneHeight + eleHeight + settings.horizontalGutter;
 				}
 				if (!isNaN(destY)) {
 					scrollToY(destY, animate);
