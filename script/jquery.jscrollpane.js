@@ -206,10 +206,10 @@
 
 				function onSelectScrollMouseUp(e)
 				{
-				   $(document)
+				  $(document)
 					  .unbind('mousemove.jScrollPaneDragging')
 					  .unbind('mouseup.jScrollPaneDragging');
-				   clearTextSelectionInterval();
+				  clearTextSelectionInterval();
 				}
 
 				pane.css('overflow', 'auto');
