@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.17 - 2013-08-17
+ * jScrollPane - v2.0.18 - 2013-10-23
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2013 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.17, Last updated: 2013-08-17*
+// *Version: 2.0.18, Last updated: 2013-10-23*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.18 - (2013-10-23) Fix for issue with gutters and scrollToElement (thanks @Dubiy)
 // 2.0.17 - (2013-08-17) Working correctly when box-sizing is set to border-box (thanks @pieht)
 // 2.0.16 - (2013-07-30) Resetting left position when scroll is removed. Fixes #189
 // 2.0.15 - (2013-07-29) Fixed issue with scrollToElement where the destX and destY are undefined.
