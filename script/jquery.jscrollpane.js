@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.0.18 - 2013-10-23
+ * jScrollPane - v2.0.19 - 2013-11-16
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2013 Kelvin Luck
@@ -8,7 +8,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.18, Last updated: 2013-10-23*
+// *Version: 2.0.19, Last updated: 2013-11-16*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.19 - (2013-11-16) Changes for more reliable scroll amount with latest mousewheel plugin (thanks @brandonaaron)
 // 2.0.18 - (2013-10-23) Fix for issue with gutters and scrollToElement (thanks @Dubiy)
 // 2.0.17 - (2013-08-17) Working correctly when box-sizing is set to border-box (thanks @pieht)
 // 2.0.16 - (2013-07-30) Resetting left position when scroll is removed. Fixes #189
