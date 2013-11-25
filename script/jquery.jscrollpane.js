@@ -332,7 +332,7 @@
 			{
 				verticalTrack.height(verticalTrackHeight + 'px');
 				verticalDragPosition = 0;
-				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
+				scrollbarWidth = parseInt(settings.verticalGutter) + parseInt(verticalTrack.outerWidth());
 
 				// Make the pane thinner to allow for the vertical scrollbar
 				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
