@@ -285,7 +285,7 @@
 						appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
 					}
 
-					verticalTrackHeight = paneHeight;
+					verticalTrackHeight = verticalBar.height();
 					container.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
 						function()
 						{
