@@ -1,3 +1,4 @@
+
 /*!
  * jScrollPane - v2.0.19 - 2013-11-16
  * http://jscrollpane.kelvinluck.com/
@@ -103,14 +104,21 @@
 					originalScrollTop = elem.scrollTop();
 					originalScrollLeft = elem.scrollLeft();
 
+					// Deal with when width/ height is 0 as it probably means the element is hidden and we should
+					// come back to it later and check once it is unhidden...
+					if(!elem.innerHeight() || !elem.innerWidth()){
+						setTimeout(function(){
+							initialise(s);
+						}, 50);
+					}
+
 					elem.css(
 						{
 							overflow: 'hidden',
 							padding: 0
 						}
 					);
-					// TODO: Deal with where width/ height is 0 as it probably means the element is hidden and we should
-					// come back to it later and check once it is unhidden...
+
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					paneHeight = elem.innerHeight();
 
@@ -1446,4 +1454,3 @@
 	};
 
 })(jQuery,this);
-
