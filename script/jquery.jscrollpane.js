@@ -308,13 +308,13 @@
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', nil);
-
+							$(settings.parentElement).bind('dragstart.jsp selectstart.jsp', nil);
+							
 							verticalDrag.addClass('jspActive');
 
 							var startY = e.pageY - verticalDrag.position().top;
 
-							$('html').bind(
+							$(settings.parentElement).bind(
 								'mousemove.jsp',
 								function(e)
 								{
@@ -335,15 +335,16 @@
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
 				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
+				if(settings.repositionPane) pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
-				try {
-					if (verticalBar.position().left === 0) {
-						pane.css('margin-left', scrollbarWidth + 'px');
-					}
-				} catch (err) {
+				if(settings.repositionPane){
+					try {
+						if (verticalBar.position().left === 0) {
+							pane.css('margin-left', scrollbarWidth + 'px');
+						}
+					} catch (err) {	}
 				}
 			}
 
@@ -396,13 +397,15 @@
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', nil);
+							
+							$(settings.parentElement).bind('dragstart.jsp selectstart.jsp', nil);
 
 							horizontalDrag.addClass('jspActive');
 
 							var startX = e.pageX - horizontalDrag.position().left;
 
-							$('html').bind(
+							
+							$(settings.parentElement).bind(
 								'mousemove.jsp',
 								function(e)
 								{
@@ -535,7 +538,8 @@
 				doScroll();
 
 				eve = ele ? 'mouseout.jsp' : 'mouseup.jsp';
-				ele = ele || $('html');
+				
+				ele = ele || $(settings.parentElement);
 				ele.bind(
 					eve,
 					function()
@@ -664,7 +668,7 @@
 
 			function cancelDrag()
 			{
-				$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
+				$(settings.parentElement).unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
 
 				if (verticalDrag) {
 					verticalDrag.removeClass('jspActive');
@@ -1442,8 +1446,10 @@
 		keyboardSpeed				: 0,
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		scrollPagePercent			: .8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		//CUSTOM SETTINGS
+		parentElement				: 'html',	// An alternative parent element (html) if conflicts with other scripts
+		repositionPane				: true		// Shift the content pane when the scroll bar is needed, make false to keep css the same and just make scroll bars visible
 	};
 
 })(jQuery,this);
-
