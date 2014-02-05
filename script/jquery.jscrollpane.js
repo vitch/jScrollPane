@@ -61,7 +61,21 @@
 //							 elements and dynamically sized elements.
 // 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
 
-(function($,window,undefined){
+(function (plugin, window) {
+	var factory = function($){
+		return plugin($, window);
+	}
+  if ( typeof define === 'function' && define.amd ) {
+      // AMD. Register as an anonymous module.
+      define(['jquery'], factory);
+  } else if (typeof exports === 'object') {
+      // Node/CommonJS style for Browserify
+      module.exports = factory;
+  } else {
+      // Browser globals
+      factory(jQuery);
+  }
+}(function($,window,undefined){
 
 	$.fn.jScrollPane = function(settings)
 	{
@@ -1445,5 +1459,4 @@
 		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
 	};
 
-})(jQuery,this);
-
+},this));
