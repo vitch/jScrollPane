@@ -94,7 +94,7 @@
 			{
 
 				var /*firstChild, lastChild, */isMaintainingPositon, lastContentX, lastContentY,
-						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
+						hasContainingSpaceChanged, originalScrollTop, originalScrollLeft, elemChildren,
 						maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
@@ -116,13 +116,15 @@
 
 					elem.width(paneWidth);
 					
-					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
+					elemChildren = elem.children().remove();
+					pane = $('<div class="jspPane" />').css('padding', originalPadding);
 					container = $('<div class="jspContainer" />')
 						.css({
 							'width': paneWidth + 'px',
 							'height': paneHeight + 'px'
 						}
 					).append(pane).appendTo(elem);
+					pane.append(elemChildren);
 
 					/*
 					// Move any margins from the first and last children up to the container so they can still
@@ -1446,4 +1448,3 @@
 	};
 
 })(jQuery,this);
-
