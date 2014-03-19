@@ -726,6 +726,9 @@
 					percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
 
+				if (isNaN(destTop))
+				    destTop = 0;
+ 
 				if (wasAtTop != isAtTop || wasAtBottom != isAtBottom) {
 					wasAtTop = isAtTop;
 					wasAtBottom = isAtBottom;
@@ -772,6 +775,9 @@
 					isAtRight = horizontalDragPosition == dragMaxX,
 					percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
+
+				if (isNaN(destLeft))
+				    destLeft = 0;
 
 				if (wasAtLeft != isAtLeft || wasAtRight != isAtRight) {
 					wasAtLeft = isAtLeft;
