@@ -1385,6 +1385,10 @@
 					{
 						return pane;
 					},
+					// Force a redraw if your content width changes
+					resetContentWidth: function() {
+						previousContentWidth = 0;
+					},
 					// Scrolls this jScrollPane down as far as it can currently scroll. If animate isn't passed then the
 					// animateScroll value from settings is used instead.
 					scrollToBottom: function(animate)
