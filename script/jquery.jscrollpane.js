@@ -351,6 +351,12 @@
 				// Make the pane thinner to allow for the vertical scrollbar
 				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
 
+				// We need to recalculate height after changing width because content may wrap.
+				pane.css('overflow', 'auto');
+				contentHeight = pane[0].scrollHeight;
+				pane.css('overflow', '');
+				percentInViewV = contentHeight / paneHeight;
+
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
 				try {
