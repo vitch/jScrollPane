@@ -726,6 +726,9 @@
 					percentScrolled = destY/ dragMaxY,
 					destTop = -percentScrolled * (contentHeight - paneHeight);
 
+				if (isNaN(destTop))
+				    destTop = 0;
+ 
 				if (wasAtTop != isAtTop || wasAtBottom != isAtBottom) {
 					wasAtTop = isAtTop;
 					wasAtBottom = isAtBottom;
@@ -772,6 +775,9 @@
 					isAtRight = horizontalDragPosition == dragMaxX,
 					percentScrolled = destX / dragMaxX,
 					destLeft = -percentScrolled * (contentWidth - paneWidth);
+
+				if (isNaN(destLeft))
+				    destLeft = 0;
 
 				if (wasAtLeft != isAtLeft || wasAtRight != isAtRight) {
 					wasAtLeft = isAtLeft;
@@ -1378,6 +1384,10 @@
 					getContentPane: function()
 					{
 						return pane;
+					},
+					// Force a redraw if your content width changes
+					resetContentWidth: function() {
+						previousContentWidth = 0;
 					},
 					// Scrolls this jScrollPane down as far as it can currently scroll. If animate isn't passed then the
 					// animateScroll value from settings is used instead.
