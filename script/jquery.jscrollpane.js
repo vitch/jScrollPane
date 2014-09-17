@@ -84,13 +84,12 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
+				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth, style
 				wasAtTop = true,
 				wasAtLeft = true,
 				wasAtBottom = false,
 				wasAtRight = false,
-				originalElement = elem.clone(false, false)
-				.empty(),
+				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
 			if (elem.css('box-sizing') === 'border-box') {
@@ -107,12 +106,14 @@
 
 			function initialise(s) {
 
+				settings = s;
 				var /*firstChild, lastChild, */ isMaintainingPositon, lastContentX, lastContentY,
 					hasContainingSpaceChanged, originalScrollTop, originalScrollLeft,
 					maintainAtBottom = false,
 					maintainAtRight = false;
 
-				settings = s;
+				// Calls the method to add the generic styles within the page
+				appendStyles();
 
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
@@ -129,10 +130,13 @@
 
 					elem.width(paneWidth);
 
-					pane = $('<div class="jspPane" />')
+					pane = $('<div />')
+						.addClass(settings.classPane)
 						.css('padding', originalPadding)
 						.append(elem.children());
-					container = $('<div class="jspContainer" />')
+
+					container = $('<div />')
+						.addClass(settings.classContainer)
 						.css({
 							'width': paneWidth + 'px',
 							'height': paneHeight + 'px'
@@ -181,7 +185,7 @@
 					pane.css('width', '');
 					elem.width(paneWidth);
 
-					container.find('> .jspVerticalBar, > .jspHorizontalBar')
+					container.find('> .' + settings.classVerticalBar + ', > .' + settings.classHorizontalBar)
 						.remove()
 						.end();
 				}
@@ -204,7 +208,7 @@
 				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
 
 				if (!(isScrollableH || isScrollableV)) {
-					elem.removeClass('jspScrollable');
+					elem.removeClass(settings.classScrollable);
 					pane.css({
 						top: 0,
 						left: 0,
@@ -215,7 +219,7 @@
 					removeKeyboardNav();
 					removeClickOnTrack();
 				} else {
-					elem.addClass('jspScrollable');
+					elem.addClass(settings.classScrollable);
 
 					isMaintainingPositon = settings.maintainPosition && (verticalDragPosition || horizontalDragPosition);
 					if (isMaintainingPositon) {
@@ -266,35 +270,128 @@
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 			}
 
+			// Add generic styles with dynamic classes names in the HEAD
+			function appendStyles() {
+				if ($('#jspStyle').length) {
+					return;
+				}
+
+				style = [
+					'.' + settings.classContainer + ' {',
+					'	overflow: hidden;',
+					'	position: relative;',
+					'}',
+					'.' + settings.classPane + ' {',
+					'	position: absolute;',
+					'}',
+					'.' + settings.classVerticalBar + ' {',
+					'	position: absolute;',
+					'	top: 0;',
+					'	right: 0;',
+					'	width: 16px;',
+					'	height: 100%;',
+					'	background: red;',
+					'}',
+					'.' + settings.classHorizontalBar + ' {',
+					'	position: absolute;',
+					'	bottom: 0;',
+					'	left: 0;',
+					'	width: 100%;',
+					'	height: 16px;',
+					'	background: red;',
+					'}',
+					'.' + settings.classCap + ' {',
+					'	display: none;',
+					'}',
+					'.' + settings.classHorizontalBar + ' .' + settings.classCap + ' {',
+					'	float: left;',
+					'}',
+					'.' + settings.classTrack + ' {',
+					'	background: #dde;',
+					'	position: relative;',
+					'}',
+					'.' + settings.classDrag + ' {',
+					'	background: #bbd;',
+					'	position: relative;',
+					'	top: 0;',
+					'	left: 0;',
+					'	cursor: pointer;',
+					'}',
+					'.' + settings.classHorizontalBar + ' .' + settings.classTrack + ',',
+					'.' + settings.classHorizontalBar + ' .' + settings.classDrag + ' {',
+					'	float: left;',
+					'	height: 100%;',
+					'}',
+					'.' + settings.classArrow + ' {',
+					'	background: #50506d;',
+					'	text-indent: -20000px;',
+					'	display: block;',
+					'	cursor: pointer;',
+					'	padding: 0;',
+					'	margin: 0;',
+					'}',
+					'.' + settings.classArrow + '.' + settings.classDisabled + ' {',
+					'	cursor: default;',
+					'	background: #80808d;',
+					'}',
+					'.' + settings.classVerticalBar + ' .' + settings.classArrow + ' {',
+					'	height: 16px;',
+					'}',
+					'.' + settings.classHorizontalBar + ' .' + settings.classArrow + ' {',
+					'	width: 16px;',
+					'	float: left;',
+					'	height: 100%;',
+					'}',
+					'.' + settings.classVerticalBar + ' .' + settings.classArrow + ':focus {',
+					'	outline: none;',
+					'}',
+					'.' + settings.classCorner + ' {',
+					'	background: #eeeef4;',
+					'	float: left;',
+					'	height: 100%;',
+					'}',
+					'* html .' + settings.classCorner + ' {',
+					'	margin: 0 -3px 0 0;',
+					'}'
+				].join('\n');
+
+				$('head').append('<style id="jspStyle">' + style + '</style>');
+			}
+
 			function initialiseVerticalScroll() {
 				if (isScrollableV) {
 
 					container.append(
-						$('<div class="jspVerticalBar" />')
-						.append(
-							$('<div class="jspCap jspCapTop" />'),
-							$('<div class="jspTrack" />')
+						$('<div />')
+							.addClass(settings.classVerticalBar)
 							.append(
-								$('<div class="jspDrag" />')
-								.append(
-									$('<div class="jspDragTop" />'),
-									$('<div class="jspDragBottom" />')
-								)
-							),
-							$('<div class="jspCap jspCapBottom" />')
-						)
+								$('<div />').addClass(settings.classCap + ' ' + settings.classCapTop),
+								$('<div />')
+									.addClass(settings.classTrack)
+									.append(
+										$('<div />')
+											.addClass(settings.classDrag)
+											.append(
+												$('<div />').addClass(settings.classDragTop),
+												$('<div />').addClass(settings.classDragBottom)
+											)
+									),
+									$('<div />').addClass(settings.classCap + ' ' + settings.classCapBottom)
+							)
 					);
 
-					verticalBar = container.find('> .jspVerticalBar');
-					verticalTrack = verticalBar.find('> .jspTrack');
-					verticalDrag = verticalTrack.find('> .jspDrag');
+					verticalBar = container.find('> .' + settings.classVerticalBar);
+					verticalTrack = verticalBar.find('> .' + settings.classTrack);
+					verticalDrag = verticalTrack.find('> .' + settings.classDrag);
 
 					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" />')
+						arrowUp = $('<a />')
+							.addClass(settings.classArrow + ' ' + settings.classArrowUp)
 							.on('mousedown.jsp', getArrowScroll(0, -1))
 							.on('click.jsp', nil);
 
-						arrowDown = $('<a class="jspArrow jspArrowDown" />')
+						arrowDown = $('<a />')
+							.addClass(settings.classArrow + ' ' + settings.classArrowDown)
 							.on('mousedown.jsp', getArrowScroll(0, 1))
 							.on('click.jsp', nil);
 
@@ -307,7 +404,7 @@
 					}
 
 					verticalTrackHeight = paneHeight;
-					container.find('> .jspVerticalBar > .jspCap:visible,> .jspVerticalBar> .jspArrow')
+					container.find('> .' + settings.classVerticalBar + ' > .' + settings.classCap + ':visible, > .' + settings.classVerticalBar + ' > .' + settings.classArrow)
 						.each(
 							function () {
 								verticalTrackHeight -= $(this)
@@ -317,17 +414,17 @@
 
 
 					verticalDrag.hover(function () {
-								verticalDrag.addClass('jspHover');
+								verticalDrag.addClass(settings.classHover);
 							},
 							function () {
-								verticalDrag.removeClass('jspHover');
+								verticalDrag.removeClass(settings.classHover);
 							})
 						.on('mousedown.jsp', function (e) {
 							// Stop IE from allowing text selection
 							$('html')
 								.on('dragstart.jsp selectstart.jsp', nil);
 
-							verticalDrag.addClass('jspActive');
+							verticalDrag.addClass(settings.classActive);
 
 							var startY = e.pageY - verticalDrag.position()
 								.top;
@@ -367,31 +464,36 @@
 				if (isScrollableH) {
 
 					container.append(
-						$('<div class="jspHorizontalBar" />')
-						.append(
-							$('<div class="jspCap jspCapLeft" />'),
-							$('<div class="jspTrack" />')
+						$('<div />')
+							.addClass(settings.classHorizontalBar)
 							.append(
-								$('<div class="jspDrag" />')
-								.append(
-									$('<div class="jspDragLeft" />'),
-									$('<div class="jspDragRight" />')
-								)
-							),
-							$('<div class="jspCap jspCapRight" />')
-						)
+								$('<div />').addClass(settings.classCap + ' ' + settings.classCapLeft),
+								$('<div />')
+									.addClass(settings.classTrack)
+									.append(
+										$('<div />')
+											.addClass(settings.classDrag)
+											.append(
+												$('<div />').addClass(settings.classDragLeft),
+												$('<div />').addClass(settings.classDragRight)
+											)
+								),
+								$('<div />').addClass(settings.classCap + ' ' + settings.classCapRight)
+							)
 					);
 
-					horizontalBar = container.find('> .jspHorizontalBar');
-					horizontalTrack = horizontalBar.find('> .jspTrack');
-					horizontalDrag = horizontalTrack.find('> .jspDrag');
+					horizontalBar = container.find('> .' + settings.classHorizontalBar);
+					horizontalTrack = horizontalBar.find('> .' + settings.classTrack);
+					horizontalDrag = horizontalTrack.find('> .' + settings.classDrag);
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft" />')
+						arrowLeft = $('<a />')
+							.addClass(settings.classArrow + ' ' + settings.classArrowLeft)
 							.on('mousedown.jsp', getArrowScroll(-1, 0))
 							.on('click.jsp', nil);
 
-						arrowRight = $('<a class="jspArrow jspArrowRight" />')
+						arrowRight = $('<a />')
+							.addClass(settings.classArrow + ' ' + settings.classArrowRight)
 							.on('mousedown.jsp', getArrowScroll(1, 0))
 							.on('click.jsp', nil);
 
@@ -404,17 +506,17 @@
 					}
 
 					horizontalDrag.hover(function () {
-								horizontalDrag.addClass('jspHover');
+								horizontalDrag.addClass(settings.classHover);
 							},
 							function () {
-								horizontalDrag.removeClass('jspHover');
+								horizontalDrag.removeClass(settings.classHover);
 							})
 						.on('mousedown.jsp', function (e) {
 							// Stop IE from allowing text selection
 							$('html')
 								.on('dragstart.jsp selectstart.jsp', nil);
 
-							horizontalDrag.addClass('jspActive');
+							horizontalDrag.addClass(settings.classActive);
 
 							var startX = e.pageX - horizontalDrag.position()
 								.left;
@@ -434,7 +536,7 @@
 			}
 
 			function sizeHorizontalScrollbar() {
-				container.find('> .jspHorizontalBar> .jspCap:visible,> .jspHorizontalBar> .jspArrow')
+				container.find('> .' + settings.classHorizontalBar + ' > .' + settings.classCap + ':visible, > .' + settings.classHorizontalBar + ' > .' + settings.classArrow)
 					.each(function () {
 						horizontalTrackWidth -= $(this)
 							.outerWidth();
@@ -450,7 +552,7 @@
 						verticalTrackWidth = verticalTrack.outerWidth();
 					verticalTrackHeight -= horizontalTrackHeight;
 					$(horizontalBar)
-						.find('> .jspCap:visible,> .jspArrow')
+						.find('> .' + settings.classCap + ':visible, > .' + settings.classArrow)
 						.each(function () {
 							horizontalTrackWidth += $(this)
 								.outerWidth();
@@ -460,8 +562,9 @@
 					paneWidth -= horizontalTrackHeight;
 					horizontalTrack.parent()
 						.append(
-							$('<div class="jspCorner" />')
-							.css('width', horizontalTrackHeight + 'px')
+							$('<div />')
+								.addClass(settings.classCorner)
+								.css('width', horizontalTrackHeight + 'px')
 						);
 					sizeVerticalScrollbar();
 					sizeHorizontalScrollbar();
@@ -534,7 +637,7 @@
 
 			function arrowScroll(dirX, dirY, arrow, ele) {
 				arrow = $(arrow)
-					.addClass('jspActive');
+					.addClass(settings.classActive);
 
 				var eve,
 					scrollTimeout,
@@ -557,7 +660,7 @@
 				ele.on(
 					eve,
 					function () {
-						arrow.removeClass('jspActive');
+						arrow.removeClass(settings.classActive);
 						scrollTimeout && clearTimeout(scrollTimeout);
 						scrollTimeout = null;
 						ele.off(eve);
@@ -674,10 +777,10 @@
 					.off('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
 
 				if (verticalDrag) {
-					verticalDrag.removeClass('jspActive');
+					verticalDrag.removeClass(settings.classActive);
 				}
 				if (horizontalDrag) {
-					horizontalDrag.removeClass('jspActive');
+					horizontalDrag.removeClass(settings.classActive);
 				}
 			}
 
@@ -779,15 +882,15 @@
 
 			function updateVerticalArrows(isAtTop, isAtBottom) {
 				if (settings.showArrows) {
-					arrowUp[isAtTop ? 'addClass' : 'removeClass']('jspDisabled');
-					arrowDown[isAtBottom ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowUp[isAtTop ? 'addClass' : 'removeClass'](settings.classDisabled);
+					arrowDown[isAtBottom ? 'addClass' : 'removeClass'](settings.classDisabled);
 				}
 			}
 
 			function updateHorizontalArrows(isAtLeft, isAtRight) {
 				if (settings.showArrows) {
-					arrowLeft[isAtLeft ? 'addClass' : 'removeClass']('jspDisabled');
-					arrowRight[isAtRight ? 'addClass' : 'removeClass']('jspDisabled');
+					arrowLeft[isAtLeft ? 'addClass' : 'removeClass'](settings.classDisabled);
+					arrowRight[isAtRight ? 'addClass' : 'removeClass'](settings.classDisabled);
 				}
 			}
 
@@ -822,7 +925,7 @@
 				// loop through parents adding the offset top of any elements that are relatively positioned between
 				// the focused element and the jspPane so we can get the true distance from the top
 				// of the focused element to the top of the scrollpane...
-				while (!e.is('.jspPane')) {
+				while (!e.is('.' + settings.classPane)) {
 					eleTop += e.position()
 						.top;
 					eleLeft += e.position()
@@ -1096,7 +1199,7 @@
 							return;
 						}
 
-						container = element.closest('.jspScrollable');
+						container = element.closest('.' + settings.classScrollable);
 						jsp = container.data('jsp');
 
 						// jsp might be another jsp instance than the one, that bound this event
@@ -1173,7 +1276,7 @@
 			function destroy() {
 				var currentY = contentPositionY(),
 					currentX = contentPositionX();
-				elem.removeClass('jspScrollable')
+				elem.removeClass(settings.classScrollable)
 					.off('.jsp');
 				elem.replaceWith(originalElement.append(pane.children()));
 				originalElement.scrollTop(currentY);
@@ -1365,38 +1468,63 @@
 	};
 
 	$.fn.jScrollPane.defaults = {
-		animateDuration: 300,
-		animateEase: 'linear',
-		animateScroll: false,
-		arrowButtonSpeed: 0,
-		arrowRepeatFreq: 50,
-		arrowScrollOnHover: false,
-		autoReinitialise: false,
-		autoReinitialiseDelay: 500,
-		clickOnTrack: true,
-		contentWidth: undefined,
-		enableKeyboardNavigation: true,
-		hideFocus: false,
-		hijackInternalLinks: false,
-		horizontalArrowPositions: 'split',
-		horizontalDragMaxWidth: 99999,
-		horizontalDragMinWidth: 0,
-		horizontalGutter: 4,
-		initialDelay: 300, // Delay before starting repeating
-		keyboardSpeed: 0,
-		maintainPosition: true,
-		mouseWheelSpeed: 3,
-		scrollPagePercent: .8, // Percent of visible area scrolled when pageUp/Down or track area pressed
-		showArrows: false,
-		speed: 30, // Default speed when others falsey
-		stickToBottom: false,
-		stickToRight: false,
-		trackClickRepeatFreq: 70,
-		trackClickSpeed: 0,
-		verticalArrowPositions: 'split',
-		verticalDragMaxHeight: 99999,
-		verticalDragMinHeight: 0,
-		verticalGutter: 4
+		animateDuration:			300,
+		animateEase:				'linear',
+		animateScroll:				false,
+		arrowButtonSpeed:			0,
+		arrowRepeatFreq:			50,
+		arrowScrollOnHover:			false,
+		autoReinitialise:			false,
+		autoReinitialiseDelay:		500,
+		clickOnTrack:				true,
+		contentWidth:				undefined,
+		classActive:				'jspActive',
+		classArrow:					'jspArrow',
+		classArrowDown:				'jspArrowDown',
+		classArrowLeft:				'jspArrowLeft',
+		classArrowRight:			'jspArrowRight',
+		classArrowUp:				'jspArrowUp',
+		classCap:					'jspCap',
+		classCapBottom:				'jspCapBottom',
+		classCapLeft:				'jspCapLeft',
+		classCapRight:				'jspCapRight',
+		classCapTop:				'jspCapTop',
+		classContainer:				'jspContainer',
+		classCorner:				'jspCorner',
+		classDisabled:				'jspDisabled',
+		classDrag:					'jspDrag',
+		classDragBottom:			'jspDragBottom',
+		classDragLeft:				'jspDragLeft',
+		classDragRight:				'jspDragRight',
+		classDragTop:				'jspDragTop',
+		classHorizontalBar:			'jspHorizontalBar',
+		classHover:					'jspHover',
+		classPane:					'jspPane',
+		classScrollable:			'jspScrollable',
+		classTrack:					'jspTrack',
+		classVerticalBar:			'jspVerticalBar',
+		enableKeyboardNavigation:	true,
+		hideFocus:					false,
+		hijackInternalLinks:		false,
+		horizontalArrowPositions:	'split',
+		horizontalDragMaxWidth:		99999,
+		horizontalDragMinWidth:		0,
+		horizontalGutter:			4,
+		initialDelay:				300, // Delay before starting repeating
+		keyboardSpeed:				0,
+		maintainPosition:			true,
+		mouseWheelSpeed:			3,
+		scrollPagePercent:			.8, // Percent of visible area scrolled when pageUp/Down or track area pressed
+		showArrows:					false,
+		speed:						30, // Default speed when others falsey
+		stickToBottom:				false,
+		stickToRight:				false,
+		trackClickRepeatFreq:		70,
+		trackClickSpeed:			0,
+		verticalArrowPositions:		'split',
+		verticalDragMaxHeight:		99999,
+		verticalDragMinHeight:		0,
+		verticalGutter:				4
 	};
 
 }, this));
