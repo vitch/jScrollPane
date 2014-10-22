@@ -719,7 +719,7 @@
 				}
 
 				container.scrollTop(0);
-				verticalDragPosition = destY;
+				verticalDragPosition = destY || 0;
 
 				var isAtTop = verticalDragPosition === 0,
 					isAtBottom = verticalDragPosition == dragMaxY,
@@ -766,7 +766,7 @@
 				}
 
 				container.scrollTop(0);
-				horizontalDragPosition = destX;
+				horizontalDragPosition = destX ||0;
 
 				var isAtLeft = horizontalDragPosition === 0,
 					isAtRight = horizontalDragPosition == dragMaxX,
@@ -893,6 +893,10 @@
 				container.unbind(mwEvent).bind(
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
+
+                        if (!horizontalDragPosition) horizontalDragPosition = 0;
+                        if (!verticalDragPosition) verticalDragPosition = 0;
+
 						var dX = horizontalDragPosition, dY = verticalDragPosition, factor = event.deltaFactor || settings.mouseWheelSpeed;
 						jsp.scrollBy(deltaX * factor, -deltaY * factor, false);
 						// return true if there was no movement so rest of screen can scroll
