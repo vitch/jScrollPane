@@ -1,14 +1,14 @@
 /*!
- * jScrollPane - v2.0.19 - 2013-11-16
+ * jScrollPane - v2.0.20 - 2014-10-23
  * http://jscrollpane.kelvinluck.com/
  *
- * Copyright (c) 2013 Kelvin Luck
+ * Copyright (c) 2014 Kelvin Luck
  * Dual licensed under the MIT or GPL licenses.
  */
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.19, Last updated: 2013-11-16*
+// *Version: 2.0.20, Last updated: 2014-10-23*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -17,7 +17,7 @@
 //
 // About: License
 //
-// Copyright (c) 2013 Kelvin Luck
+// Copyright (c) 2014 Kelvin Luck
 // Dual licensed under the MIT or GPL Version 2 licenses.
 // http://jscrollpane.kelvinluck.com/MIT-LICENSE.txt
 // http://jscrollpane.kelvinluck.com/GPL-LICENSE.txt
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.20 - (2014-10-23) Adds AMD support (thanks @carlosrberto) and support for overflow-x/overflow-y (thanks @darimpulso)
 // 2.0.19 - (2013-11-16) Changes for more reliable scroll amount with latest mousewheel plugin (thanks @brandonaaron)
 // 2.0.18 - (2013-10-23) Fix for issue with gutters and scrollToElement (thanks @Dubiy)
 // 2.0.17 - (2013-08-17) Working correctly when box-sizing is set to border-box (thanks @pieht)
