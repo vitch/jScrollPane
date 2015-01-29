@@ -189,7 +189,7 @@
 				} else {
 					contentWidth = pane[0].scrollWidth;
 				}
-				contentHeight = pane[0].scrollHeight;
+				contentHeight = pane[0].clientHeight;
 				pane.css('overflow', '');
 
 				percentInViewH = contentWidth / paneWidth;
