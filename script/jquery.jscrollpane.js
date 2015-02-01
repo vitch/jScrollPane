@@ -93,17 +93,13 @@
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
-			if (elem.css('box-sizing') === 'border-box') {
-				originalPadding = 0;
-				originalPaddingTotalWidth = 0;
-			} else {
-				originalPadding = elem.css('paddingTop') + ' ' +
-									elem.css('paddingRight') + ' ' +
-									elem.css('paddingBottom') + ' ' +
-									elem.css('paddingLeft');	
-				originalPaddingTotalWidth = (parseInt(elem.css('paddingLeft'), 10) || 0) +
-											(parseInt(elem.css('paddingRight'), 10) || 0);
-			}
+			originalBoxSizing = elem.css('box-sizing');
+			originalPadding = elem.css('paddingTop') + ' ' +
+								elem.css('paddingRight') + ' ' +
+								elem.css('paddingBottom') + ' ' +
+								elem.css('paddingLeft');
+			originalPaddingTotalWidth = originalBoxSizing === 'border-box' ? 0 : (parseInt(elem.css('paddingLeft'), 10) || 0) +
+										(parseInt(elem.css('paddingRight'), 10) || 0);
 
 			function initialise(s)
 			{
@@ -130,8 +126,8 @@
 					paneHeight = elem.innerHeight();
 
 					elem.width(paneWidth);
-					
-					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
+
+					pane = $('<div class="jspPane" />').css({'padding': originalPadding, 'box-sizing' : originalBoxSizing}).append(elem.children());
 					container = $('<div class="jspContainer" />')
 						.css({
 							'width': paneWidth + 'px',
@@ -350,7 +346,7 @@
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
 				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
+				pane.css('width', paneWidth - scrollbarWidth - originalPaddingTotalWidth);
 
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
@@ -468,7 +464,7 @@
 				}
 				// reflow content
 				if (isScrollableH) {
-					pane.width((container.outerWidth() - originalPaddingTotalWidth) + 'px');
+					pane.css('width', (container.outerWidth() - originalPaddingTotalWidth) + 'px');
 				}
 				contentHeight = pane.outerHeight();
 				percentInViewV = contentHeight / paneHeight;
