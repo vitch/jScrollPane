@@ -1,14 +1,14 @@
 /*!
- * jScrollPane - v2.0.21 - 2015-02-24
+ * jScrollPane - v2.0.22 - 2015-03-20
  * http://jscrollpane.kelvinluck.com/
  *
- * Copyright (c) 2014 Kelvin Luck
+ * Copyright (c) 2015 Kelvin Luck
  * Dual licensed under the MIT or GPL licenses.
  */
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.0.21, Last updated: 2015-02-24*
+// *Version: 2.0.22, Last updated: 2015-03-20*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -39,6 +39,7 @@
 //
 // About: Release History
 //
+// 2.0.22 - (2015-03-20) Allow for container to become height:auto (e.g. by media query)
 // 2.0.21 - (2015-02-24) Simplify UMD pattern: fixes browserify when loading jQuery outside of bundle
 // 2.0.20 - (2014-10-23) Adds AMD support (thanks @carlosrberto) and support for overflow-x/overflow-y (thanks @darimpulso)
 // 2.0.19 - (2013-11-16) Changes for more reliable scroll amount with latest mousewheel plugin (thanks @brandonaaron)
@@ -158,6 +159,24 @@
 					maintainAtRight  = settings.stickToRight  && isCloseToRight();
 
 					hasContainingSpaceChanged = elem.innerWidth() + originalPaddingTotalWidth != paneWidth || elem.outerHeight() != paneHeight;
+                    
+                    /* If height is now "auto" then the div will change size with the new content */
+                    var origHeight = elem.outerHeight();
+                    elem.append('<div style="height:100px;" class="height-test"></div>');
+                    containingSpaceNoLongerContains = elem.outerHeight() != origHeight;
+                    elem.find('.height-test').remove();
+                    if (containingSpaceNoLongerContains) {
+                        hasContainingSpaceChanged = true;
+                        pane.css({
+                            'position':'static',
+                            'top':0
+                        });
+						container.css({
+							width: paneWidth + 'px',
+							height: ''
+						});
+                        
+                    }
 
 					if (hasContainingSpaceChanged) {
 						paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
@@ -166,7 +185,7 @@
 							width: paneWidth + 'px',
 							height: paneHeight + 'px'
 						});
-					}
+					}                   
 
 					// If nothing changed since last check...
 					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
@@ -211,6 +230,7 @@
 					removeClickOnTrack();
 				} else {
 					elem.addClass('jspScrollable');
+                    pane.css('position','');
 
 					isMaintainingPositon = settings.maintainPosition && (verticalDragPosition || horizontalDragPosition);
 					if (isMaintainingPositon) {
