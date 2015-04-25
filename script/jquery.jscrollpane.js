@@ -937,7 +937,8 @@
 				isScrollableV && validParents.push(verticalBar[0]);
 
 				// IE also focuses elements that don't have tabindex set.
-				pane.focus(
+				pane.bind(
+					'focus.jsp',
 					function()
 					{
 						elem.focus();
@@ -1036,6 +1037,8 @@
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
 					.unbind('keydown.jsp keypress.jsp');
+
+				pane.unbind('.jsp');
 			}
 
 			function observeHash()
@@ -1208,6 +1211,7 @@
 				var currentY = contentPositionY(),
 					currentX = contentPositionX();
 				elem.removeClass('jspScrollable').unbind('.jsp');
+				pane.unbind('.jsp');
 				elem.replaceWith(originalElement.append(pane.children()));
 				originalElement.scrollTop(currentY);
 				originalElement.scrollLeft(currentX);
