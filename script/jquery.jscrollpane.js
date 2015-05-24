@@ -987,6 +987,10 @@
 							if (e.keyCode == keyDown) {
 								keyDownHandler();
 							}
+							// If the keypress is not related to the area, ignore it. Fixes problem with inputs inside scrolled area. Copied from line 955.
+							if (e.target !== this && !(validParents.length && $(e.target).closest(validParents).length)){
+								return;
+							}
 							return !elementHasScrolled;
 						}
 					);
