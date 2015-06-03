@@ -202,8 +202,8 @@
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
 					pane.css({
-            top: 0,
-            left: 0,
+						top: 0,
+						left: 0,
 						width: container.width() - originalPaddingTotalWidth
 					});
 					removeMousewheel();
@@ -303,7 +303,7 @@
 					container.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
 						function()
 						{
-							verticalTrackHeight -= $(this).outerHeight();
+							verticalTrackHeight -= $(this).outerHeight(true);
 						}
 					);
 
@@ -346,7 +346,7 @@
 			{
 				verticalTrack.height(verticalTrackHeight + 'px');
 				verticalDragPosition = 0;
-				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
+				scrollbarWidth = verticalBar.outerWidth(true);
 
 				// Make the pane thinner to allow for the vertical scrollbar
 				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
@@ -436,7 +436,7 @@
 				container.find('>.jspHorizontalBar>.jspCap:visible,>.jspHorizontalBar>.jspArrow').each(
 					function()
 					{
-						horizontalTrackWidth -= $(this).outerWidth();
+						horizontalTrackWidth -= $(this).outerWidth(true);
 					}
 				);
 
@@ -453,7 +453,7 @@
 					$(horizontalBar).find('>.jspCap:visible,>.jspArrow').each(
 						function()
 						{
-							horizontalTrackWidth += $(this).outerWidth();
+							horizontalTrackWidth += $(this).outerWidth(true);
 						}
 					);
 					horizontalTrackWidth -= verticalTrackWidth;
@@ -1453,7 +1453,6 @@
 		animateDuration				: 300,
 		animateEase					: 'linear',
 		hijackInternalLinks			: false,
-		verticalGutter				: 4,
 		horizontalGutter			: 4,
 		mouseWheelSpeed				: 3,
 		arrowButtonSpeed			: 0,
