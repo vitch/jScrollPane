@@ -105,7 +105,7 @@
 			}
 
 			// Workaround for #313 to prevent the scrollbars from being sticky if containing elements stop the propagation of the events
-			elem.bind('mouseup',cancelDrag);
+			elem.bind('mouseup.jsp',cancelDrag);
 
 			function initialise(s)
 			{
@@ -288,7 +288,7 @@
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
 					// Workaround for #313 to prevent infinite loop in initClickOnTrack() if containing elements stop the propagation of the events
-					verticalTrack.bind('mouseup', function(){$(document).mouseup();});
+					verticalTrack.bind('mouseup.jsp', function(){$(document).mouseup();});
 					
 					if (settings.showArrows) {
 						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
@@ -1234,6 +1234,7 @@
 				if (reinitialiseInterval) {
 					clearInterval(reinitialiseInterval);
 				}
+				elem.unbind('mouseup.jsp',cancelDrag);
 			}
 
 			// Public API
