@@ -104,6 +104,9 @@
 											(parseInt(elem.css('paddingRight'), 10) || 0);
 			}
 
+			// Workaround for #313 to prevent the scrollbars from being sticky if containing elements stop the propagation of the events
+			elem.bind('mouseup',cancelDrag);
+
 			function initialise(s)
 			{
 
@@ -112,7 +115,7 @@
 						maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
-
+				
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
 					originalScrollLeft = elem.scrollLeft();
@@ -284,6 +287,9 @@
 					verticalTrack = verticalBar.find('>.jspTrack');
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
+					// Workaround for #313 to prevent infinite loop in initClickOnTrack() if containing elements stop the propagation of the events
+					verticalTrack.bind('mouseup', function(){$(document).mouseup();});
+					
 					if (settings.showArrows) {
 						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
 							'mousedown.jsp', getArrowScroll(0, -1)
@@ -382,6 +388,9 @@
 					horizontalTrack = horizontalBar.find('>.jspTrack');
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
+					// Workaround for #313 to prevent infinite loop in initClickOnTrack() if containing elements stop the propagation of the events
+					horizontalTrack.bind('mouseup', function(){$(document).mouseup();});
+					
 					if (settings.showArrows) {
 						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').bind(
 							'mousedown.jsp', getArrowScroll(-1, 0)
