@@ -699,6 +699,14 @@
 					destY = dragMaxY;
 				}
 
+				// allow for devs to prevent the JSP from being scrolled
+				var willScrollYEvent = new $.Event("jsp-will-scroll-y");
+				elem.trigger(willScrollYEvent, [destY]);
+
+				if (willScrollYEvent.isDefaultPrevented()) {
+					return;
+				}
+
 				var tmpVerticalDragPosition = destY || 0;
 
 				var isAtTop = tmpVerticalDragPosition === 0,
@@ -756,6 +764,15 @@
 					destX = 0;
 				} else if (destX > dragMaxX) {
 					destX = dragMaxX;
+				}
+
+
+				// allow for devs to prevent the JSP from being scrolled
+				var willScrollXEvent = new $.Event("jsp-will-scroll-x");
+				elem.trigger(willScrollXEvent, [destX]);
+
+				if (willScrollXEvent.isDefaultPrevented()) {
+					return;
 				}
 
 				var tmpHorizontalDragPosition = destX ||0;
