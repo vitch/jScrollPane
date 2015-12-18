@@ -699,15 +699,25 @@
 					destY = dragMaxY;
 				}
 
+				var tmpVerticalDragPosition = destY || 0;
+
+				var isAtTop = tmpVerticalDragPosition === 0,
+					isAtBottom = tmpVerticalDragPosition == dragMaxY,
+					percentScrolled = destY/ dragMaxY,
+					destTop = -percentScrolled * (contentHeight - paneHeight);
+
 				// can't just check if(animate) because false is a valid value that could be passed in...
 				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(verticalDrag, 'top', destY,	_positionDragY);
+					jsp.animate(verticalDrag, 'top', destY,	_positionDragY, function() {
+						elem.trigger('jsp-user-scroll-y', [-destTop, isAtTop, isAtBottom]);
+					});
 				} else {
 					verticalDrag.css('top', destY);
 					_positionDragY(destY);
+					elem.trigger('jsp-user-scroll-y', [-destTop, isAtTop, isAtBottom]);
 				}
 
 			}
@@ -748,14 +758,24 @@
 					destX = dragMaxX;
 				}
 
+				var tmpHorizontalDragPosition = destX ||0;
+
+				var isAtLeft = tmpHorizontalDragPosition === 0,
+					isAtRight = tmpHorizontalDragPosition == dragMaxX,
+					percentScrolled = destX / dragMaxX,
+					destLeft = -percentScrolled * (contentWidth - paneWidth);
+
 				if (animate === undefined) {
 					animate = settings.animateScroll;
 				}
 				if (animate) {
-					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX);
+					jsp.animate(horizontalDrag, 'left', destX,	_positionDragX, function() {
+						elem.trigger('jsp-user-scroll-x', [-destLeft, isAtLeft, isAtRight]);
+					});
 				} else {
 					horizontalDrag.css('left', destX);
 					_positionDragX(destX);
+					elem.trigger('jsp-user-scroll-x', [-destLeft, isAtLeft, isAtRight]);
 				}
 			}
 
