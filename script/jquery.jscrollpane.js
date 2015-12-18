@@ -1365,8 +1365,9 @@
 					//  * prop         - the property that is being animated
 					//  * value        - the value it's being animated to
 					//  * stepCallback - a function that you must execute each time you update the value of the property
+					//  * completeCallback - a function that will be executed after the animation had finished
 					// You can use the default implementation (below) as a starting point for your own implementation.
-					animate: function(ele, prop, value, stepCallback)
+					animate: function(ele, prop, value, stepCallback, completeCallback)
 					{
 						var params = {};
 						params[prop] = value;
@@ -1376,7 +1377,8 @@
 								'duration'	: settings.animateDuration,
 								'easing'	: settings.animateEase,
 								'queue'		: false,
-								'step'		: stepCallback
+								'step'		: stepCallback,
+								'complete'	: completeCallback
 							}
 						);
 					},
