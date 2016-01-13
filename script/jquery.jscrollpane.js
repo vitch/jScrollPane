@@ -1184,8 +1184,12 @@
 						var touchPos = ev.originalEvent.touches[0],
 							dX = horizontalDragPosition, dY = verticalDragPosition;
 
-						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
+						//calculate if the div is scaled and apply the reverse scaling factor to the drag distance
+						var sy = event.currentTarget.getBoundingClientRect().height/$(event.currentTarget).height();
+						var sx = event.currentTarget.getBoundingClientRect().width/$(event.currentTarget).width();
 
+						jsp.scrollTo((startX + touchStartX - touchPos.pageX)/sx, (startY + touchStartY - touchPos.pageY)/sy);
+		
 						moved = moved || Math.abs(touchStartX - touchPos.pageX) > 5 || Math.abs(touchStartY - touchPos.pageY) > 5;
 
 						// return true if there was no movement so rest of screen can scroll
