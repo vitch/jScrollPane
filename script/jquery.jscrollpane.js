@@ -1225,8 +1225,14 @@
 							return;
 						}
 
-						var touchPos = ev.originalEvent.touches[0],
+						var touchPos,
 							dX = horizontalDragPosition, dY = verticalDragPosition;
+
+						if (ev.originalEvent.touches) { // touchmove
+						  touchPos = ev.originalEvent.touches[0];
+						} else { // MSPointerMove
+						  touchPos = ev.originalEvent;
+						}
 
 						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
 
