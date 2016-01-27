@@ -1130,7 +1130,7 @@
 				$(document.body).data('jspHijack', true);
 
 				// use live handler to also capture newly created links
-				$(document.body).delegate('a[href*=#]', 'click', function(event) {
+				$(document.body).delegate('a[href*="#"]', 'click', function(event) {
 					// does the link point to the same page?
 					// this also takes care of cases with a <base>-Tag or Links not starting with the hash #
 					// e.g. <a href="index.html#test"> when the current url already is index.html
