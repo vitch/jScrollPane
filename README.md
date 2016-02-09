@@ -21,3 +21,7 @@ grunt
 ```
 
 Please remember to update the changelog in the comment at the header of both JS files when submitting a pull request.
+
+# License
+
+jScrollPane is dual-licensed under the [GPL 2 license](https://github.com/vitch/jScrollPane/blob/master/GPL-LICENSE.txt) and the [MIT license](https://github.com/vitch/jScrollPane/blob/master/MIT-LICENSE.txt).
