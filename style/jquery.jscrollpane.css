@@ -8,7 +8,8 @@
 .jspContainer
 {
 	overflow: hidden;
-	position: relative
+	position: relative;
+	touch-action: pinch-zoom;
 	-ms-touch-action: pinch-zoom; /* Direct panning (pan-x pan-y) pointer events to JavaScript code. */
 }
 
