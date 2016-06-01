@@ -480,7 +480,7 @@
 					} else if (horizontalDragWidth < settings.horizontalDragMinWidth) {
 						horizontalDragWidth = settings.horizontalDragMinWidth;
 					}
-					horizontalDrag.width(horizontalDragWidth + 'px');
+					horizontalDrag.css('width', horizontalDragWidth + 'px');
 					dragMaxX = horizontalTrackWidth - horizontalDragWidth;
 					_positionDragX(horizontalDragPosition); // To update the state for the arrow buttons
 				}
@@ -491,7 +491,7 @@
 					} else if (verticalDragHeight < settings.verticalDragMinHeight) {
 						verticalDragHeight = settings.verticalDragMinHeight;
 					}
-					verticalDrag.height(verticalDragHeight + 'px');
+					verticalDrag.css('height', verticalDragHeight + 'px');
 					dragMaxY = verticalTrackHeight - verticalDragHeight;
 					_positionDragY(verticalDragPosition); // To update the state for the arrow buttons
 				}
