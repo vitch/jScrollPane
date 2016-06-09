@@ -16,7 +16,9 @@ module.exports = function(grunt) {
     uglify: {
       jsp: {
         files: {
-          '../script/jquery.jscrollpane.min.js': '../script/jquery.jscrollpane.js'
+          '../script/jquery.jscrollpane.min.js': '../script/jquery.jscrollpane.js',
+          '../script/mwheelIntent.min.js': '../script/mwheelIntent.js',
+          '../script/jquery.mousewheel.min.js': '../script/jquery.mousewheel.js'
         },
         options: {
           preserveComments: 'some'
