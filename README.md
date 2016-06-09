@@ -14,13 +14,38 @@ To use it first make sure you have [node](http://nodejs.org/), npm and the `grun
 `npm install -g grunt-cli`
 
 Then:
-
 ```
 cd build
+npm install
+```
+The above command will install the grunt build plugins, retrieve the jquery.mousewheel plugin, and run the minification build.
+
+
+
+#### Additional build patterns (from the /build directory)
+
+Start the development server using npm:
+```
+npm start
+```
+
+Start the development server using grunt:
+```
+grunt serve
+```
+
+Re-build the script dependencies and minifications using npm:
+```
+npm run build
+```
+
+Re-build the script dependencies and minifications using npm:
+```
 grunt
 ```
 
-Please remember to update the changelog in the comment at the header of both JS files when submitting a pull request.
+## Changelog
+Please remember to update the changelog in the comment at the header of both JS files (`jquery.jscrollpane.js`, `mwheelIntent.js`) when submitting a pull request.
 
 # License
 
