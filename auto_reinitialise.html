@@ -25,7 +25,7 @@
 		<!-- the mousewheel plugin -->
 		<script type="text/javascript" src="script/jquery.mousewheel.js"></script>
 		<!-- the jScrollPane script -->
-		<script type="text/javascript" src="script/jquery.jscrollpane.min.js"></script>
+		<script type="text/javascript" src="script/jquery.jscrollpane.js"></script>
 		<!-- scripts specific to this demo site -->
 		<script type="text/javascript" src="script/demo.js"></script>
 
@@ -73,15 +73,7 @@
 			<p>
 				This demonstration shows how you can tell jScrollPane to automatically reinitialise itself. You do this
 				by passing in <strong><a href="settings.html#autoReinitialise">autoReinitialise</a>: true</strong> as a
-				setting. If you do this then the scrollpane attempts to reinitialise itself every
-				<a href="settings.html#autoReinitialiseDelay">autoReinitialiseDelay</a> miliseconds.
-			</p>
-			<p>
-				Note that there is obviously a processing overhead associated with this method as the script is running
-				repeatedly in the background. For this reason <strong>autoReinitialise</strong> is false by default and
-				if possible you are recommended to <a href="dynamic_content.html">manually reinitialise</a>
-				jScrollPane when you add content to it. However, in some situations this isn't possible so the
-				<strong>autoReinitialise</strong> method is provided for convenience.
+				setting. This will update the scroll bars automatically based if the contents change in size.
 			</p>
 			<div class="scroll-pane">
 			</div>
