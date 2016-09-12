@@ -93,8 +93,8 @@
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
 
-      // declare variables to monitor resize events
-      var resizeElement, resizeGrowElement, resizeShrinkElement, resizeGrowChildElement, resizeShrinkChildElement, resizeWidth, resizeHeight;
+      // // declare variables to monitor resize events
+      // var resizeElement, resizeGrowElement, resizeShrinkElement, resizeGrowChildElement, resizeShrinkChildElement, resizeWidth, resizeHeight;
 
 			if (elem.css('box-sizing') === 'border-box') {
 				originalPadding = 0;
@@ -123,6 +123,7 @@
 
 					elem.css(
 						{
+              position: 'relative',
 							overflow: 'hidden',
 							padding: 0
 						}
@@ -251,76 +252,16 @@
 
 				if (settings.autoReinitialise && !resizeEventsAdded) {
 
-          // create resize event elements - based on resize sensor: https://github.com/flowkey/resize-sensor/
-          resizeElement = document.createElement('div');
-          resizeGrowElement = document.createElement('div');
-          resizeGrowChildElement = document.createElement('div');
-          resizeShrinkElement = document.createElement('div');
-          resizeShrinkChildElement = document.createElement('div');
-
-          // add necessary styling
-          resizeElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
-          resizeGrowElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
-          resizeShrinkElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
-
-          resizeGrowChildElement.style.cssText = 'position: absolute; left: 0; top: 0;';
-          resizeShrinkChildElement.style.cssText = 'position: absolute; left: 0; top: 0; width: 200%; height: 200%;';
-
-          // Create a function to programmatically update sizes
-          var updateSizes = function() {
-
-              resizeGrowChildElement.style.width = resizeGrowElement.offsetWidth + 10 + 'px';
-              resizeGrowChildElement.style.height = resizeGrowElement.offsetHeight + 10 + 'px';
-
-              resizeGrowElement.scrollLeft = resizeGrowElement.scrollWidth;
-              resizeGrowElement.scrollTop = resizeGrowElement.scrollHeight;
-
-              resizeShrinkElement.scrollLeft = resizeShrinkElement.scrollWidth;
-              resizeShrinkElement.scrollTop = resizeShrinkElement.scrollHeight;
-
-              resizeWidth = pane.width();
-              resizeHeight = pane.height();
+          var reinitialiseFn = function() {
+            // if size has changed then reinitialise
+            initialise(settings);
           };
 
-          // create functions to call when content grows
-          var onGrow = function() {
+          // detect size change in content
+          detectSizeChanges(pane, reinitialiseFn);
 
-            // check to see if the content has change size
-            if (pane.width() > resizeWidth || pane.height() > resizeHeight) {
-                // if size has changed then reinitialise
-                initialise(settings);
-            }
-            // after reinitialising update sizes
-            updateSizes();
-          };
-
-          // create functions to call when content shrinks
-          var onShrink = function() {
-
-            // check to see if the content has change size
-            if (pane.width() < resizeWidth || pane.height() < resizeHeight) {
-                // if size has changed then reinitialise
-                initialise(settings);
-            }
-            // after reinitialising update sizes
-            updateSizes();
-          };
-
-          // bind to scroll events
-          resizeGrowElement.addEventListener('scroll', onGrow.bind(this));
-          resizeShrinkElement.addEventListener('scroll', onShrink.bind(this));
-
-          // nest elements before adding to pane
-          resizeGrowElement.appendChild(resizeGrowChildElement);
-          resizeShrinkElement.appendChild(resizeShrinkChildElement);
-
-          resizeElement.appendChild(resizeGrowElement);
-          resizeElement.appendChild(resizeShrinkElement);
-
-          pane.append(resizeElement);
-
-          // update sizes initially
-          updateSizes();
+          // detect size changes of container
+          detectSizeChanges(elem, reinitialiseFn);
 
 					resizeEventsAdded = true;
 				}
@@ -330,6 +271,83 @@
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 			}
+
+      function detectSizeChanges(element, callback) {
+
+        // create resize event elements - based on resize sensor: https://github.com/flowkey/resize-sensor/
+        var resizeWidth, resizeHeight;
+        var resizeElement = document.createElement('div');
+        var resizeGrowElement = document.createElement('div');
+        var resizeGrowChildElement = document.createElement('div');
+        var resizeShrinkElement = document.createElement('div');
+        var resizeShrinkChildElement = document.createElement('div');
+
+        // add necessary styling
+        resizeElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+        resizeGrowElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+        resizeShrinkElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+
+        resizeGrowChildElement.style.cssText = 'position: absolute; left: 0; top: 0;';
+        resizeShrinkChildElement.style.cssText = 'position: absolute; left: 0; top: 0; width: 200%; height: 200%;';
+
+        // Create a function to programmatically update sizes
+        var updateSizes = function() {
+
+            resizeGrowChildElement.style.width = resizeGrowElement.offsetWidth + 10 + 'px';
+            resizeGrowChildElement.style.height = resizeGrowElement.offsetHeight + 10 + 'px';
+
+            resizeGrowElement.scrollLeft = resizeGrowElement.scrollWidth;
+            resizeGrowElement.scrollTop = resizeGrowElement.scrollHeight;
+
+            resizeShrinkElement.scrollLeft = resizeShrinkElement.scrollWidth;
+            resizeShrinkElement.scrollTop = resizeShrinkElement.scrollHeight;
+
+            resizeWidth = element.width();
+            resizeHeight = element.height();
+        };
+
+        // create functions to call when content grows
+        var onGrow = function() {
+
+          // check to see if the content has change size
+          if (element.width() > resizeWidth || element.height() > resizeHeight) {
+
+              // if size has changed then reinitialise
+              callback.apply(this, []);
+          }
+          // after reinitialising update sizes
+          updateSizes();
+        };
+
+        // create functions to call when content shrinks
+        var onShrink = function() {
+
+          // check to see if the content has change size
+          if (element.width() < resizeWidth || element.height() < resizeHeight) {
+
+              // if size has changed then reinitialise
+              callback.apply(this, []);
+          }
+          // after reinitialising update sizes
+          updateSizes();
+        };
+
+        // bind to scroll events
+        resizeGrowElement.addEventListener('scroll', onGrow.bind(this));
+        resizeShrinkElement.addEventListener('scroll', onShrink.bind(this));
+
+        // nest elements before adding to pane
+        resizeGrowElement.appendChild(resizeGrowChildElement);
+        resizeShrinkElement.appendChild(resizeShrinkChildElement);
+
+        resizeElement.appendChild(resizeGrowElement);
+        resizeElement.appendChild(resizeShrinkElement);
+
+        element.append(resizeElement);
+
+        // update sizes initially
+        updateSizes();
+      }
 
 			function initialiseVerticalScroll()
 			{
