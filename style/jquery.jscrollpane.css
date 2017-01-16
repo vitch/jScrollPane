@@ -5,6 +5,11 @@
  * may not operate correctly without them.
  */
 
+.jspScrollable
+{
+  outline: 0;
+}
+
 .jspContainer
 {
 	overflow: hidden;
