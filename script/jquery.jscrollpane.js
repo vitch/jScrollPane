@@ -349,9 +349,15 @@
 				verticalDragPosition = 0;
 				scrollbarWidth = settings.verticalGutter + verticalTrack.outerWidth();
 
-				// Make the pane thinner to allow for the vertical scrollbar
-				pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
-
+				if (settings.overlayTrack!==true) {
+					// Make the pane thinner to allow for the vertical scrollbar
+					pane.width(paneWidth - scrollbarWidth - originalPaddingTotalWidth);
+				}
+				else {
+					// pull vertical scrollbar same amount of it's width so it will still stay
+					// in container panel visually. 
+					verticalTrack.css({right: verticalTrack.outerWidth()});
+				}
 				// Add margin to the left of the pane if scrollbars are on that side (to position
 				// the scrollbar on the left or right set it's left or right property in CSS)
 				try {
@@ -1509,6 +1515,7 @@
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
 		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		overlayTrack			: false
 	};
 
 }));
