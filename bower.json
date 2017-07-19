@@ -6,7 +6,9 @@
 	],
 	"main": [
 		"./script/jquery.mousewheel.js",
+		"./script/jquery.mousewheel.min.js",
 		"./script/mwheelIntent.js",
+		"./script/mwheelIntent.min.js",
 		"./script/jquery.jscrollpane.js",
 		"./script/jquery.jscrollpane.min.js",
 		"./style/jquery.jscrollpane.css"
