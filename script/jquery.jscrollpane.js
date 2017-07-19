@@ -1189,7 +1189,7 @@
 				});
 			}
 
-			// Init touch on iPad, iPhone, iPod, Android
+			// Init touch on iPad, iPhone, iPod, Android, MSPointerEvents
 			function initTouch()
 			{
 				var startX,
@@ -1199,11 +1199,18 @@
 					moved,
 					moving = false;
 
-				container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').bind(
-					'touchstart.jsp',
+				container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick MSPointerDown.jsp MSPointerMove.jsp MSPointerUp.jsp MSPointerCancel.jsp').bind(
+					'touchstart.jsp MSPointerDown.jsp',
 					function(e)
 					{
-						var touch = e.originalEvent.touches[0];
+						var touch;
+
+						if (e.originalEvent.touches) { // touchstart
+							touch = e.originalEvent.touches[0];
+						} else { // MSPointerDown
+							touch = e.originalEvent;
+						}
+
 						startX = contentPositionX();
 						startY = contentPositionY();
 						touchStartX = touch.pageX;
@@ -1212,15 +1219,21 @@
 						moving = true;
 					}
 				).bind(
-					'touchmove.jsp',
+					'touchmove.jsp MSPointerMove.jsp',
 					function(ev)
 					{
 						if(!moving) {
 							return;
 						}
 
-						var touchPos = ev.originalEvent.touches[0],
+						var touchPos,
 							dX = horizontalDragPosition, dY = verticalDragPosition;
+
+						if (ev.originalEvent.touches) { // touchmove
+						  touchPos = ev.originalEvent.touches[0];
+						} else { // MSPointerMove
+						  touchPos = ev.originalEvent;
+						}
 
 						jsp.scrollTo(startX + touchStartX - touchPos.pageX, startY + touchStartY - touchPos.pageY);
 
@@ -1230,7 +1243,7 @@
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
 				).bind(
-					'touchend.jsp',
+					'touchend.jsp MSPointerUp.jsp MSPointerCancel.jsp',
 					function(e)
 					{
 						moving = false;
