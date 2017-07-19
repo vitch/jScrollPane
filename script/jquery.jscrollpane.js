@@ -39,7 +39,7 @@
 //
 // About: Release History
 //
-// 2.0.23 - (2016-01-28) Various 
+// 2.0.23 - (2016-01-28) Various
 // 2.0.22 - (2015-04-25) Resolve a memory leak due to an event handler that isn't cleaned up in destroy (thanks @timjnh)
 // 2.0.21 - (2015-02-24) Simplify UMD pattern: fixes browserify when loading jQuery outside of bundle
 // 2.0.20 - (2014-10-23) Adds AMD support (thanks @carlosrberto) and support for overflow-x/overflow-y (thanks @darimpulso)
@@ -88,10 +88,13 @@
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
-				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
+				resizeEventsAdded, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				originalElement = elem.clone(false, false).empty(),
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
+
+      // // declare variables to monitor resize events
+      // var resizeElement, resizeGrowElement, resizeShrinkElement, resizeGrowChildElement, resizeShrinkChildElement, resizeWidth, resizeHeight;
 
 			if (elem.css('box-sizing') === 'border-box') {
 				originalPadding = 0;
@@ -120,6 +123,7 @@
 
 					elem.css(
 						{
+              position: 'relative',
 							overflow: 'hidden',
 							padding: 0
 						}
@@ -246,16 +250,20 @@
 					}
 				}
 
-				if (settings.autoReinitialise && !reinitialiseInterval) {
-					reinitialiseInterval = setInterval(
-						function()
-						{
-							initialise(settings);
-						},
-						settings.autoReinitialiseDelay
-					);
-				} else if (!settings.autoReinitialise && reinitialiseInterval) {
-					clearInterval(reinitialiseInterval);
+				if (settings.autoReinitialise && !resizeEventsAdded) {
+
+          var reinitialiseFn = function() {
+            // if size has changed then reinitialise
+            initialise(settings);
+          };
+
+          // detect size change in content
+          detectSizeChanges(pane, reinitialiseFn);
+
+          // detect size changes of container
+          detectSizeChanges(elem, reinitialiseFn);
+
+					resizeEventsAdded = true;
 				}
 
 				originalScrollTop && elem.scrollTop(0) && scrollToY(originalScrollTop, false);
@@ -263,6 +271,83 @@
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 			}
+
+      function detectSizeChanges(element, callback) {
+
+        // create resize event elements - based on resize sensor: https://github.com/flowkey/resize-sensor/
+        var resizeWidth, resizeHeight;
+        var resizeElement = document.createElement('div');
+        var resizeGrowElement = document.createElement('div');
+        var resizeGrowChildElement = document.createElement('div');
+        var resizeShrinkElement = document.createElement('div');
+        var resizeShrinkChildElement = document.createElement('div');
+
+        // add necessary styling
+        resizeElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+        resizeGrowElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+        resizeShrinkElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+
+        resizeGrowChildElement.style.cssText = 'position: absolute; left: 0; top: 0;';
+        resizeShrinkChildElement.style.cssText = 'position: absolute; left: 0; top: 0; width: 200%; height: 200%;';
+
+        // Create a function to programmatically update sizes
+        var updateSizes = function() {
+
+            resizeGrowChildElement.style.width = resizeGrowElement.offsetWidth + 10 + 'px';
+            resizeGrowChildElement.style.height = resizeGrowElement.offsetHeight + 10 + 'px';
+
+            resizeGrowElement.scrollLeft = resizeGrowElement.scrollWidth;
+            resizeGrowElement.scrollTop = resizeGrowElement.scrollHeight;
+
+            resizeShrinkElement.scrollLeft = resizeShrinkElement.scrollWidth;
+            resizeShrinkElement.scrollTop = resizeShrinkElement.scrollHeight;
+
+            resizeWidth = element.width();
+            resizeHeight = element.height();
+        };
+
+        // create functions to call when content grows
+        var onGrow = function() {
+
+          // check to see if the content has change size
+          if (element.width() > resizeWidth || element.height() > resizeHeight) {
+
+              // if size has changed then reinitialise
+              callback.apply(this, []);
+          }
+          // after reinitialising update sizes
+          updateSizes();
+        };
+
+        // create functions to call when content shrinks
+        var onShrink = function() {
+
+          // check to see if the content has change size
+          if (element.width() < resizeWidth || element.height() < resizeHeight) {
+
+              // if size has changed then reinitialise
+              callback.apply(this, []);
+          }
+          // after reinitialising update sizes
+          updateSizes();
+        };
+
+        // bind to scroll events
+        resizeGrowElement.addEventListener('scroll', onGrow.bind(this));
+        resizeShrinkElement.addEventListener('scroll', onShrink.bind(this));
+
+        // nest elements before adding to pane
+        resizeGrowElement.appendChild(resizeGrowChildElement);
+        resizeShrinkElement.appendChild(resizeShrinkChildElement);
+
+        resizeElement.appendChild(resizeGrowElement);
+        resizeElement.appendChild(resizeShrinkElement);
+
+        element.append(resizeElement);
+
+        // update sizes initially
+        updateSizes();
+      }
 
 			function initialiseVerticalScroll()
 			{
@@ -1483,7 +1568,6 @@
 		stickToRight				: false,
 		clickOnTrack				: true,
 		autoReinitialise			: false,
-		autoReinitialiseDelay		: 500,
 		verticalDragMinHeight		: 0,
 		verticalDragMaxHeight		: 99999,
 		horizontalDragMinWidth		: 0,
