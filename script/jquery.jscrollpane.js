@@ -309,14 +309,17 @@
 					);
 
 
-					verticalDrag.hover(
+					verticalDrag.on(
+                                                "mouseenter",
 						function()
 						{
-							verticalDrag.addClass('jspHover');
-						},
+							horizontalDrag.addClass('jspHover');
+						}
+                                        ).on(
+                                                "mouseleave",
 						function()
 						{
-							verticalDrag.removeClass('jspHover');
+							horizontalDrag.removeClass('jspHover');
 						}
 					).on(
 						'mousedown.jsp',
@@ -397,11 +400,14 @@
 						appendArrows(horizontalTrack, settings.horizontalArrowPositions, arrowLeft, arrowRight);
 					}
 
-					horizontalDrag.hover(
+					horizontalDrag.on(
+                                                "mouseenter",
 						function()
 						{
 							horizontalDrag.addClass('jspHover');
-						},
+						}
+                                        ).on(
+                                                "mouseleave",
 						function()
 						{
 							horizontalDrag.removeClass('jspHover');
