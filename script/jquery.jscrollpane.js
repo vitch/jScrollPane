@@ -286,15 +286,15 @@
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
 					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" />').bind(
+						arrowUp = $('<a class="jspArrow jspArrowUp" />').on(
 							'mousedown.jsp', getArrowScroll(0, -1)
-						).bind('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown" />').bind(
+						).on('click.jsp', nil);
+						arrowDown = $('<a class="jspArrow jspArrowDown" />').on(
 							'mousedown.jsp', getArrowScroll(0, 1)
-						).bind('click.jsp', nil);
+						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
-							arrowUp.bind('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
-							arrowDown.bind('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
+							arrowUp.on('mouseover.jsp', getArrowScroll(0, -1, arrowUp));
+							arrowDown.on('mouseover.jsp', getArrowScroll(0, 1, arrowDown));
 						}
 
 						appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
@@ -318,24 +318,24 @@
 						{
 							verticalDrag.removeClass('jspHover');
 						}
-					).bind(
+					).on(
 						'mousedown.jsp',
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', nil);
+							$('html').on('dragstart.jsp selectstart.jsp', nil);
 
 							verticalDrag.addClass('jspActive');
 
 							var startY = e.pageY - verticalDrag.position().top;
 
-							$('html').bind(
+							$('html').on(
 								'mousemove.jsp',
 								function(e)
 								{
 									positionDragY(e.pageY - startY, false);
 								}
-							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
+							).on('mouseup.jsp mouseleave.jsp', cancelDrag);
 							return false;
 						}
 					);
@@ -384,15 +384,15 @@
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').bind(
+						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').on(
 							'mousedown.jsp', getArrowScroll(-1, 0)
-						).bind('click.jsp', nil);
-						arrowRight = $('<a class="jspArrow jspArrowRight" />').bind(
+						).on('click.jsp', nil);
+						arrowRight = $('<a class="jspArrow jspArrowRight" />').on(
 							'mousedown.jsp', getArrowScroll(1, 0)
-						).bind('click.jsp', nil);
+						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
-							arrowLeft.bind('mouseover.jsp', getArrowScroll(-1, 0, arrowLeft));
-							arrowRight.bind('mouseover.jsp', getArrowScroll(1, 0, arrowRight));
+							arrowLeft.on('mouseover.jsp', getArrowScroll(-1, 0, arrowLeft));
+							arrowRight.on('mouseover.jsp', getArrowScroll(1, 0, arrowRight));
 						}
 						appendArrows(horizontalTrack, settings.horizontalArrowPositions, arrowLeft, arrowRight);
 					}
@@ -406,24 +406,24 @@
 						{
 							horizontalDrag.removeClass('jspHover');
 						}
-					).bind(
+					).on(
 						'mousedown.jsp',
 						function(e)
 						{
 							// Stop IE from allowing text selection
-							$('html').bind('dragstart.jsp selectstart.jsp', nil);
+							$('html').on('dragstart.jsp selectstart.jsp', nil);
 
 							horizontalDrag.addClass('jspActive');
 
 							var startX = e.pageX - horizontalDrag.position().left;
 
-							$('html').bind(
+							$('html').on(
 								'mousemove.jsp',
 								function(e)
 								{
 									positionDragX(e.pageX - startX, false);
 								}
-							).bind('mouseup.jsp mouseleave.jsp', cancelDrag);
+							).on('mouseup.jsp mouseleave.jsp', cancelDrag);
 							return false;
 						}
 					);
@@ -551,14 +551,14 @@
 
 				eve = ele ? 'mouseout.jsp' : 'mouseup.jsp';
 				ele = ele || $('html');
-				ele.bind(
+				ele.on(
 					eve,
 					function()
 					{
 						arrow.removeClass('jspActive');
 						scrollTimeout && clearTimeout(scrollTimeout);
 						scrollTimeout = null;
-						ele.unbind(eve);
+						ele.off(eve);
 					}
 				);
 			}
@@ -567,7 +567,7 @@
 			{
 				removeClickOnTrack();
 				if (isScrollableV) {
-					verticalTrack.bind(
+					verticalTrack.on(
 						'mousedown.jsp',
 						function(e)
 						{
@@ -606,10 +606,10 @@
 									{
 										scrollTimeout && clearTimeout(scrollTimeout);
 										scrollTimeout = null;
-										$(document).unbind('mouseup.jsp', cancelClick);
+										$(document).off('mouseup.jsp', cancelClick);
 									};
 								doScroll();
-								$(document).bind('mouseup.jsp', cancelClick);
+								$(document).on('mouseup.jsp', cancelClick);
 								return false;
 							}
 						}
@@ -617,7 +617,7 @@
 				}
 
 				if (isScrollableH) {
-					horizontalTrack.bind(
+					horizontalTrack.on(
 						'mousedown.jsp',
 						function(e)
 						{
@@ -656,10 +656,10 @@
 									{
 										scrollTimeout && clearTimeout(scrollTimeout);
 										scrollTimeout = null;
-										$(document).unbind('mouseup.jsp', cancelClick);
+										$(document).off('mouseup.jsp', cancelClick);
 									};
 								doScroll();
-								$(document).bind('mouseup.jsp', cancelClick);
+								$(document).on('mouseup.jsp', cancelClick);
 								return false;
 							}
 						}
@@ -670,16 +670,16 @@
 			function removeClickOnTrack()
 			{
 				if (horizontalTrack) {
-					horizontalTrack.unbind('mousedown.jsp');
+					horizontalTrack.off('mousedown.jsp');
 				}
 				if (verticalTrack) {
-					verticalTrack.unbind('mousedown.jsp');
+					verticalTrack.off('mousedown.jsp');
 				}
 			}
 
 			function cancelDrag()
 			{
-				$('html').unbind('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
+				$('html').off('dragstart.jsp selectstart.jsp mousemove.jsp mouseup.jsp mouseleave.jsp');
 
 				if (verticalDrag) {
 					verticalDrag.removeClass('jspActive');
@@ -928,7 +928,7 @@
 
 			function initMousewheel()
 			{
-				container.unbind(mwEvent).bind(
+				container.off(mwEvent).on(
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
 
@@ -945,7 +945,7 @@
 
 			function removeMousewheel()
 			{
-				container.unbind(mwEvent);
+				container.off(mwEvent);
 			}
 
 			function nil()
@@ -955,7 +955,7 @@
 
 			function initFocusHandler()
 			{
-				pane.find(':input,a').unbind('focus.jsp').bind(
+				pane.find(':input,a').off('focus.jsp').on(
 					'focus.jsp',
 					function(e)
 					{
@@ -966,7 +966,7 @@
 
 			function removeFocusHandler()
 			{
-				pane.find(':input,a').unbind('focus.jsp');
+				pane.find(':input,a').off('focus.jsp');
 			}
 
 			function initKeyboardNav()
@@ -976,7 +976,7 @@
 				isScrollableV && validParents.push(verticalBar[0]);
 
 				// IE also focuses elements that don't have tabindex set.
-				pane.bind(
+				pane.on(
 					'focus.jsp',
 					function()
 					{
@@ -985,8 +985,8 @@
 				);
 
 				elem.attr('tabindex', 0)
-					.unbind('keydown.jsp keypress.jsp')
-					.bind(
+					.off('keydown.jsp keypress.jsp')
+					.on(
 						'keydown.jsp',
 						function(e)
 						{
@@ -1018,7 +1018,7 @@
 							elementHasScrolled = e.keyCode == keyDown && dX != horizontalDragPosition || dY != verticalDragPosition;
 							return !elementHasScrolled;
 						}
-					).bind(
+					).on(
 						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses if the JSP scrolls...
 						function(e)
 						{
@@ -1079,9 +1079,9 @@
 			{
 				elem.attr('tabindex', '-1')
 					.removeAttr('tabindex')
-					.unbind('keydown.jsp keypress.jsp');
+					.off('keydown.jsp keypress.jsp');
 
-				pane.unbind('.jsp');
+				pane.off('.jsp');
 			}
 
 			function observeHash()
@@ -1199,7 +1199,7 @@
 					moved,
 					moving = false;
 
-				container.unbind('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').bind(
+				container.off('touchstart.jsp touchmove.jsp touchend.jsp click.jsp-touchclick').on(
 					'touchstart.jsp',
 					function(e)
 					{
@@ -1211,7 +1211,7 @@
 						moved = false;
 						moving = true;
 					}
-				).bind(
+				).on(
 					'touchmove.jsp',
 					function(ev)
 					{
@@ -1229,7 +1229,7 @@
 						// return true if there was no movement so rest of screen can scroll
 						return dX == horizontalDragPosition && dY == verticalDragPosition;
 					}
-				).bind(
+				).on(
 					'touchend.jsp',
 					function(e)
 					{
@@ -1238,7 +1238,7 @@
 							return false;
 						}*/
 					}
-				).bind(
+				).on(
 					'click.jsp-touchclick',
 					function(e)
 					{
@@ -1253,8 +1253,8 @@
 			function destroy(){
 				var currentY = contentPositionY(),
 					currentX = contentPositionX();
-				elem.removeClass('jspScrollable').unbind('.jsp');
-				pane.unbind('.jsp');
+				elem.removeClass('jspScrollable').off('.jsp');
+				pane.off('.jsp');
 				elem.replaceWith(originalElement.append(pane.children()));
 				originalElement.scrollTop(currentY);
 				originalElement.scrollLeft(currentX);
