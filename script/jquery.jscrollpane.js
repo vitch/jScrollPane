@@ -313,13 +313,13 @@
                                                 "mouseenter",
 						function()
 						{
-							horizontalDrag.addClass('jspHover');
+							verticalDrag.addClass('jspHover');
 						}
                                         ).on(
                                                 "mouseleave",
 						function()
 						{
-							horizontalDrag.removeClass('jspHover');
+							verticalDrag.removeClass('jspHover');
 						}
 					).on(
 						'mousedown.jsp',
