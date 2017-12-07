@@ -171,10 +171,13 @@
 					}
 
 					// If nothing changed since last check...
-					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
-						elem.width(paneWidth);
-						return;
+					if(!settings.fullReinitialise) {
+						if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
+							elem.width(paneWidth);
+							return;
+						}
 					}
+					
 					previousContentWidth = contentWidth;
 
 					pane.css('width', '');
@@ -1514,7 +1517,8 @@
 		keyboardSpeed				: 0,
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		scrollPagePercent			: .8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		fullReinitialise			: false
 	};
 
 }));
