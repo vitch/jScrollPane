@@ -765,6 +765,9 @@
 				}
 
 				updateVerticalArrows(isAtTop, isAtBottom);
+				// Add classes 'jspDragAtTop' or 'jspDragAtBottom' when the vertical drag is at top or bottom.
+				verticalDrag[isAtTop ? 'addClass' : 'removeClass']('jspDragAtTop');
+				verticalDrag[isAtBottom ? 'addClass' : 'removeClass']('jspDragAtBottom');
 				pane.css('top', destTop);
 				elem.trigger('jsp-scroll-y', [-destTop, isAtTop, isAtBottom]).trigger('scroll');
 			}
