@@ -556,7 +556,9 @@
 						if (dirY !== 0) {
 							jsp.scrollByY(dirY * settings.arrowButtonSpeed);
 						}
-						scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.arrowRepeatFreq);
+						scrollTimeout = setTimeout(function() {
+							doScroll();
+						}, isFirst ? settings.initialDelay : settings.arrowRepeatFreq);
 						isFirst = false;
 					};
 
@@ -612,7 +614,9 @@
 											cancelClick();
 											return;
 										}
-										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
+										scrollTimeout = setTimeout(function() {
+											doScroll();
+										}, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
 										isFirst = false;
 									},
 									cancelClick = function()
@@ -662,7 +666,9 @@
 											cancelClick();
 											return;
 										}
-										scrollTimeout = setTimeout(doScroll, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
+										scrollTimeout = setTimeout(function() {
+											doScroll();
+										}, isFirst ? settings.initialDelay : settings.trackClickRepeatFreq);
 										isFirst = false;
 									},
 									cancelClick = function()
