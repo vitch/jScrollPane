@@ -307,7 +307,13 @@
 						appendArrows(verticalTrack, settings.verticalArrowPositions, arrowUp, arrowDown);
 					}
 
-					verticalTrackHeight = paneHeight;
+					var paddingTop = parseInt($('.jspVerticalBar').css('padding-top'), 10),
+						paddingBtm = parseInt($('.jspVerticalBar').css('padding-bottom'), 10),
+						marginTop = parseInt($('.jspVerticalBar').css('margin-top'), 10),
+						marginBtm = parseInt($('.jspVerticalBar').css('margin-bottom'), 10);
+
+					heightDifference = (paddingTop + paddingBtm) + (marginTop + marginBtm);
+					verticalTrackHeight = paneHeight - heightDifference;
 					container.find('>.jspVerticalBar>.jspCap:visible,>.jspVerticalBar>.jspArrow').each(
 						function()
 						{
