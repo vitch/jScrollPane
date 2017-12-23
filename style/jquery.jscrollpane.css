@@ -113,3 +113,8 @@
 {
 	margin: 0 -3px 0 0;
 }
+
+/* To preserve user's style concerning that ugly chrome default blue outline */
+*:focus {
+    outline: inherit;
+}
