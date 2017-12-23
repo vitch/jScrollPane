@@ -201,9 +201,8 @@
 
 				percentInViewH = contentWidth / paneWidth;
 				percentInViewV = contentHeight / paneHeight;
-				isScrollableV = percentInViewV > 1;
-
-				isScrollableH = percentInViewH > 1;
+				isScrollableV = percentInViewV > 1 || settings.alwaysShowVScroll;
+				isScrollableH = percentInViewH > 1 || settings.alwaysShowHScroll;
 
 				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
 
@@ -1521,7 +1520,9 @@
 		keyboardSpeed				: 0,
 		initialDelay                : 300,        // Delay before starting repeating
 		speed						: 30,		// Default speed when others falsey
-		scrollPagePercent			: .8		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		scrollPagePercent			: .8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
+		alwaysShowVScroll			: false,
+		alwaysShowHScroll			: false,
 	};
 
 }));
