@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.1.0 - 2017-12-2017
+ * jScrollPane - v2.1.1-rc.1 - 2017-12-23
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
@@ -9,7 +9,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.1.0, Last updated: 2017-12-16*
+// *Version: 2.1.0-rc.1, Last updated: 2017-12-23*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -40,6 +40,13 @@
 //
 // About: Release History
 //
+// 2.1.1-rc.1  - (2017-12-23) Started to slowly merge stuff (HO HO HO Merry Christmas!)
+//             * Merged
+//             - #349 - ScrollPane reinitialization should adapt to changed container size
+//             - #335 Set drag bar width/height with .css instead of .width/.height
+//             - #297 added two settings: always show HScroll and VScroll
+//             * Bugs
+//             - #8 Make it possible to tell a scrollbar to be "always on"
 // 2.1.0  - (2017-12-16) Update jQuery to version 3.x
 // 2.0.23 - (2016-01-28) Various
 // 2.0.22 - (2015-04-25) Resolve a memory leak due to an event handler that isn't cleaned up in destroy (thanks @timjnh)
