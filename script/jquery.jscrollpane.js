@@ -1,15 +1,15 @@
 /*!
- * jScrollPane - v2.1.1-rc.1 - 2017-12-23
+ * jScrollPane - v2.1.1 - 2018-01-12
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
- * Copyright (c) 2017 Tuukka Pasanen
+ * Copyright (c) 2017-2018 Tuukka Pasanen
  * Dual licensed under the MIT or GPL licenses.
  */
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.1.0-rc.1, Last updated: 2017-12-23*
+// *Version: 2.1.1, Last updated: 2018-01-12*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -19,6 +19,7 @@
 // About: License
 //
 // Copyright (c) 2017 Kelvin Luck
+// Copyright (c) 2017-2018 Tuukka Pasanen
 // Dual licensed under the MIT or GPL Version 2 licenses.
 // http://jscrollpane.kelvinluck.com/MIT-LICENSE.txt
 // http://jscrollpane.kelvinluck.com/GPL-LICENSE.txt
@@ -35,11 +36,13 @@
 // website (http://jscrollpane.kelvinluck.com/) for more information on getting support. You are also
 // welcome to fork the project on GitHub if you can contribute a fix for a given issue.
 //
-// jQuery Versions - tested in 1.4.2+ - reported to work in 1.3.x
-// Browsers Tested - Firefox 3.6.8, Safari 5, Opera 10.6, Chrome 5.0, IE 6, 7, 8
+// jQuery Versions - jQuery 3.x. Although script should work from jQuery 1.1 and up but no promises are made.
+// Browsers Tested - See jQuery browser support page: https://jquery.com/browser-support/. Only modern
+//                   browsers are supported.
 //
 // About: Release History
 //
+// 2.1.1  - (2018-01-12) As everyone stays silent then we just release! No changes from RC.1
 // 2.1.1-rc.1  - (2017-12-23) Started to slowly merge stuff (HO HO HO Merry Christmas!)
 //             * Merged
 //             - #349 - ScrollPane reinitialization should adapt to changed container size
@@ -59,20 +62,6 @@
 // 2.0.15 - (2013-07-29) Fixed issue with scrollToElement where the destX and destY are undefined.
 // 2.0.14 - (2013-05-01) Updated to most recent mouse wheel plugin (see #106) and related changes for sensible scroll speed
 // 2.0.13 - (2013-05-01) Switched to semver compatible version name
-// 2.0.0beta12 - (2012-09-27) fix for jQuery 1.8+
-// 2.0.0beta11 - (2012-05-14)
-// 2.0.0beta10 - (2011-04-17) cleaner required size calculation, improved keyboard support, stickToBottom/Left, other small fixes
-// 2.0.0beta9 - (2011-01-31) new API methods, bug fixes and correct keyboard support for FF/OSX
-// 2.0.0beta8 - (2011-01-29) touchscreen support, improved keyboard support
-// 2.0.0beta7 - (2011-01-23) scroll speed consistent (thanks Aivo Paas)
-// 2.0.0beta6 - (2010-12-07) scrollToElement horizontal support
-// 2.0.0beta5 - (2010-10-18) jQuery 1.4.3 support, various bug fixes
-// 2.0.0beta4 - (2010-09-17) clickOnTrack support, bug fixes
-// 2.0.0beta3 - (2010-08-27) Horizontal mousewheel, mwheelIntent, keyboard support, bug fixes
-// 2.0.0beta2 - (2010-08-21) Bug fixes
-// 2.0.0beta1 - (2010-08-17) Rewrite to follow modern best practices and enable horizontal scrolling, initially hidden
-//							 elements and dynamically sized elements.
-// 1.x - (2006-12-31 - 2010-07-31) Initial version, hosted at googlecode, deprecated
 
 (function (factory) {
   if ( typeof define === 'function' && define.amd ) {
