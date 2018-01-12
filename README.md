@@ -55,9 +55,9 @@ If there is changes needed to make in Pull Request it's up to Pull Request owner
 
 ### Pull Requests should at least have these
  - Pull Request should at least contain topic what it's changing
- - brief explanation why this should be integrated and what have been changed
- - if there is new initialize properties they they should be documented to documentation
- - if this Pull Request generates new functionality which ain't having example that should be provided.
+ - Brief explanation why this should be integrated and what have been changed
+ - If there is new initialize properties they they should be documented to documentation
+ - If this Pull Request generates new functionality which ain't having example that should be provided.
 
 ## License
 
