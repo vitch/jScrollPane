@@ -260,8 +260,13 @@
 					clearInterval(reinitialiseInterval);
 				}
 
-				originalScrollTop && elem.scrollTop(0) && scrollToY(originalScrollTop, false);
-				originalScrollLeft && elem.scrollLeft(0) && scrollToX(originalScrollLeft, false);
+        if(originalScrollTop && elem.scrollTop(0)) {
+          scrollToY(originalScrollTop, false);
+        }
+
+				if(originalScrollLeft && elem.scrollLeft(0)) {
+          scrollToX(originalScrollLeft, false);
+        }
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
 			}
@@ -564,7 +569,9 @@
 					function()
 					{
 						arrow.removeClass('jspActive');
-						scrollTimeout && clearTimeout(scrollTimeout);
+						if(scrollTimeout) {
+              clearTimeout(scrollTimeout);
+            }
 						scrollTimeout = null;
 						ele.off(eve);
 					}
@@ -612,7 +619,9 @@
 									},
 									cancelClick = function()
 									{
-										scrollTimeout && clearTimeout(scrollTimeout);
+										if(scrollTimeout) {
+                      clearTimeout(scrollTimeout);
+                    }
 										scrollTimeout = null;
 										$(document).off('mouseup.jsp', cancelClick);
 									};
@@ -662,7 +671,9 @@
 									},
 									cancelClick = function()
 									{
-										scrollTimeout && clearTimeout(scrollTimeout);
+										if(scrollTimeout) {
+                      clearTimeout(scrollTimeout);
+                    }
 										scrollTimeout = null;
 										$(document).off('mouseup.jsp', cancelClick);
 									};
@@ -980,8 +991,13 @@
 			function initKeyboardNav()
 			{
 				var keyDown, elementHasScrolled, validParents = [];
-				isScrollableH && validParents.push(horizontalBar[0]);
-				isScrollableV && validParents.push(verticalBar[0]);
+				if(isScrollableH) {
+          validParents.push(horizontalBar[0]);
+        }
+
+				if(isScrollableV) {
+          validParents.push(verticalBar[0]);
+        }
 
 				// IE also focuses elements that don't have tabindex set.
 				pane.on(
@@ -1163,7 +1179,6 @@
 					hash = escape(this.href.substr(this.href.indexOf('#') + 1));
 
 					// find the element on the page
-					element;
 					try {
 						element = $('#' + hash + ', a[name="' + hash + '"]');
 					} catch (e) {
