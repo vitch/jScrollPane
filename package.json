@@ -1,0 +1,30 @@
+{
+  "name": "jscrollpane",
+  "version": "2.1.1",
+  "description": "jScrollPane - cross browser custom scroll bars",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vitch/jScrollPane.git"
+  },
+  "keywords": [
+    "jquery",
+    "jscrollpane",
+    "css"
+  ],
+  "author": "Tuukka Pasanen",
+  "license": "(MIT OR GPL-2.0)",
+  "bugs": {
+    "url": "https://github.com/vitch/jScrollPane/issues"
+  },
+  "homepage": "https://github.com/vitch/jScrollPane#readme", 
+  "dependencies" :
+  { 
+    "jquery" : "3.x"
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-contrib-connect": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-contrib-uglify": "latest"
+  }
+}
