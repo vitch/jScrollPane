@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/vitch/jScrollPane/issues"
   },
+  "main": "Gruntfile.js",
   "homepage": "https://github.com/vitch/jScrollPane#readme", 
   "dependencies" :
   { 
