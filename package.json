@@ -1,6 +1,6 @@
 {
   "name": "jscrollpane",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "jScrollPane - cross browser custom scroll bars",
   "repository": {
     "type": "git",
@@ -17,10 +17,9 @@
     "url": "https://github.com/vitch/jScrollPane/issues"
   },
   "main": "Gruntfile.js",
-  "homepage": "https://github.com/vitch/jScrollPane#readme", 
-  "dependencies" :
-  { 
-    "jquery" : "3.x"
+  "homepage": "https://github.com/vitch/jScrollPane#readme",
+  "dependencies": {
+    "jquery": "3.x"
   },
   "devDependencies": {
     "grunt": "latest",
