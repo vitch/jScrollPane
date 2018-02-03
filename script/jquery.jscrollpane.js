@@ -163,7 +163,6 @@
 
 					newPaneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					newPaneHeight = elem.innerHeight();
-					console.log('newPaneHeight = ' + newPaneHeight);
 					pane.css('position', 'absolute');
 
 					maintainAtBottom = settings.stickToBottom && isCloseToBottom();
@@ -201,8 +200,6 @@
 				percentInViewV = contentHeight / paneHeight;
 				isScrollableV = percentInViewV > 1 || settings.alwaysShowVScroll;
 				isScrollableH = percentInViewH > 1 || settings.alwaysShowHScroll;
-
-				//console.log(paneWidth, paneHeight, contentWidth, contentHeight, percentInViewH, percentInViewV, isScrollableH, isScrollableV);
 
 				if (!(isScrollableH || isScrollableV)) {
 					elem.removeClass('jspScrollable');
