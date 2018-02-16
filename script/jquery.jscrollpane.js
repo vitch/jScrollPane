@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.1.2-rc.2 - 2018-02-03
+ * jScrollPane - v2.1.2 - 2018-02-16
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
@@ -9,7 +9,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.1.2-rc.2, Last updated: 2018-02-03*
+// *Version: 2.1.2, Last updated: 2018-02-03*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -42,6 +42,8 @@
 //
 // About: Release History
 //
+// 2.1.2       - (2018-02-16) Just on console.log remove and Release!
+//             This version should play nicely with NPM
 // 2.1.2-rc.2  - (2018-02-03) Update package.json main-tag
 // 2.1.2-rc.1  - (2018-01-18) Release on NPM.
 // 2.1.1       - (2018-01-12) As everyone stays silent then we just release! No changes from RC.1
