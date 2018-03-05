@@ -93,7 +93,8 @@
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
 				originalElement = elem.clone(false, false).empty(),
-				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
+				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp',
+			    	isPaused = false;
 
 			if (elem.css('box-sizing') === 'border-box') {
 				originalPadding = 0;
@@ -951,7 +952,9 @@
 				container.off(mwEvent).on(
 					mwEvent,
 					function (event, delta, deltaX, deltaY) {
-
+			if (isPaused === true) {
+				return;
+		    	}
                         if (!horizontalDragPosition) horizontalDragPosition = 0;
                         if (!verticalDragPosition) verticalDragPosition = 0;
 
@@ -1018,6 +1021,9 @@
 							if (e.target !== this && !(validParents.length && $(e.target).closest(validParents).length)){
 								return;
 							}
+							if (isPaused === true) {
+								return;
+						    	}
 							var dX = horizontalDragPosition, dY = verticalDragPosition;
 							switch(e.keyCode) {
 								case 40: // down
@@ -1047,6 +1053,9 @@
 						'keypress.jsp', // For FF/ OSX so that we can cancel the repeat key presses if the JSP scrolls...
 						function(e)
 						{
+							if (isPaused === true) {
+								return;
+						    	}
 							if (e.keyCode == keyDown) {
 								keyDownHandler();
 							}
@@ -1470,6 +1479,12 @@
 					destroy: function()
 					{
 							destroy();
+					},
+					pause: function() {
+					    isPaused = true;
+					},
+					resume: function() {
+					    isPaused = false;
 					}
 				}
 			);
