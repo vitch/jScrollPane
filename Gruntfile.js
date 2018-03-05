@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     uglify: {
       jsp: {
         files: {
-          '../script/jquery.jscrollpane.min.js': '../script/jquery.jscrollpane.js'
+          'script/jquery.jscrollpane.min.js': 'script/jquery.jscrollpane.js'
         },
         options: {
           preserveComments: 'some'
@@ -25,14 +25,14 @@ module.exports = function(grunt) {
     },
     watch: {
       content: {
-        files: ['../script/jquery.jscrollpane.js'],
+        files: ['script/jquery.jscrollpane.js'],
         tasks: 'uglify'
       }
     },
     connect: {
       site: {
         options: {
-          base: '../'
+          base: '.'
         }
       }
     }
