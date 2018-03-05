@@ -16,13 +16,13 @@
   "bugs": {
     "url": "https://github.com/vitch/jScrollPane/issues"
   },
-  "main": "build/Gruntfile.js",
+  "main": "Gruntfile.js",
   "homepage": "https://github.com/vitch/jScrollPane#readme",
   "dependencies": {
     "jquery": "3.x"
   },
   "devDependencies": {
-    "grunt": "latest",
+    "grunt-cli": "latest",
     "grunt-contrib-connect": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-contrib-uglify": "latest"
