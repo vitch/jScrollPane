@@ -45,6 +45,7 @@
 //
 // About: Release History
 //
+// 2.2.1       - (2018-06-07) Register to globally available jQuery else fallback to private jQuery
 // 2.2.0       - (2018-05-16) No changes to RC1
 // 2.2.0-rc.1  - (2018-04-28) Merged resize sensor to find out size changes of screen and
 //                            again little bit tuned this to support more npm goodies.
@@ -76,7 +77,7 @@
       define(['jquery'], factory);
   } else if (typeof exports === 'object') {
       // Node/CommonJS style for Browserify
-      module.exports = factory(require('jquery'));
+      module.exports = factory(jQuery || require('jquery'));
   } else {
       // Browser globals
       factory(jQuery);
