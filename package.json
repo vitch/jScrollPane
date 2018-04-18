@@ -18,13 +18,17 @@
   },
   "main": "script/jquery.jscrollpane.min.js",
   "homepage": "https://github.com/vitch/jScrollPane#readme",
+  "scripts": {
+    "build": "grunt"
+  },
   "dependencies": {
     "jquery": "3.x"
   },
   "devDependencies": {
+    "grunt": "^1.0.2",
     "grunt-cli": "latest",
     "grunt-contrib-connect": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-contrib-uglify": "latest"
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-watch": "latest"
   }
 }
