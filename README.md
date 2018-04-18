@@ -22,20 +22,19 @@ Please feel free to make Bug reports against project but if you are making Issue
 
 ## Contributing
 
-There is a simple [grunt](http://gruntjs.com) based build script which will help to produce a minified version of
-jScrollPane if you make any modifications and want to submit a pull request. You can find it in the `build/` directory.
+There is a simple [grunt](http://gruntjs.com) based build script in `Gruntfile.js` which will help to produce a minified version of
+jScrollPane if you make any modifications and want to submit a pull request.
 
-To use it, make sure you have [node](http://nodejs.org/), npm and the `grunt-cli` module installed first:
+To use it, make sure you have [node](http://nodejs.org/), npm:
 
 ```
-npm install -g grunt-cli
+npm install
 ```
 
 Then:
 
 ```
-cd build
-grunt
+npm run build
 ```
 
 Please remember to update the changelog in the comment at the header of both JS files when submitting a pull request.
