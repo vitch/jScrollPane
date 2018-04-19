@@ -34,7 +34,7 @@
 			{
 				var settings = {
 					showArrows: true,
-					autoReinitialise: true
+					resizeSensor: true
 				};
 				var pane = $('.scroll-pane')
 				pane.jScrollPane(settings);
@@ -72,15 +72,12 @@
 			<h1>jScrollPane - automatic reinitialisation demo page</h1>
 			<p>
 				This demonstration shows how you can tell jScrollPane to automatically reinitialise itself. You do this
-				by passing in <strong><a href="settings.html#autoReinitialise">autoReinitialise</a>: true</strong> as a
-				setting. If you do this then the scrollpane attempts to reinitialise itself every
-				<a href="settings.html#autoReinitialiseDelay">autoReinitialiseDelay</a> miliseconds.
+				by passing in <strong><a href="settings.html#resizeSensor">resizeSensor</a>: true</strong> as a
+				setting. If you do this then the scrollpane attempts to reinitialise any time it detects a change in the content size.
 			</p>
 			<p>
-				Note that there is obviously a processing overhead associated with this method as the script is running
-				repeatedly in the background. For this reason <strong>autoReinitialise</strong> is false by default and
-				if possible you are recommended to <a href="dynamic_content.html">manually reinitialise</a>
-				jScrollPane when you add content to it or use the <a href="resize_sensor.html">resizeSensor</a>.
+				Note this will work fine in most cases, however if content is absolutely positioned it may be unable to
+				detect changes. If that is the case <strong>autoReinitialise</strong> can be used instead.
 			</p>
 			<div class="scroll-pane">
 			</div>

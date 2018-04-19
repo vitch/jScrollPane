@@ -97,8 +97,20 @@
 				horizontalBar, horizontalTrack, horizontalTrackWidth, horizontalDragWidth, arrowLeft, arrowRight,
 				reinitialiseInterval, originalPadding, originalPaddingTotalWidth, previousContentWidth,
 				wasAtTop = true, wasAtLeft = true, wasAtBottom = false, wasAtRight = false,
-				originalElement = elem.clone(false, false).empty(),
+				originalElement = elem.clone(false, false).empty(), resizeEventsAdded = false,
 				mwEvent = $.fn.mwheelIntent ? 'mwheelIntent.jsp' : 'mousewheel.jsp';
+
+			var reinitialiseFn = function() {
+				// if size has changed then reinitialise
+				if (settings.resizeSensorDelay > 0) {
+					setTimeout(function() {
+						initialise(settings);
+					}, settings.resizeSensorDelay);
+				}
+				else {
+					initialise(settings);
+				}
+			};
 
 			if (elem.css('box-sizing') === 'border-box') {
 				originalPadding = 0;
@@ -254,7 +266,7 @@
 					}
 				}
 
-				if (settings.autoReinitialise && !reinitialiseInterval) {
+				if (!settings.resizeSensor && settings.autoReinitialise && !reinitialiseInterval) {
 					reinitialiseInterval = setInterval(
 						function()
 						{
@@ -262,8 +274,25 @@
 						},
 						settings.autoReinitialiseDelay
 					);
-				} else if (!settings.autoReinitialise && reinitialiseInterval) {
+				} else if (!settings.resizeSensor && !settings.autoReinitialise && reinitialiseInterval) {
 					clearInterval(reinitialiseInterval);
+				}
+
+				if(settings.resizeSensor && !resizeEventsAdded) {
+		
+					// detect size change in content
+					detectSizeChanges(pane, reinitialiseFn);
+			
+					// detect size changes of scroll element
+					detectSizeChanges(elem, reinitialiseFn);
+			
+					// detect size changes of container
+					detectSizeChanges(elem.parent(), reinitialiseFn);
+
+					// add a reinit on window resize also for safety
+					window.addEventListener('resize', reinitialiseFn);
+			
+					resizeEventsAdded = true;
 				}
 
         if(originalScrollTop && elem.scrollTop(0)) {
@@ -275,6 +304,88 @@
         }
 
 				elem.trigger('jsp-initialised', [isScrollableH || isScrollableV]);
+			}
+
+			function detectSizeChanges(element, callback) {
+ 
+				// create resize event elements - based on resize sensor: https://github.com/flowkey/resize-sensor/
+				var resizeWidth, resizeHeight;
+				var resizeElement = document.createElement('div');
+				var resizeGrowElement = document.createElement('div');
+				var resizeGrowChildElement = document.createElement('div');
+				var resizeShrinkElement = document.createElement('div');
+				var resizeShrinkChildElement = document.createElement('div');
+		
+				// add necessary styling
+				resizeElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+				resizeGrowElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+				resizeShrinkElement.style.cssText = 'position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: scroll; z-index: -1; visibility: hidden;';
+		
+				resizeGrowChildElement.style.cssText = 'position: absolute; left: 0; top: 0;';
+				resizeShrinkChildElement.style.cssText = 'position: absolute; left: 0; top: 0; width: 200%; height: 200%;';
+		
+				// Create a function to programmatically update sizes
+				var updateSizes = function() {
+		
+					resizeGrowChildElement.style.width = resizeGrowElement.offsetWidth + 10 + 'px';
+					resizeGrowChildElement.style.height = resizeGrowElement.offsetHeight + 10 + 'px';
+		
+					resizeGrowElement.scrollLeft = resizeGrowElement.scrollWidth;
+					resizeGrowElement.scrollTop = resizeGrowElement.scrollHeight;
+		
+					resizeShrinkElement.scrollLeft = resizeShrinkElement.scrollWidth;
+					resizeShrinkElement.scrollTop = resizeShrinkElement.scrollHeight;
+		
+					resizeWidth = element.width();
+					resizeHeight = element.height();
+				};
+		
+				// create functions to call when content grows
+				var onGrow = function() {
+		
+					// check to see if the content has change size
+					if (element.width() > resizeWidth || element.height() > resizeHeight) {
+			
+						// if size has changed then reinitialise
+						callback.apply(this, []);
+					}
+					// after reinitialising update sizes
+					updateSizes();
+				};
+		
+				// create functions to call when content shrinks
+				var onShrink = function() {
+		
+					// check to see if the content has change size
+					if (element.width() < resizeWidth || element.height() < resizeHeight) {
+			
+						// if size has changed then reinitialise
+						callback.apply(this, []);
+					}
+					// after reinitialising update sizes
+					updateSizes();
+				};
+		
+				// bind to scroll events
+				resizeGrowElement.addEventListener('scroll', onGrow.bind(this));
+				resizeShrinkElement.addEventListener('scroll', onShrink.bind(this));
+		
+				// nest elements before adding to pane
+				resizeGrowElement.appendChild(resizeGrowChildElement);
+				resizeShrinkElement.appendChild(resizeShrinkChildElement);
+		
+				resizeElement.appendChild(resizeGrowElement);
+				resizeElement.appendChild(resizeShrinkElement);
+		
+				element.append(resizeElement);
+
+				// ensure parent element is not statically positioned
+				if(window.getComputedStyle(element[0], null).getPropertyValue('position') === 'static') {
+					element[0].style.position = 'relative';
+				}
+		
+				// update sizes initially
+				updateSizes();
 			}
 
 			function initialiseVerticalScroll()
@@ -1540,6 +1651,8 @@
 		scrollPagePercent			: 0.8,		// Percent of visible area scrolled when pageUp/Down or track area pressed
 		alwaysShowVScroll			: false,
 		alwaysShowHScroll			: false,
+		resizeSensor				: false,
+		resizeSensorDelay			: 0,
 	};
 
 }));
