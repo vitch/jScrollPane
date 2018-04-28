@@ -60,12 +60,24 @@
 				right edge then the scrollpane then the scrollpane will remain scrolled to the right edge even if new
 				content is added to the pane which makes it wider.
 			</p>
+			<h2 id="resizeSensor">resizeSensor <span class="setting-type">- boolean (default false)</span></h2>
+			<p>
+				Whether jScrollPane should automatically reinitialise itself whenever the content inside changes in size. 
+				This can help with instances when the size of the content of the scrollpane (or the
+				surrounding element) changes. This is more performant than using autoReinitialise, however autoReinitialise
+				should be used if elements inside the scrollpane are absolutely positioned.	<a href="resize_sensor.html">Demo</a>.
+			</p>
+			<h2 id="resizeSensorDelay">resizeSensorDelay <span class="setting-type">- int (default 0)</span></h2>
+			<p>
+				The number of milliseconds to wait before reinitialising after resizeSensor detects a change (if <a href="#resizeSensor">resizeSensor</a>
+				is true).
+			</p>
 			<h2 id="autoReinitialise">autoReinitialise <span class="setting-type">- boolean (default false)</span></h2>
 			<p>
 				Whether jScrollPane should automatically reinitialise itself periodically after you have initially
 				initialised it. This can help with instances when the size of the content of the scrollpane (or the
 				surrounding element) changes. However, it does involve an overhead of running a javascript function on
-				a timer so it is recommended only to activate where necessary. <a href="auto_reinitialise.html">Demo</a>.
+				a timer so it is recommended to use the resizeSensor where possible. <a href="auto_reinitialise.html">Demo</a>.
 			</p>
 			<h2 id="autoReinitialiseDelay">autoReinitialiseDelay <span class="setting-type">- int (default 500)</span></h2>
 			<p>
