@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.1.3 - 2018-04-04
+ * jScrollPane - v2.2.0-rc.1 - 2018-04-28
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
@@ -9,7 +9,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.1.3, Last updated: 2018-04-04*
+// *Version: 2.2.0-rc.1, Last updated: 2018-04-28*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -42,6 +42,11 @@
 //
 // About: Release History
 //
+// 2.2.0-rc.1  - (2018-04-28) Merged resize sensor to find out size changes of screen and
+//                            again little bit tuned this to support more npm goodies.
+//                            * Merged:
+//                            - #361 Event based reinitialising - Resize Sensor
+//                            - #359 Use npm scripts and local dev dependencies to build the project
 // 2.1.3       - (2018-04-04) No changes from Release Candidate 2 so making release
 // 2.1.3-rc.2  - (2018-03-13) Now using 'script/jquery.jscrollpane.min.js' main
 //                            in package.json rather than 'Gruntfile.js'
@@ -60,17 +65,6 @@
 //             * Bugs
 //             - #8 Make it possible to tell a scrollbar to be "always on"
 // 2.1.0  - (2017-12-16) Update jQuery to version 3.x
-// 2.0.23 - (2016-01-28) Various
-// 2.0.22 - (2015-04-25) Resolve a memory leak due to an event handler that isn't cleaned up in destroy (thanks @timjnh)
-// 2.0.21 - (2015-02-24) Simplify UMD pattern: fixes browserify when loading jQuery outside of bundle
-// 2.0.20 - (2014-10-23) Adds AMD support (thanks @carlosrberto) and support for overflow-x/overflow-y (thanks @darimpulso)
-// 2.0.19 - (2013-11-16) Changes for more reliable scroll amount with latest mousewheel plugin (thanks @brandonaaron)
-// 2.0.18 - (2013-10-23) Fix for issue with gutters and scrollToElement (thanks @Dubiy)
-// 2.0.17 - (2013-08-17) Working correctly when box-sizing is set to border-box (thanks @pieht)
-// 2.0.16 - (2013-07-30) Resetting left position when scroll is removed. Fixes #189
-// 2.0.15 - (2013-07-29) Fixed issue with scrollToElement where the destX and destY are undefined.
-// 2.0.14 - (2013-05-01) Updated to most recent mouse wheel plugin (see #106) and related changes for sensible scroll speed
-// 2.0.13 - (2013-05-01) Switched to semver compatible version name
 
 (function (factory) {
   if ( typeof define === 'function' && define.amd ) {
