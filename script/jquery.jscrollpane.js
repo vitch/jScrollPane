@@ -88,7 +88,7 @@
 		// JScrollPane "class" - public methods are available through $('selector').data('jsp')
 		function JScrollPane(elem, s)
 		{
-			var settings, jsp = this, pane, paneWidth, paneHeight, container, contentWidth, contentHeight,
+			var settings, jsp = this, pane, paneWidth, paneHeight, paneMaxHeight, container, contentWidth, contentHeight,
 				percentInViewH, percentInViewV, isScrollableV, isScrollableH, verticalDrag, dragMaxY,
 				verticalDragPosition, horizontalDrag, dragMaxX, horizontalDragPosition,
 				verticalBar, verticalTrack, scrollbarWidth, verticalTrackHeight, verticalDragHeight, arrowUp, arrowDown,
@@ -146,6 +146,16 @@
 					paneWidth = elem.innerWidth() + originalPaddingTotalWidth;
 					paneHeight = elem.innerHeight();
 
+					paneMaxHeight = elem.css("max-height");
+					if(paneMaxHeight.indexOf("px") !== -1) {
+						paneMaxHeight = parseFloat(paneMaxHeight);
+						if(isNaN(paneMaxHeight)) {
+							paneMaxHeight = null;
+						}
+					} else {
+						paneMaxHeight = null;
+					}
+
 					elem.width(paneWidth);
 
 					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
@@ -200,6 +210,23 @@
 
 					pane.css('width', '');
 					elem.width(paneWidth);
+
+					if(paneMaxHeight !== null) {
+						if(paneHeight < paneMaxHeight) {
+							paneHeight = paneMaxHeight;
+							container.css({
+								height: paneHeight + 'px'
+							});
+						}
+					}
+
+					// If the content has reduced in height, shrink the container
+					if(pane.outerHeight() < paneHeight) {
+						contentHeight = pane.outerHeight();
+						container.css({
+							height: contentHeight + 'px'
+						});
+					}
 
 					container.find('>.jspVerticalBar,>.jspHorizontalBar').remove().end();
 				}
