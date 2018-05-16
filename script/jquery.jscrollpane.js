@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.2.0-rc.1 - 2018-04-28
+ * jScrollPane - v2.2.0 - 2018-05-16
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
@@ -9,12 +9,15 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.2.0-rc.1, Last updated: 2018-04-28*
+// *Version: 2.2.0, Last updated: 2018-05-16*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
-// Source       - http://github.com/vitch/jScrollPane/raw/master/script/jquery.jscrollpane.js
-// (Minified)   - http://github.com/vitch/jScrollPane/raw/master/script/jquery.jscrollpane.min.js
+// CND          - https://cdnjs.com/libraries/jScrollPane
+// Source       - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.0/script/jquery.jscrollpane.min.js
+// (Minified)   - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.0/script/jquery.jscrollpane.js
+// CSS          - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.0/style/jquery.jscrollpane.css
+// (Minified)   - https://cdnjs.cloudflare.com/ajax/libs/jScrollPane/2.2.0/style/jquery.jscrollpane.min.css
 //
 // About: License
 //
@@ -42,6 +45,7 @@
 //
 // About: Release History
 //
+// 2.2.0       - (2018-05-16) No changes to RC1
 // 2.2.0-rc.1  - (2018-04-28) Merged resize sensor to find out size changes of screen and
 //                            again little bit tuned this to support more npm goodies.
 //                            * Merged:
