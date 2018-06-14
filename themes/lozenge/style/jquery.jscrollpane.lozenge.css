@@ -64,15 +64,15 @@
 
 .jspArrowDown
 {
-	background-position: -64px 0 !important; 
+	background-position: -64px 0; 
 }
 
 .jspArrowLeft
 {
-	background-position: -96px 0 !important;
+	background-position: -96px 0;
 }
 
 .jspArrowRight
 {
-	background-position: -32px 0 !important;
+	background-position: -32px 0;
 }
