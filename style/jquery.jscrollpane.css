@@ -72,6 +72,7 @@
 {
 	background: #50506d;
 	cursor: pointer;
+        direction: ltr;
 	display: block;
 	margin: 0;
 	padding: 0;
