@@ -1,6 +1,6 @@
 {
   "name": "jscrollpane",
-  "version": "2.2.1-rc.2",
+  "version": "2.2.1",
   "description": "jScrollPane - cross browser custom scroll bars",
   "repository": {
     "type": "git",
