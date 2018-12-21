@@ -6,8 +6,8 @@ To see a bunch of examples of jScrollPane in action please visit the [jScrollPan
 
 # How to get it
 
-## CND
-Up-to-date CND version is kindly provided by: [CNDJS jScrollPane](https://cdnjs.com/libraries/jScrollPane)
+## CDN
+Up-to-date CDN version is kindly provided by: [CDNJS jScrollPane](https://cdnjs.com/libraries/jScrollPane)
 
 ## NPM
 Up-to-date Node version [jScrollPane](https://www.npmjs.com/package/jscrollpane) is also available from NPM.
