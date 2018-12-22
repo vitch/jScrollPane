@@ -12,6 +12,9 @@ Up-to-date CDN version is kindly provided by: [CDNJS jScrollPane](https://cdnjs.
 ## NPM
 Up-to-date Node version [jScrollPane](https://www.npmjs.com/package/jscrollpane) is also available from NPM.
 
+## Ruby on Rails
+jScrollPane [packed as Ruby gem](https://github.com/bodrovis/jscrollpane-rails) is also available.
+
 ## Issues
 
 Please feel free to make Bug reports against project but if you are making Issue in this project please read below.
