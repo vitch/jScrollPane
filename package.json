@@ -1,6 +1,6 @@
 {
   "name": "jscrollpane",
-  "version": "2.2.1",
+  "version": "2.2.3",
   "description": "jScrollPane - cross browser custom scroll bars",
   "repository": {
     "type": "git",
@@ -22,13 +22,13 @@
     "build": "grunt"
   },
   "dependencies": {
-    "jquery": "3.x"
+    "jquery": "^3.5.1"
   },
   "devDependencies": {
     "grunt": "^1.1.0",
-    "grunt-cli": "latest",
-    "grunt-contrib-connect": "latest",
-    "grunt-contrib-uglify": "latest",
+    "grunt-cli": "^1.3.2",
+    "grunt-contrib-connect": "^2.1.0",
+    "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0"
   }
 }
