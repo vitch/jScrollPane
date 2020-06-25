@@ -199,7 +199,7 @@
 
 					paneWidth = newPaneWidth;
 					paneHeight = newPaneHeight;
-					container.css({width: paneWidth, height: paneHeight});
+					container.css({width: paneWidth + "px", height: paneHeight + "px"});
 
 					// If nothing changed since last check...
 					if (!hasContainingSpaceChanged && previousContentWidth == contentWidth && pane.outerHeight() == contentHeight) {
