@@ -24,17 +24,17 @@ function unsetPos(){
 
 $.event.special.mwheelIntent = {
 	setup: function(){
-		var jElm = $(this).bind('mousewheel', $.event.special.mwheelIntent.handler);
+		var jElm = $(this).on('mousewheel', $.event.special.mwheelIntent.handler);
 		if( this !== doc && this !== root && this !== body ){
-			jElm.bind('mouseleave', unsetPos);
+			jElm.on('mouseleave', unsetPos);
 		}
 		jElm = null;
         return true;
     },
 	teardown: function(){
         $(this)
-			.unbind('mousewheel', $.event.special.mwheelIntent.handler)
-			.unbind('mouseleave', unsetPos)
+			.unon('mousewheel', $.event.special.mwheelIntent.handler)
+			.unon('mouseleave', unsetPos)
 		;
         return true;
     },
@@ -60,17 +60,17 @@ $.event.special.mwheelIntent = {
 };
 $.fn.extend({
 	mwheelIntent: function(fn) {
-		return fn ? this.bind("mwheelIntent", fn) : this.trigger("mwheelIntent");
+		return fn ? this.on("mwheelIntent", fn) : this.trigger("mwheelIntent");
 	},
 	
 	unmwheelIntent: function(fn) {
-		return this.unbind("mwheelIntent", fn);
+		return this.unon("mwheelIntent", fn);
 	}
 });
 
 $(function(){
 	body = doc.body;
 	//assume that document is always scrollable, doesn't hurt if not
-	$(doc).bind('mwheelIntent.mwheelIntentDefault', $.noop);
+	$(doc).on('mwheelIntent.mwheelIntentDefault', $.noop);
 });
 })(jQuery);
