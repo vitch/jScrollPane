@@ -52,17 +52,24 @@
 			<p>
 				If <a href="#maintainPosition">maintainPosition</a> is true and the scrollpane is scrolled to the
 				bottom then the scrollpane then the scrollpane will remain scrolled to the bottom even if new content
-				is added to the pane which makes it taller.
+				is added to the pane which makes it taller. User has to do this scroll manually.
+				If maintainPosition is false and stickToBottom is true it will always jump to bottom when reinitialize
+				happened and stay there. Notice then it does not maintain position only sticks to bottom even User
+				scrolls pane up.
 			</p>
 			<h2 id="stickToRight">stickToRight<span class="setting-type">- boolean (default false)</span></h2>
 			<p>
 				If <a href="#maintainPosition">maintainPosition</a> is true and the scrollpane is scrolled to its
 				right edge then the scrollpane then the scrollpane will remain scrolled to the right edge even if new
-				content is added to the pane which makes it wider.
+				content is added to the pane which makes it wider. User has to do this scroll manually as it tries
+				to keep position.
+				If maintainPosition is false and stickToRight is true it will always jump to right when new content
+				appears and stay there. Notice then it does not maintain position only sticks to right even User
+				scrolls pane left.
 			</p>
 			<h2 id="resizeSensor">resizeSensor <span class="setting-type">- boolean (default false)</span></h2>
 			<p>
-				Whether jScrollPane should automatically reinitialise itself whenever the content inside changes in size. 
+				Whether jScrollPane should automatically reinitialise itself whenever the content inside changes in size.
 				This can help with instances when the size of the content of the scrollpane (or the
 				surrounding element) changes. This is more performant than using autoReinitialise, however autoReinitialise
 				should be used if elements inside the scrollpane are absolutely positioned.	<a href="resize_sensor.html">Demo</a>.

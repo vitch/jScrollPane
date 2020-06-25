@@ -138,6 +138,8 @@
 						newPaneWidth, newPaneHeight, maintainAtBottom = false, maintainAtRight = false;
 
 				settings = s;
+                lastContentX = 0;
+                lastContentY = 0;
 
 				if (pane === undefined) {
 					originalScrollTop = elem.scrollTop();
@@ -241,6 +243,7 @@
 					elem.addClass('jspScrollable');
 
 					isMaintainingPositon = settings.maintainPosition && (verticalDragPosition || horizontalDragPosition);
+
 					if (isMaintainingPositon) {
 						lastContentX = contentPositionX();
 						lastContentY = contentPositionY();
@@ -250,7 +253,7 @@
 					initialiseHorizontalScroll();
 					resizeScrollbars();
 
-					if (isMaintainingPositon) {
+					if (settings.stickToBottom || settings.stickToRight) {
 						scrollToX(maintainAtRight  ? (contentWidth  - paneWidth ) : lastContentX, false);
 						scrollToY(maintainAtBottom ? (contentHeight - paneHeight) : lastContentY, false);
 					}
@@ -1059,13 +1062,25 @@
 			function isCloseToBottom()
 			{
 				var scrollableHeight = contentHeight - paneHeight;
-				return (scrollableHeight >= 20) && (scrollableHeight - contentPositionY() < 10);
+
+				if(settings.maintainPosition == true)
+				{
+					return (scrollableHeight >= 20) && (scrollableHeight - contentPositionY() < 10);
+				}
+
+				return true;
 			}
 
 			function isCloseToRight()
 			{
 				var scrollableWidth = contentWidth - paneWidth;
-				return (scrollableWidth >= 20) && (scrollableWidth - contentPositionX() < 10);
+
+				if(settings.maintainPosition == true)
+				{
+					return (scrollableWidth >= 20) && (scrollableWidth - contentPositionX() < 10);
+				}
+
+				return true;
 			}
 
 			function initMousewheel()
