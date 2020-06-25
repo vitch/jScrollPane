@@ -1,5 +1,5 @@
 /*!
- * jScrollPane - v2.2.1 - 2018-09-27
+ * jScrollPane - v2.2.3 - 2020-06-25
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
@@ -9,7 +9,7 @@
 
 // Script: jScrollPane - cross browser customisable scrollbars
 //
-// *Version: 2.2.1, Last updated: 2018-09-27*
+// *Version: 2.2.3, Last updated: 2020-06-25*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -45,6 +45,8 @@
 //
 // About: Release History
 //
+// 2.2.3       - (2020-06-25) Fix Github Issue #376 and #377 with jQuery 3.5 and upcoming jQuery 4.0
+// 2.2.2       - (2020-05-06) Just update NPM dependecies to remove vunerbilities
 // 2.2.1       - (2018-09-27) No changed applied to release so same as RC1/2
 // 2.2.1-rc.2  - (2018-06-14) Sucked NPM release have to make new Release.. this is 2018!
 // 2.2.1-rc.1  - (2018-06-14) Fixed CSSLint warnings which can lead CSS problems in
@@ -154,8 +156,8 @@
 
 					elem.width(paneWidth);
 
-					pane = $('<div class="jspPane" />').css('padding', originalPadding).append(elem.children());
-					container = $('<div class="jspContainer" />')
+					pane = $('<div class="jspPane"></div>').css('padding', originalPadding).append(elem.children());
+					container = $('<div class="jspContainer"></div>')
 						.css({
 							'width': paneWidth + 'px',
 							'height': paneHeight + 'px'
@@ -397,15 +399,15 @@
 				if (isScrollableV) {
 
 					container.append(
-						$('<div class="jspVerticalBar" />').append(
-							$('<div class="jspCap jspCapTop" />'),
-							$('<div class="jspTrack" />').append(
-								$('<div class="jspDrag" />').append(
-									$('<div class="jspDragTop" />'),
-									$('<div class="jspDragBottom" />')
+						$('<div class="jspVerticalBar"></div>').append(
+							$('<div class="jspCap jspCapTop"></div>'),
+							$('<div class="jspTrack"></div>').append(
+								$('<div class="jspDrag"></div>').append(
+									$('<div class="jspDragTop"></div>'),
+									$('<div class="jspDragBottom"></div>')
 								)
 							),
-							$('<div class="jspCap jspCapBottom" />')
+							$('<div class="jspCap jspCapBottom"></div>')
 						)
 					);
 
@@ -414,10 +416,10 @@
 					verticalDrag = verticalTrack.find('>.jspDrag');
 
 					if (settings.showArrows) {
-						arrowUp = $('<a class="jspArrow jspArrowUp" />').on(
+						arrowUp = $('<a class="jspArrow jspArrowUp"></a>').on(
 							'mousedown.jsp', getArrowScroll(0, -1)
 						).on('click.jsp', nil);
-						arrowDown = $('<a class="jspArrow jspArrowDown" />').on(
+						arrowDown = $('<a class="jspArrow jspArrowDown"></a>').on(
 							'mousedown.jsp', getArrowScroll(0, 1)
 						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -498,15 +500,15 @@
 				if (isScrollableH) {
 
 					container.append(
-						$('<div class="jspHorizontalBar" />').append(
-							$('<div class="jspCap jspCapLeft" />'),
-							$('<div class="jspTrack" />').append(
-								$('<div class="jspDrag" />').append(
-									$('<div class="jspDragLeft" />'),
-									$('<div class="jspDragRight" />')
+						$('<div class="jspHorizontalBar"></div>').append(
+							$('<div class="jspCap jspCapLeft"></div>'),
+							$('<div class="jspTrack"></div>').append(
+								$('<div class="jspDrag"></div>').append(
+									$('<div class="jspDragLeft"></div>'),
+									$('<div class="jspDragRight"></div>')
 								)
 							),
-							$('<div class="jspCap jspCapRight" />')
+							$('<div class="jspCap jspCapRight"></div>')
 						)
 					);
 
@@ -515,10 +517,10 @@
 					horizontalDrag = horizontalTrack.find('>.jspDrag');
 
 					if (settings.showArrows) {
-						arrowLeft = $('<a class="jspArrow jspArrowLeft" />').on(
+						arrowLeft = $('<a class="jspArrow jspArrowLeft"></a>').on(
 							'mousedown.jsp', getArrowScroll(-1, 0)
 						).on('click.jsp', nil);
-						arrowRight = $('<a class="jspArrow jspArrowRight" />').on(
+						arrowRight = $('<a class="jspArrow jspArrowRight"></a>').on(
 							'mousedown.jsp', getArrowScroll(1, 0)
 						).on('click.jsp', nil);
 						if (settings.arrowScrollOnHover) {
@@ -595,7 +597,7 @@
 					paneHeight -= verticalTrackWidth;
 					paneWidth -= horizontalTrackHeight;
 					horizontalTrack.parent().append(
-						$('<div class="jspCorner" />').css('width', horizontalTrackHeight + 'px')
+						$('<div class="jspCorner"></div>').css('width', horizontalTrackHeight + 'px')
 					);
 					sizeVerticalScrollbar();
 					sizeHorizontalScrollbar();
