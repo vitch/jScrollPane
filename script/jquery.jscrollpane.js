@@ -1,15 +1,16 @@
 /*!
- * jScrollPane - v2.2.3 - 2020-06-25
+ * jScrollPane - v2.2.3-rc.1 - 2020-06-26
  * http://jscrollpane.kelvinluck.com/
  *
  * Copyright (c) 2014 Kelvin Luck
- * Copyright (c) 2017-2018 Tuukka Pasanen
+ * Copyright (c) 2017-2020 Tuukka Pasanen
  * Dual licensed under the MIT or GPL licenses.
+ *
+ * SPDX-License-Identifier: MIT
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 // Script: jScrollPane - cross browser customisable scrollbars
-//
-// *Version: 2.2.3, Last updated: 2020-06-25*
 //
 // Project Home - http://jscrollpane.kelvinluck.com/
 // GitHub       - http://github.com/vitch/jScrollPane
@@ -22,10 +23,10 @@
 // About: License
 //
 // Copyright (c) 2017 Kelvin Luck
-// Copyright (c) 2017-2018 Tuukka Pasanen
+// Copyright (c) 2017-2020 Tuukka Pasanen
 // Dual licensed under the MIT or GPL Version 2 licenses.
-// http://jscrollpane.kelvinluck.com/MIT-LICENSE.txt
-// http://jscrollpane.kelvinluck.com/GPL-LICENSE.txt
+// https://github.com/vitch/jScrollPane/blob/master/MIT-LICENSE.txt
+// https://github.com/vitch/jScrollPane/blob/master/GPL-LICENSE.txt
 //
 // About: Examples
 //
@@ -45,7 +46,9 @@
 //
 // About: Release History
 //
-// 2.2.3       - (2020-06-25) Fix Github Issue #376 and #377 with jQuery 3.5 and upcoming jQuery 4.0
+// 2.2.3-rc.1  - (2020-06-26) Fix Github Issue #376 and #377 with jQuery 3.5 and upcoming jQuery 4.0
+//                            Small change with setting stickToBottom. Updated other scripts to
+//                             jQuery 3.x.
 // 2.2.2       - (2020-05-06) Just update NPM dependecies to remove vunerbilities
 // 2.2.1       - (2018-09-27) No changed applied to release so same as RC1/2
 // 2.2.1-rc.2  - (2018-06-14) Sucked NPM release have to make new Release.. this is 2018!
@@ -59,24 +62,6 @@
 //                            * Merged:
 //                            - #361 Event based reinitialising - Resize Sensor
 //                            - #359 Use npm scripts and local dev dependencies to build the project
-// 2.1.3       - (2018-04-04) No changes from Release Candidate 2 so making release
-// 2.1.3-rc.2  - (2018-03-13) Now using 'script/jquery.jscrollpane.min.js' main
-//                            in package.json rather than 'Gruntfile.js'
-// 2.1.3-rc.1  - (2018-03-05) Moving Gruntfile.js to root and example HTML
-//                            to subdirectory examples
-// 2.1.2       - (2018-02-16) Just on console.log remove and Release!
-//                            This version should play nicely with NPM
-// 2.1.2-rc.2  - (2018-02-03) Update package.json main-tag
-// 2.1.2-rc.1  - (2018-01-18) Release on NPM.
-// 2.1.1       - (2018-01-12) As everyone stays silent then we just release! No changes from RC.1
-// 2.1.1-rc.1  - (2017-12-23) Started to slowly merge stuff (HO HO HO Merry Christmas!)
-//             * Merged
-//             - #349 - ScrollPane reinitialization should adapt to changed container size
-//             - #335 Set drag bar width/height with .css instead of .width/.height
-//             - #297 added two settings: always show HScroll and VScroll
-//             * Bugs
-//             - #8 Make it possible to tell a scrollbar to be "always on"
-// 2.1.0  - (2017-12-16) Update jQuery to version 3.x
 
 (function (factory) {
   if ( typeof define === 'function' && define.amd ) {
